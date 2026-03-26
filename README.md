@@ -12,7 +12,7 @@ Phần mềm Quản lý Quán Cà Phê
 ---
 
 ## 🔸 Tóm tắt nhanh
-- **Hệ thống 2 thành phần**: Backend FastAPI + Frontend React/Tauri (Desktop + Web Dev Server)
+- **Hệ thống 2 thành phần**: 
 - **Nghiệp vụ Bán hàng (POS)**: Quản lý order, sơ đồ bàn, thanh toán đa phương thức (Tiền mặt, Thẻ, QR, Hóa đơn ĐT).
 - **Quản lý Vận hành**: Quản lý menu, kho nguyên liệu (nhập/xuất/kiểm kê), khách hàng (tích điểm).
 - **Quản lý Nhân sự**: Phân quyền chi tiết (Admin, Thu ngân, Pha chế), chấm công, tính lương.
