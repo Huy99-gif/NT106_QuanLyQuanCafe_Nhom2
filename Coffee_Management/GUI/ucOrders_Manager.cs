@@ -7,11 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DTO; 
 
 namespace GUI
 {
     public partial class ucOrders_Manager : UserControl
     {
+        
+        private List<TableModel>? _originalTableData;
+        private List<WarningWaitModel> _kitchenWarnings = new List<WarningWaitModel>();
+
         public ucOrders_Manager()
         {
             InitializeComponent();
@@ -20,32 +25,91 @@ namespace GUI
 
         private void LoadDummyData()
         {
-            DataTable dtTables = new DataTable();
-            dtTables.Columns.Add("Bàn");
-            dtTables.Columns.Add("Trạng Thái");
-            dtTables.Columns.Add("Tiến độ món");
-            dtTables.Columns.Add("Tạm Tính");
-            dtTables.Rows.Add("Bàn 01", "Đang phục vụ", "Đã lên đủ", "150,000 đ");
-            dtTables.Rows.Add("Bàn 02", "Chờ lên món", "Thiếu 2 món", "85,000 đ");
-            dtTables.Rows.Add("Bàn 05", "Chờ lên món", "Thiếu 1 món", "45,000 đ");
-            dtTables.Rows.Add("Bàn 08", "Đang phục vụ", "Đã lên đủ", "210,000 đ");
-            dtTables.Rows.Add("Bàn 12", "Chờ thanh toán", "Đã xong", "320,000 đ");
-            dgvTableStatus.DataSource = dtTables;
+            // Thêm các trạng thái vào ComboBox
+            cboTableStatus.Items.Clear();
+            cboTableStatus.Items.AddRange(new string[] { "Tất cả", "Đang phục vụ", "Chờ lên món", "Chờ thanh toán" });
+            cboTableStatus.SelectedIndex = 0;
+            // Tạo dữ liệu mẫu cho DataGridView
+            _originalTableData = new List<TableModel>
+            {
+                new TableModel { TableId = 1, TableName = "Bàn 01", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "150,000 đ" },
+                new TableModel { TableId = 2, TableName = "Bàn 02", Status = "Chờ lên món", Progress = "Thiếu 2 món", TotalAmount = "85,000 đ" },
+                new TableModel { TableId = 5, TableName = "Bàn 05", Status = "Chờ lên món", Progress = "Thiếu 1 món", TotalAmount = "45,000 đ" },
+                new TableModel { TableId = 8, TableName = "Bàn 08", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "210,000 đ" },
+                new TableModel { TableId = 12, TableName = "Bàn 12", Status = "Chờ thanh toán", Progress = "Đã xong", TotalAmount = "320,000 đ" }
+            };
+
+            dgvTableStatus.DataSource = _originalTableData;
+            dgvTableStatus.Columns["TableId"].Visible = false;
+            dgvTableStatus.Columns["TableName"].HeaderText = "Bàn";
+            dgvTableStatus.Columns["Status"].HeaderText = "Trạng Thái";
+            dgvTableStatus.Columns["Progress"].HeaderText = "Tiến độ món";
+            dgvTableStatus.Columns["TotalAmount"].HeaderText = "Tạm Tính";
+
             dgvTableStatus.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTableStatus.RowHeadersVisible = false;
-            lstSoldOut.Items.Clear();
-            lstSoldOut.Items.Add("❌ Bánh ngọt Tiramisu");
-            lstSoldOut.Items.Add("❌ Sinh tố Bơ");
-            lstSoldOut.Items.Add("❌ Trà sen vàng (Hết hạt sen)");
-            lstKitchenWarning.Items.Clear();
-            lstKitchenWarning.Items.Add("⚠️ Bàn 02: Cà phê sữa đá (Đợi 18 phút)");
-            lstKitchenWarning.Items.Add("⚠️ Bàn 05: Trà đào cam sả (Đợi 15 phút)");
-            lstKitchenWarning.Items.Add("🔥 Bàn 15: Sinh tố dâu (Đợi 25 phút - Quá lâu!)");
+
+            _kitchenWarnings = new List<WarningWaitModel>
+            {
+                new WarningWaitModel { TableName = "Bàn 02", DrinkName = "Cà phê sữa đá", WaitTimeMinutes = 18 },
+                new WarningWaitModel { TableName = "Bàn 05", DrinkName = "Trà đào cam sả", WaitTimeMinutes = 15 },
+                new WarningWaitModel { TableName = "Bàn 15", DrinkName = "Sinh tố dâu", WaitTimeMinutes = 25 },
+                new WarningWaitModel { TableName = "Bàn VIP 1", DrinkName = "Bò bít tết", WaitTimeMinutes = 30 }
+            };
+            lstKitchenWarning.DataSource = null;
+            lstKitchenWarning.DataSource = _kitchenWarnings;
+            lstKitchenWarning.DisplayMember = "DisplayText";
+        }
+
+        private void btnFilterTable_Click(object sender, EventArgs e)
+        {
+            if (cboTableStatus.SelectedItem == null || _originalTableData == null) return;
+
+            string? selectedStatus = cboTableStatus.SelectedItem.ToString();
+
+            if (selectedStatus == "Tất cả")
+            {
+                dgvTableStatus.DataSource = _originalTableData;
+            }
+            else
+            {
+                var filteredData = _originalTableData
+                                    .Where(table => table.Status == selectedStatus)
+                                    .ToList();
+
+                dgvTableStatus.DataSource = filteredData;
+            }
         }
 
         private void lstSoldOut_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cboTableStatus_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstKitchenWarning_DoubleClick(object sender, EventArgs e)
+        {
+            // Kiểm tra xem người dùng có đang bấm vào một dòng dữ liệu hợp lệ hay không
+            if (lstKitchenWarning.SelectedItem != null)
+            {
+                // 1. Lấy thông tin dòng vừa được double-click và ép kiểu về WarningWaitModel
+                var monDaXong = (WarningWaitModel)lstKitchenWarning.SelectedItem;
+
+                // Tùy chọn: Hiển thị thông báo xác nhận nhỏ (bạn có thể bỏ đi nếu muốn thao tác nhanh)
+                // MessageBox.Show($"Đã hoàn thành: {monDaXong.FoodName} ở {monDaXong.TableName}", "Thông báo");
+
+                // 2. Xóa món này khỏi danh sách dữ liệu gốc
+                _kitchenWarnings.Remove(monDaXong);
+
+                // 3. Cập nhật (Refresh) lại ListBox để dòng chữ biến mất khỏi màn hình
+                lstKitchenWarning.DataSource = null;
+                lstKitchenWarning.DataSource = _kitchenWarnings;
+                lstKitchenWarning.DisplayMember = "DisplayText";
+            }
         }
     }
 }

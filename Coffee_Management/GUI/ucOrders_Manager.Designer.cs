@@ -37,6 +37,9 @@
             lblSoldOutValue = new Label();
             lblSoldOutTitle = new Label();
             pnlTableStatus = new Panel();
+            btnStatus = new Button();
+            btnFilterTable = new Button();
+            cboTableStatus = new ComboBox();
             dgvTableStatus = new DataGridView();
             lblTableStatusTitle = new Label();
             pnlSoldOut = new Panel();
@@ -136,12 +139,51 @@
             // pnlTableStatus
             // 
             pnlTableStatus.BackColor = Color.FromArgb(30, 30, 30);
+            pnlTableStatus.Controls.Add(btnStatus);
+            pnlTableStatus.Controls.Add(btnFilterTable);
+            pnlTableStatus.Controls.Add(cboTableStatus);
             pnlTableStatus.Controls.Add(dgvTableStatus);
             pnlTableStatus.Controls.Add(lblTableStatusTitle);
             pnlTableStatus.Location = new Point(20, 120);
             pnlTableStatus.Name = "pnlTableStatus";
             pnlTableStatus.Size = new Size(450, 390);
             pnlTableStatus.TabIndex = 1;
+            // 
+            // btnStatus
+            // 
+            btnStatus.BackColor = Color.FromArgb(45, 45, 48);
+            btnStatus.FlatAppearance.BorderSize = 0;
+            btnStatus.FlatStyle = FlatStyle.Flat;
+            btnStatus.ForeColor = Color.White;
+            btnStatus.Location = new Point(345, 12);
+            btnStatus.Name = "btnStatus";
+            btnStatus.Size = new Size(85, 25);
+            btnStatus.TabIndex = 3;
+            btnStatus.Text = "Cập nhật";
+            btnStatus.UseVisualStyleBackColor = false;
+            // 
+            // btnFilterTable
+            // 
+            btnFilterTable.BackColor = Color.FromArgb(45, 45, 48);
+            btnFilterTable.FlatAppearance.BorderSize = 0;
+            btnFilterTable.FlatStyle = FlatStyle.Flat;
+            btnFilterTable.ForeColor = Color.White;
+            btnFilterTable.Location = new Point(345, 345);
+            btnFilterTable.Name = "btnFilterTable";
+            btnFilterTable.Size = new Size(85, 25);
+            btnFilterTable.TabIndex = 4;
+            btnFilterTable.Text = "Lọc";
+            btnFilterTable.UseVisualStyleBackColor = false;
+            btnFilterTable.Click += btnFilterTable_Click;
+            // 
+            // cboTableStatus
+            // 
+            cboTableStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTableStatus.FormattingEnabled = true;
+            cboTableStatus.Location = new Point(20, 346);
+            cboTableStatus.Name = "cboTableStatus";
+            cboTableStatus.Size = new Size(315, 23);
+            cboTableStatus.TabIndex = 3;
             // 
             // dgvTableStatus
             // 
@@ -244,6 +286,7 @@
             lstKitchenWarning.Name = "lstKitchenWarning";
             lstKitchenWarning.Size = new Size(254, 119);
             lstKitchenWarning.TabIndex = 0;
+            lstKitchenWarning.DoubleClick += lstKitchenWarning_DoubleClick;
             // 
             // lblKitchenWarningTitle
             // 
@@ -298,5 +341,8 @@
         private System.Windows.Forms.Panel pnlKitchenWarning;
         private System.Windows.Forms.Label lblKitchenWarningTitle;
         private System.Windows.Forms.ListBox lstKitchenWarning;
+        private ComboBox cboTableStatus;
+        private System.Windows.Forms.Button btnFilterTable;
+        private Button btnStatus;
     }
 }

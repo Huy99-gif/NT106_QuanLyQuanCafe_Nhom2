@@ -21,5 +21,10 @@ namespace GUI
         {
 
         }
+
+        private void lblDailyRevValue_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
