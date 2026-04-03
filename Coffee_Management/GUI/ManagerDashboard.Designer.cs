@@ -210,6 +210,7 @@
             btnClose.Size = new Size(50, 70);
             btnClose.TabIndex = 0;
             btnClose.Text = "X";
+            btnClose.Click += btnClose_Click_1;
             // 
             // lblTitle
             // 
