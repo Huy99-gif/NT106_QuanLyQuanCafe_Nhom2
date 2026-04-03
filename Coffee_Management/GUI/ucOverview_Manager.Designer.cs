@@ -70,6 +70,7 @@
             lblDailyRevValue.Size = new Size(128, 30);
             lblDailyRevValue.TabIndex = 1;
             lblDailyRevValue.Text = "5,200,000 đ";
+            lblDailyRevValue.Click += lblDailyRevValue_Click;
             // 
             // lblDailyRevTitle
             // 
