@@ -16,5 +16,6 @@ namespace QuanLyQuanCafe.GUI
         {
             InitializeComponent();
         }
+        //
     }
 }
