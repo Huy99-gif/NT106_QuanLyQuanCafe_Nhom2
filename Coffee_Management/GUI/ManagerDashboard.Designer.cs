@@ -27,10 +27,10 @@
             pnlLogo = new Panel();
             lblLogo = new Label();
             pnlMainContent = new Panel();
-            lblWelcome = new Label();
             pnlHeader = new Panel();
             btnClose = new Button();
             lblTitle = new Label();
+            lblWelcome = new Label();
             pnlSidebar.SuspendLayout();
             pnlLogo.SuspendLayout();
             pnlMainContent.SuspendLayout();
@@ -187,17 +187,6 @@
             pnlMainContent.Size = new Size(804, 600);
             pnlMainContent.TabIndex = 2;
             // 
-            // lblWelcome
-            // 
-            lblWelcome.AutoSize = true;
-            lblWelcome.Font = new Font("Segoe UI", 18F);
-            lblWelcome.ForeColor = Color.Gray;
-            lblWelcome.Location = new Point(260, 220);
-            lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(280, 32);
-            lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Select a tab from the left";
-            // 
             // pnlHeader
             // 
             pnlHeader.BackColor = Color.FromArgb(30, 30, 30);
@@ -233,6 +222,17 @@
             lblTitle.TabIndex = 1;
             lblTitle.Text = "DASHBOARD";
             lblTitle.Click += lblTitle_Click_1;
+            // 
+            // lblWelcome
+            // 
+            lblWelcome.AutoSize = true;
+            lblWelcome.Font = new Font("Segoe UI", 18F);
+            lblWelcome.ForeColor = Color.Gray;
+            lblWelcome.Location = new Point(260, 220);
+            lblWelcome.Name = "lblWelcome";
+            lblWelcome.Size = new Size(280, 32);
+            lblWelcome.TabIndex = 0;
+            lblWelcome.Text = "Select a tab from the left";
             // 
             // ManagerDashboard
             // 
