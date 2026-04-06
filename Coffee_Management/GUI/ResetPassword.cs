@@ -11,14 +11,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using BUS;
 
 namespace GUI
 {
     public partial class ResetPassword : Form
     {
-        public ResetPassword()
+        private string userEmail;
+        public ResetPassword(string email)
         {
             InitializeComponent();
+            this.userEmail = email;
         }
 
         private void txtConfirmPass_Enter(object sender, EventArgs e)
@@ -39,7 +42,7 @@ namespace GUI
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             string newPass = txtNewPass.Text;
             string confirmPass = txtConfirmPass.Text;
@@ -50,17 +53,39 @@ namespace GUI
                 return;
             }
 
-            if (newPass == confirmPass)
+            if (newPass != confirmPass)
             {
-                MessageBox.Show("Password reset successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Login login = new Login();
-                login.Show();
+                MessageBox.Show("Passwords do not match. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            btnSave.Text = "Saving...";
+            btnSave.Enabled = false;
+
+            // Khởi tạo lớp xử lý logic
+            AuthServiceBUS authBUS = new AuthServiceBUS();
+
+            // Gọi hàm xử lý (truyền email, pass mới, và xác nhận pass)
+            var result = await authBUS.HandlePasswordReset(userEmail, txtNewPass.Text, txtConfirmPass.Text);
+
+            if (result.IsValid)
+            {
+                MessageBox.Show("Password updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Form? loginForm = Application.OpenForms["Login"];
+                if (loginForm != null)
+                {
+                    loginForm.Show();
+                }
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Passwords do not match. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + result.Message, "Fail", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            btnSave.Text = "Save";
+            btnSave.Enabled = true;
+
         }
 
         private bool IsValidPassword(string password)
@@ -82,6 +107,16 @@ namespace GUI
                     txtNewPass.SelectAll();
                 }
             }
+        }
+
+        private void lblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form? VerifyForm = Application.OpenForms["VerifyCode"];
+            if (VerifyForm != null)
+            {
+                VerifyForm.Show();
+            }
+            this.Close();
         }
     }
 }

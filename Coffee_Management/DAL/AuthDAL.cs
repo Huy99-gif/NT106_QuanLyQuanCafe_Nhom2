@@ -19,7 +19,7 @@ namespace DAL
                 var config = new FirebaseAuthConfig
                 {
                     ApiKey = AppConfig.AuthSecret,         // VD: "AIzaSyD-..." (Lấy từ Firebase Console)
-                    AuthDomain = "qlcafe - b621b.firebaseapp.com", // VD: "your-project.firebaseapp.com"
+                    AuthDomain = "qlcafe-b621b.firebaseapp.com", // VD: "your-project.firebaseapp.com"
                     Providers = new FirebaseAuthProvider[]
                     {
                         new EmailProvider() // Khai báo sử dụng đăng nhập bằng Email/Password
@@ -65,8 +65,8 @@ namespace DAL
             catch (Exception ex)
             {
                 // Sai mật khẩu, email chưa đăng ký trên Auth, hoặc mất mạng
-                //throw new Exception(ex.Message); Thử lỗi để xem chi tiết lỗi bên Authenciation   
-                return null;
+                throw new Exception(ex.Message); //Thử lỗi để xem chi tiết lỗi bên Authenciation   
+                //return null;
             }
         }
     }
