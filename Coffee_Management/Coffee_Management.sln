@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BUS", "BUS\BUS.csproj", "{7B90B2FD-427F-48A3-AFD5-284CCB1CB81A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{9961A33B-F5EF-49EB-9387-B90FB29A37B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{95340192-1E13-42F7-8222-5516B9B26B93} = {95340192-1E13-42F7-8222-5516B9B26B93}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

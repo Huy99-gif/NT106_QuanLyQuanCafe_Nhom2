@@ -25,6 +25,7 @@
             btnShowConfirmPass = new Button();
             txtConfirmPass = new TextBox();
             btnSave = new Button();
+            lblBackToLogin = new LinkLabel();
             pnlNewPassBg.SuspendLayout();
             pnlConfirmPassBg.SuspendLayout();
             SuspendLayout();
@@ -128,12 +129,26 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
+            // lblBackToLogin
+            // 
+            lblBackToLogin.AutoSize = true;
+            lblBackToLogin.Font = new Font("Segoe UI", 10F);
+            lblBackToLogin.LinkColor = Color.LightSkyBlue;
+            lblBackToLogin.Location = new Point(478, 290);
+            lblBackToLogin.Name = "lblBackToLogin";
+            lblBackToLogin.Size = new Size(92, 19);
+            lblBackToLogin.TabIndex = 6;
+            lblBackToLogin.TabStop = true;
+            lblBackToLogin.Text = "Back to Login";
+            lblBackToLogin.LinkClicked += lblBackToLogin_LinkClicked;
+            // 
             // ResetPassword
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
             ClientSize = new Size(800, 450);
+            Controls.Add(lblBackToLogin);
             Controls.Add(btnSave);
             Controls.Add(pnlConfirmPassBg);
             Controls.Add(pnlNewPassBg);
@@ -161,5 +176,6 @@
         private Button btnShowConfirmPass;
         private TextBox txtConfirmPass;
         private Button btnSave;
+        private LinkLabel lblBackToLogin;
     }
 }

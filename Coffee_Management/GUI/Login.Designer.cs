@@ -164,6 +164,7 @@
             txtEmail.PlaceholderText = "jubaer@gmail.com";
             txtEmail.Size = new Size(306, 22);
             txtEmail.TabIndex = 0;
+            txtEmail.TextChanged += txtEmail_TextChanged;
             txtEmail.Validating += txtEmail_Validating;
             // 
             // lblTitle
