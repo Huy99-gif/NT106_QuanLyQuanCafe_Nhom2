@@ -24,6 +24,7 @@
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblTitle = new Label();
             lblDescription = new Label();
             pnlCodeBg = new Panel();
@@ -31,6 +32,7 @@
             btnVerify = new Button();
             lblResend = new LinkLabel();
             lblBackToLogin = new LinkLabel();
+            resendTimer = new System.Windows.Forms.Timer(components);
             pnlCodeBg.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,9 +54,9 @@
             lblDescription.ForeColor = Color.LightGray;
             lblDescription.Location = new Point(220, 140);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(338, 19);
+            lblDescription.Size = new Size(307, 19);
             lblDescription.TabIndex = 1;
-            lblDescription.Text = "Please enter the 8-characters code sent to your email.";
+            lblDescription.Text = "Please enter the 8 digits code sent to your email.";
             lblDescription.Click += lblDescription_Click;
             // 
             // pnlCodeBg
@@ -106,6 +108,7 @@
             lblResend.TabIndex = 4;
             lblResend.TabStop = true;
             lblResend.Text = "Resend Code";
+            lblResend.LinkClicked += lblResend_LinkClicked;
             // 
             // lblBackToLogin
             // 
@@ -119,6 +122,11 @@
             lblBackToLogin.TabStop = true;
             lblBackToLogin.Text = "Back to Login";
             lblBackToLogin.LinkClicked += lblBackToLogin_LinkClicked;
+            // 
+            // resendTimer
+            // 
+            resendTimer.Interval = 1000;
+            resendTimer.Tick += timer1_Tick;
             // 
             // VerifyCode
             // 
@@ -151,5 +159,6 @@
         private Button btnVerify;
         private LinkLabel lblResend;
         private LinkLabel lblBackToLogin;
+        private System.Windows.Forms.Timer resendTimer;
     }
 }

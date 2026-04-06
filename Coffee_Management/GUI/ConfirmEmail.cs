@@ -8,11 +8,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BUS;
 
 namespace GUI
 {
     public partial class ConfirmEmail : Form
     {
+        private EmailCode emailBUS = new EmailCode();
         public ConfirmEmail()
         {
             InitializeComponent();
@@ -28,7 +30,7 @@ namespace GUI
             this.Close();
         }
 
-        private void btnSendCode_Click(object sender, EventArgs e)
+        private async void btnSendCode_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text;
 
@@ -38,16 +40,26 @@ namespace GUI
                 return;
             }
 
-            if (email == "kirak7264@gmail.com")
+            btnSendCode.Enabled = false;
+            btnSendCode.Text = "Sending...";
+
+            // Gọi BUS gửi mail
+            var result = await emailBUS.SendVerificationCodeAsync(email);
+
+            if (result.IsSuccess)
             {
-                VerifyCode verifyCode = new VerifyCode();
-                verifyCode.Show();
-                this.Close();
+                MessageBox.Show(result.Message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // QUAN TRỌNG: Mở Form 2 và truyền Mã code + Email sang đó
+                VerifyCode verifyForm = new VerifyCode(result.Code, email);
+                verifyForm.Show();
+                this.Hide(); // Ẩn Form 1 đi
             }
             else
             {
-                MessageBox.Show("Email not found. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                MessageBox.Show(result.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnSendCode.Enabled = true;
+                btnSendCode.Text = "Send Code";
             }
         }
 
@@ -76,5 +88,6 @@ namespace GUI
         {
 
         }
+
     }
 }
