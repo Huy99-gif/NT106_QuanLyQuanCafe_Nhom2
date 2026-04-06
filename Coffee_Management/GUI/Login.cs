@@ -4,6 +4,13 @@ using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
+using System;
+using DTO;
+using BUS;
+
 
 namespace GUI
 {
@@ -15,6 +22,11 @@ namespace GUI
 
             //Khi nhập pass chuyển thành dấu chấm
         }
+
+        private AuthBUS authBUS = new AuthBUS();
+
+        // Biến static lưu trữ phiên đăng nhập hiện tại cho toàn bộ ứng dụng
+        public static Employee? CurrentUser;
 
         //Hàm tạo sự kiện cho UI
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
@@ -70,7 +82,7 @@ namespace GUI
             Application.Exit();
         }
 
-        private void btnSignIn_Click(object sender, EventArgs e)
+        private async void btnSignIn_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text;
             string password = txtPassword.Text;
@@ -81,23 +93,51 @@ namespace GUI
                 return;
             }
 
-            //Code này chỉ thử luồng dữ liệu
-            if (email == "admin@admin.com" && password == "admin1@WS")
+            if (string.IsNullOrWhiteSpace(password))
             {
-                ManagerDashboard managerDashboard = new ManagerDashboard();
-                managerDashboard.Show();
-                this.Hide();
+                MessageBox.Show("Please enter your password.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else if (email == "orstaff@orstaff.com" && password == "orstaff1@WS")
+
+            // 2. Khóa nút bấm trong lúc chờ mạng
+            btnSignIn.Enabled = false;
+            btnSignIn.Text = "Processing...";
+
+            // 3. Gọi BUS thực hiện đăng nhập
+            // Vì BUS trả về 1 Tuple (IsSuccess, Message, UserData), ta dùng 'var result' để hứng
+            var result = await authBUS.LoginBUS(email, password);
+
+            // 4. Xử lý kết quả và Phân quyền
+            if (result.IsSuccess == true)
             {
-                OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
-                orstaffDashboard.Show();
-                this.Hide();
+                // Đăng nhập và qua các ải kiểm tra nghiệp vụ thành công
+                CurrentUser = result.UserData!; // Lưu vào biến hệ thống
+
+                // Điều hướng dựa vào Role
+                if (CurrentUser.Role == "manager")
+                {
+                    ManagerDashboard managerDashboard = new ManagerDashboard();
+                    managerDashboard.Show();
+                    this.Hide();
+                }
+                else if (CurrentUser.Role == "staff")
+                {
+                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
+                    orstaffDashboard.Show();
+                    this.Hide();
+                }
             }
             else
             {
-                MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Nếu IsSuccess == false (Sai pass, tài khoản bị khóa, rỗng...)
+                // Chỉ cần lấy đúng câu Message từ lớp BUS và in ra
+                MessageBox.Show(result.Message, "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            // 5. Mở lại nút bấm
+            btnSignIn.Enabled = true;
+            btnSignIn.Text = "Sign in";
         }
 
         private bool IsValidPassword(string password)
@@ -140,6 +180,11 @@ namespace GUI
                     txtPassword.SelectAll();
                 }
             }
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
