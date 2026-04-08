@@ -19,6 +19,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             pnlRight = new Panel();
+            chkRememberMe = new CheckBox();
             btnClose = new Button();
             lblForgotPass = new LinkLabel();
             btnSignIn = new Button();
@@ -40,6 +41,7 @@
             // pnlRight
             // 
             pnlRight.BackColor = Color.FromArgb(30, 30, 30);
+            pnlRight.Controls.Add(chkRememberMe);
             pnlRight.Controls.Add(btnClose);
             pnlRight.Controls.Add(lblForgotPass);
             pnlRight.Controls.Add(btnSignIn);
@@ -49,11 +51,20 @@
             pnlRight.Cursor = Cursors.Hand;
             pnlRight.Dock = DockStyle.Fill;
             pnlRight.ForeColor = Color.White;
-            pnlRight.Location = new Point(306, 0);
-            pnlRight.Margin = new Padding(3, 2, 3, 2);
+            pnlRight.Location = new Point(350, 0);
             pnlRight.Name = "pnlRight";
-            pnlRight.Size = new Size(438, 375);
+            pnlRight.Size = new Size(730, 503);
             pnlRight.TabIndex = 1;
+            // 
+            // chkRememberMe
+            // 
+            chkRememberMe.AutoSize = true;
+            chkRememberMe.Location = new Point(64, 320);
+            chkRememberMe.Name = "chkRememberMe";
+            chkRememberMe.Size = new Size(130, 24);
+            chkRememberMe.TabIndex = 6;
+            chkRememberMe.Text = "Lưu đăng nhập";
+            chkRememberMe.UseVisualStyleBackColor = true;
             // 
             // btnClose
             // 
@@ -62,9 +73,10 @@
             btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnClose.ForeColor = Color.White;
-            btnClose.Location = new Point(388, 0);
+            btnClose.Location = new Point(656, 0);
+            btnClose.Margin = new Padding(3, 4, 3, 4);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(50, 375);
+            btnClose.Size = new Size(74, 503);
             btnClose.TabIndex = 5;
             btnClose.Text = "X";
             btnClose.Click += btnClose_Click;
@@ -73,9 +85,9 @@
             // 
             lblForgotPass.AutoSize = true;
             lblForgotPass.LinkColor = Color.White;
-            lblForgotPass.Location = new Point(280, 239);
+            lblForgotPass.Location = new Point(288, 320);
             lblForgotPass.Name = "lblForgotPass";
-            lblForgotPass.Size = new Size(100, 15);
+            lblForgotPass.Size = new Size(125, 20);
             lblForgotPass.TabIndex = 4;
             lblForgotPass.TabStop = true;
             lblForgotPass.Text = "Forgot Password?";
@@ -89,10 +101,9 @@
             btnSignIn.FlatStyle = FlatStyle.Flat;
             btnSignIn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSignIn.ForeColor = Color.Black;
-            btnSignIn.Location = new Point(145, 281);
-            btnSignIn.Margin = new Padding(3, 2, 3, 2);
+            btnSignIn.Location = new Point(166, 375);
             btnSignIn.Name = "btnSignIn";
-            btnSignIn.Size = new Size(131, 34);
+            btnSignIn.Size = new Size(150, 45);
             btnSignIn.TabIndex = 3;
             btnSignIn.Text = "Sign In";
             btnSignIn.UseVisualStyleBackColor = false;
@@ -103,10 +114,9 @@
             pnlPassBg.BackColor = Color.FromArgb(45, 45, 48);
             pnlPassBg.Controls.Add(btnShowPass);
             pnlPassBg.Controls.Add(txtPassword);
-            pnlPassBg.Location = new Point(47, 188);
-            pnlPassBg.Margin = new Padding(3, 2, 3, 2);
+            pnlPassBg.Location = new Point(54, 251);
             pnlPassBg.Name = "pnlPassBg";
-            pnlPassBg.Size = new Size(332, 34);
+            pnlPassBg.Size = new Size(379, 45);
             pnlPassBg.TabIndex = 2;
             // 
             // btnShowPass
@@ -117,10 +127,9 @@
             btnShowPass.FlatStyle = FlatStyle.Flat;
             btnShowPass.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnShowPass.ForeColor = Color.Black;
-            btnShowPass.Location = new Point(270, 2);
-            btnShowPass.Margin = new Padding(3, 2, 3, 2);
+            btnShowPass.Location = new Point(309, 3);
             btnShowPass.Name = "btnShowPass";
-            btnShowPass.Size = new Size(59, 27);
+            btnShowPass.Size = new Size(67, 36);
             btnShowPass.TabIndex = 5;
             btnShowPass.Text = "👁️";
             btnShowPass.UseVisualStyleBackColor = false;
@@ -133,11 +142,10 @@
             txtPassword.BorderStyle = BorderStyle.None;
             txtPassword.Font = new Font("Segoe UI", 12F);
             txtPassword.ForeColor = Color.White;
-            txtPassword.Location = new Point(13, 7);
-            txtPassword.Margin = new Padding(3, 2, 3, 2);
+            txtPassword.Location = new Point(15, 9);
             txtPassword.Name = "txtPassword";
             txtPassword.PlaceholderText = "password123";
-            txtPassword.Size = new Size(306, 22);
+            txtPassword.Size = new Size(350, 27);
             txtPassword.TabIndex = 0;
             txtPassword.Enter += TxtPassword_Enter;
             txtPassword.Validating += txtPassword_Validating;
@@ -146,10 +154,9 @@
             // 
             pnlEmailBg.BackColor = Color.FromArgb(45, 45, 48);
             pnlEmailBg.Controls.Add(txtEmail);
-            pnlEmailBg.Location = new Point(47, 135);
-            pnlEmailBg.Margin = new Padding(3, 2, 3, 2);
+            pnlEmailBg.Location = new Point(54, 180);
             pnlEmailBg.Name = "pnlEmailBg";
-            pnlEmailBg.Size = new Size(332, 34);
+            pnlEmailBg.Size = new Size(379, 45);
             pnlEmailBg.TabIndex = 1;
             // 
             // txtEmail
@@ -158,11 +165,10 @@
             txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Font = new Font("Segoe UI", 12F);
             txtEmail.ForeColor = Color.White;
-            txtEmail.Location = new Point(13, 7);
-            txtEmail.Margin = new Padding(3, 2, 3, 2);
+            txtEmail.Location = new Point(15, 9);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "jubaer@gmail.com";
-            txtEmail.Size = new Size(306, 22);
+            txtEmail.Size = new Size(350, 27);
             txtEmail.TabIndex = 0;
             txtEmail.TextChanged += txtEmail_TextChanged;
             txtEmail.Validating += txtEmail_Validating;
@@ -172,9 +178,9 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(44, 52);
+            lblTitle.Location = new Point(50, 69);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(306, 60);
+            lblTitle.Size = new Size(381, 74);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Welcome Back,\r\nPlease login to your account";
             // 
@@ -183,8 +189,9 @@
             pictureBox1.BackColor = Color.BurlyWood;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(306, 375);
+            pictureBox1.Size = new Size(350, 500);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
@@ -196,23 +203,21 @@
             picLeft.BackColor = Color.BurlyWood;
             picLeft.Dock = DockStyle.Left;
             picLeft.Location = new Point(0, 0);
-            picLeft.Margin = new Padding(3, 2, 3, 2);
             picLeft.Name = "picLeft";
-            picLeft.Size = new Size(306, 375);
+            picLeft.Size = new Size(350, 503);
             picLeft.SizeMode = PictureBoxSizeMode.StretchImage;
             picLeft.TabIndex = 0;
             picLeft.TabStop = false;
             // 
             // Login
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(744, 375);
+            ClientSize = new Size(1080, 503);
             Controls.Add(pictureBox1);
             Controls.Add(pnlRight);
             Controls.Add(picLeft);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login - QLCafe";
@@ -240,5 +245,6 @@
         private Button btnShowPass;
         private Button btnClose;
         private PictureBox picLeft;
+        private CheckBox chkRememberMe;
     }
 }

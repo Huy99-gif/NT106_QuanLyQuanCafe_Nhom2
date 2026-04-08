@@ -16,7 +16,7 @@ namespace GUI
         {
             InitializeComponent();
             LoadDummyData();
-            btnAddStaff.Click += BtnAddStaff_Click;
+            btnAddStaff.Click += btnAddStaff_Click;
             btnCheckIn.Click += BtnCheckIn_Click;
             btnApproveLeave.Click += BtnApproveLeave_Click;
         }
@@ -49,11 +49,6 @@ namespace GUI
             lstLeaveq.Items.Add("   Thời gian: Ca Tối (Hôm nay)");
         }
 
-        private void BtnAddStaff_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("Mở Form thêm nhân viên mới (Điền tên, tuổi, vị trí, mức lương...)", "Thêm Nhân Sự", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void BtnCheckIn_Click(object? sender, EventArgs e)
         {
             MessageBox.Show("Tính năng Quét thẻ RFID / Vân tay / Nhập mã NV để điểm danh ca làm việc.", "Chấm Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -64,7 +59,23 @@ namespace GUI
             MessageBox.Show("Đã DUYỆT đơn xin nghỉ của [NV03 Lê Văn C]. Dữ liệu đã cập nhật vào tính lương cuối tháng.", "Duyệt Nghỉ Phép", MessageBoxButtons.OK, MessageBoxIcon.Information);
             lstLeaveq.Items.Clear();
             lstLeaveq.Items.Add("✔️ Không còn đơn xin nghỉ nào cần duyệt.");
-            btnApproveLeave.Enabled = false; 
+            btnApproveLeave.Enabled = false;
+        }
+
+        private void btnAddStaff_Click(object sender, EventArgs e)
+        {
+            frmAddEmployee frmAdd = new frmAddEmployee();
+            // Mở form lên dưới dạng hộp thoại (người dùng phải đóng form này mới thao tác tiếp được với nền bên dưới)
+            if (frmAdd.ShowDialog() == DialogResult.OK)
+            {
+                // Đoạn code này sẽ chạy nếu bên form AddEmployee bạn lưu thành công 
+                // và đã gán: this.DialogResult = DialogResult.OK;
+
+                MessageBox.Show("Đã cập nhật danh sách nhân viên mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Gọi hàm load lại dữ liệu lên DataGridView ở đây (nếu có)
+                // Ví dụ: LoadStaffData();
+            }
         }
     }
 }

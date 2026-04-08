@@ -16,6 +16,9 @@ namespace DTO
         [JsonProperty("avatar_url")]
         public string? AvatarUrl { get; set; }
 
+        [JsonIgnore] // RẤT QUAN TRỌNG: Chỉ dùng để tạo Auth, không đẩy lên Database
+        public string? Password { get; set; }
+
         [JsonProperty("email")]
         public string? Email { get; set; }
 

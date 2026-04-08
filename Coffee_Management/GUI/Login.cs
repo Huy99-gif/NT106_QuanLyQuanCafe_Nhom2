@@ -23,6 +23,20 @@ namespace GUI
             //Khi nhập pass chuyển thành dấu chấm
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e); 
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.SavedEmail))
+            {
+                txtEmail.Text = Properties.Settings.Default.SavedEmail;
+                txtPassword.Text = Properties.Settings.Default.SavedPassword;
+                chkRememberMe.Checked = true;
+            }
+            txtPassword.UseSystemPasswordChar = true;
+        }
+
+
         private AuthBUS authBUS = new AuthBUS();
 
         // Biến static lưu trữ phiên đăng nhập hiện tại cho toàn bộ ứng dụng
@@ -113,6 +127,22 @@ namespace GUI
                 // Đăng nhập và qua các ải kiểm tra nghiệp vụ thành công
                 CurrentUser = result.UserData!; // Lưu vào biến hệ thống
 
+
+                // BẮT ĐẦU THÊM ĐOẠN NÀY ĐỂ LƯU MẬT KHẨU
+                if (chkRememberMe.Checked)
+                {
+                    Properties.Settings.Default.SavedEmail = txtEmail.Text;
+                    Properties.Settings.Default.SavedPassword = txtPassword.Text;
+                }
+                else
+                {
+                    Properties.Settings.Default.SavedEmail = "";
+                    Properties.Settings.Default.SavedPassword = "";
+                }
+                Properties.Settings.Default.Save();
+                // KẾT THÚC THÊM ĐOẠN LƯU MẬT KHẨU
+
+
                 // Điều hướng dựa vào Role
                 if (CurrentUser.Role == "manager")
                 {
@@ -138,6 +168,7 @@ namespace GUI
             // 5. Mở lại nút bấm
             btnSignIn.Enabled = true;
             btnSignIn.Text = "Sign in";
+
         }
 
         private bool IsValidPassword(string password)
@@ -186,5 +217,6 @@ namespace GUI
         {
 
         }
+
     }
 }
