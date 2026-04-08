@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddEmployee));
             txtPassword = new TextBox();
             btnSave = new Button();
             dtpHireDate = new DateTimePicker();
@@ -166,7 +165,7 @@
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonFace;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImage = Properties.Resources.bg_login;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1090, 661);
             Controls.Add(textBox1);
