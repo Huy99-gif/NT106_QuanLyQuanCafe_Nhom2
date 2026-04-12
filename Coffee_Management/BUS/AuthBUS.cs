@@ -13,7 +13,7 @@ namespace BUS
             try
             {
                 // 1. Gọi DAL thực hiện đăng nhập
-                Employee user = await authDAL.LoginDAL(email, password);
+                Employee? user = await authDAL.LoginDAL(email, password);
 
                 // 2. Xử lý các nghiệp vụ sau khi có kết quả từ Database
                 if (user == null)

@@ -64,18 +64,23 @@ namespace GUI
 
         private void btnAddStaff_Click(object sender, EventArgs e)
         {
-            frmAddEmployee frmAdd = new frmAddEmployee();
+            AddEmployee frmAdd = new AddEmployee();
             // Mở form lên dưới dạng hộp thoại (người dùng phải đóng form này mới thao tác tiếp được với nền bên dưới)
             if (frmAdd.ShowDialog() == DialogResult.OK)
             {
                 // Đoạn code này sẽ chạy nếu bên form AddEmployee bạn lưu thành công 
                 // và đã gán: this.DialogResult = DialogResult.OK;
 
-                MessageBox.Show("Đã cập nhật danh sách nhân viên mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The new employee list has been updated!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Gọi hàm load lại dữ liệu lên DataGridView ở đây (nếu có)
                 // Ví dụ: LoadStaffData();
             }
+        }
+
+        private void dgvStaff_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -35,11 +35,8 @@ namespace GUI
 
         private void lblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form? ConfirmForm = Application.OpenForms["ConfirmEmail"];
-            if (ConfirmForm != null)
-            {
-                ConfirmForm.Show();
-            }
+            Form ConfirmForm = new ConfirmEmail();
+            ConfirmForm.Show();
             this.Close();
         }
 
@@ -115,7 +112,7 @@ namespace GUI
             {
                 // 2. Gọi lại hàm gửi mã từ BUS (sử dụng email đã nhận từ Form trước)
                 // result.Code sẽ là mã mới được sinh ra
-                var result = await emailBUS.SendVerificationCodeAsync(_userEmail);
+                var result = await emailBUS.ProcessPasswordResetAsync(_userEmail);
 
                 if (result.IsSuccess)
                 {

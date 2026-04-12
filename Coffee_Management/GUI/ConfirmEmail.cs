@@ -44,7 +44,7 @@ namespace GUI
             btnSendCode.Text = "Sending...";
 
             // Gọi BUS gửi mail
-            var result = await emailBUS.SendVerificationCodeAsync(email);
+            var result = await emailBUS.ProcessPasswordResetAsync(email);
 
             if (result.IsSuccess)
             {
@@ -89,5 +89,9 @@ namespace GUI
 
         }
 
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

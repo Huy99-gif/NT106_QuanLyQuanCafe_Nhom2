@@ -25,7 +25,7 @@ namespace GUI
 
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e); 
+            base.OnLoad(e);
 
             if (!string.IsNullOrEmpty(Properties.Settings.Default.SavedEmail))
             {
@@ -218,5 +218,9 @@ namespace GUI
 
         }
 
+        private void chkRememberMe_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
