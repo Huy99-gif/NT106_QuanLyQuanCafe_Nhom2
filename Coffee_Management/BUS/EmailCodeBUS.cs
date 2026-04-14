@@ -12,14 +12,23 @@ using DAL;
 
 namespace BUS
 {
-    public class EmailCode
+    public class EmailCodeBUS
     {
         // URL lấy từ Firebase Console sau khi deploy hàm sendVerificationEmail
         private EmailCodeDAL _emailDAL = new EmailCodeDAL();
-        public async Task<(bool IsSuccess, string Code, string Message)> ProcessPasswordResetAsync(string email)
+        public async Task<(bool IsSuccess, string? Code, string Message)> ProcessPasswordResetAsync(string email)
         {
             try
             {
+                if (!Validation.IsAnyEmpty(email))
+                {
+                    if (!Validation.IsValidEmail(email))
+                        return (false, "", "Invalid email format. Please enter a valid email address.");
+                }
+                else
+                {
+                    return (false, "", "Please enter your email address.");
+                }
                 // DAL đi kiểm tra email
                 var checkResult = await _emailDAL.CheckEmailAPI(email);
 
@@ -36,7 +45,7 @@ namespace BUS
             }
             catch (Exception ex)
             {
-                return (false, "", "Bus error: " + ex.Message);
+                return (false, "", "An error occurred during sending code: " + ex.Message);
             }
         }
     }

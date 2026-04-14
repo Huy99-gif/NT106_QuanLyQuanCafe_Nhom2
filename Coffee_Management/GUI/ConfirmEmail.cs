@@ -14,7 +14,7 @@ namespace GUI
 {
     public partial class ConfirmEmail : Form
     {
-        private EmailCode emailBUS = new EmailCode();
+        private EmailCodeBUS emailBUS = new EmailCodeBUS();
         public ConfirmEmail()
         {
             InitializeComponent();
@@ -33,12 +33,6 @@ namespace GUI
         private async void btnSendCode_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text;
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                MessageBox.Show("Please enter your email address!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
             btnSendCode.Enabled = false;
             btnSendCode.Text = "Sending...";
@@ -60,27 +54,6 @@ namespace GUI
                 MessageBox.Show(result.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnSendCode.Enabled = true;
                 btnSendCode.Text = "Send Code";
-            }
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            // Kiểm tra định dạng: chữ/số/dấu_chấm @ chữ/số . chữ/số
-            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-            return Regex.IsMatch(email, pattern);
-        }
-
-        private void txtEmail_Validating(object sender, CancelEventArgs e)
-        {
-            string email = txtEmail.Text;
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                if (!IsValidEmail(email))
-                {
-                    MessageBox.Show("Invalid email format! Please enter email following the format: example@gmail.com", "Invalid Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                    txtEmail.SelectAll();
-                }
             }
         }
 

@@ -1,21 +1,18 @@
 ﻿using DTO;
-using Firebase.Auth;
-using Firebase.Auth.Providers;
-using Firebase.Database;
-using Firebase.Database.Query;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
 
 namespace DAL
 {
     public class AuthDAL
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        public async Task<Employee?> LoginDAL(string email, string password)
+        public async Task<(EmployeeDTO? User, string? Token)> LoginDAL(string email, string password)
         {
             try
             {
@@ -31,10 +28,18 @@ namespace DAL
                 if (response.IsSuccessStatusCode)
                 {
                     string responseData = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<Employee>(responseData);
+
+                    // PHÂN TÍCH JSON: { token: "...", user: { ... } }
+                    JObject json = JObject.Parse(responseData);
+
+                    string? token = json["token"]?.ToString();
+                    EmployeeDTO? user = json["user"]?.ToObject<EmployeeDTO>();
+
+                    // Trả về cả 2 giá trị cùng lúc
+                    return (user, token);
                 }
 
-                return null;
+                return (null, null);
             }
             catch (Exception ex)
             {

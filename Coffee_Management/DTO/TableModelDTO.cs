@@ -1,6 +1,6 @@
 ﻿namespace DTO
 {
-    public class TableModel
+    public class TableModelDTO
     {
         public int TableId { get; set; }
         public string? TableName { get; set; }

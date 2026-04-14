@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -77,7 +78,19 @@ namespace GUI
             {
                 Login.Show();
             }
-            this.Close();
+            GlobalSession.Logout();
+            //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
+            for (int i = Application.OpenForms.Count - 1; i >= 0; i--)
+            {
+                Form? f = Application.OpenForms[i];
+
+                // Nếu không phải là form Login thì đóng nó lại
+                // (Dùng f.Name để kiểm tra)
+                if (f.Name != "Login")
+                {
+                    f.Close(); // Đóng form
+                }
+            }
         }
 
         private void lblTitle_Click(object sender, EventArgs e)

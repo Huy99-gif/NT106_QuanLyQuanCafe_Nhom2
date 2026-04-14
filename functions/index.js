@@ -181,12 +181,12 @@ exports.loginEmployee = onRequest(async (req, res) => {
 
     try {
         // Admin SDK không có hàm đăng nhập bằng mật khẩu, nên ta gọi thẳng REST API của Firebase Auth.
-        await axios.post(
+        const authResponse = await axios.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`,
             { email: email, password: password, returnSecureToken: true }
         );
-        // Nếu lệnh trên không bị lỗi catch, tức là email & pass đã đúng.
-
+        // Nếu lệnh trên không bị lỗi catch, tức là email & pass đã đúng, ta có thể lấy ID Token (nếu cần) để xác thực các lệnh tiếp theo (nếu muốn).
+        const idToken = authResponse.data.idToken;
         // Thay vì WinForms biết bảng "nhan_vien" và query OrderBy, giờ server Node.js sẽ làm.
         const db = admin.database();
         
@@ -215,7 +215,10 @@ exports.loginEmployee = onRequest(async (req, res) => {
         employeeData.EmployeeId = employeeId;
 
         // Trả kết quả JSON về cho C#
-        return res.status(200).json(employeeData);
+        return res.status(200).json({
+        token: idToken,
+        user: employeeData
+    });
 
     } catch (error) {
         // Bắt lỗi: Nếu email/pass sai, axios sẽ ném lỗi. Ta ném mã 401 về cho WinForms.
@@ -225,74 +228,149 @@ exports.loginEmployee = onRequest(async (req, res) => {
     }
 });
 
+// Hàm phụ để xác thực Token và kiểm tra vai trò quản lý (Manager Role)
+async function verifyManagerRole(req) {
+    const authHeader = req.headers.authorization;
+    
+    // Kiểm tra Token có tồn tại không
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new Error('Missing or invalid authorization header');
+    }
+
+    const token = authHeader.split('Bearer ')[1];
+
+    // Giải mã Token
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const userEmail = decodedToken.email; // Lấy email từ token
+
+    // Truy vấn Database để tìm thông tin chi tiết của nhân viên này
+    const db = admin.database();
+    const snapshot = await db.ref('nhan_vien')
+                             .orderByChild('email')
+                             .equalTo(userEmail)
+                             .once('value');
+
+    if (!snapshot.exists()) {
+        throw new Error('User not found in database');
+    }
+
+    const data = snapshot.val();
+    const employeeId = Object.keys(data)[0];
+    const employeeData = data[employeeId];
+
+    // KIỂM TRA QUYỀN (Role)
+    const userRole = employeeData.vai_tro; 
+
+    if (userRole !== 'manager' && userRole !== 'admin') {
+        // Ném ra lỗi NẾU KHÔNG PHẢI LÀ QUẢN LÝ
+        throw new Error('Permission denied. Manager role is required.'); 
+    }
+
+    // Nếu qua được ải này, trả về thông tin người dùng
+    return employeeData; 
+}
+
 //Tao một API endpoint có tên là "getAllEmployees" để trả về danh sách tất cả nhân viên (dữ liệu từ Realtime Database)
 exports.getAllEmployees = onRequest(async (req, res) => {
-    // Chỉ nhận GET để truy vấn
     if (req.method !== "GET") {
         return res.status(405).send({ message: "Method Not Allowed" });
     }
 
-    // Kiểm tra Secret Key (Mã bí mật từ App.config gửi qua Header)
-    if (!authorize(req)) 
-        return res.status(403).send({ message: "Unauthorized: Invalid Secret Key" });
-
     try {
+        // Yêu cầu phải có Token hợp lệ VÀ phải là Quản lý mới được xem danh sách
+        await verifyManagerRole(req);
         const snapshot = await admin.database().ref('nhan_vien').once('value');
         const data = snapshot.val();
-        // Trả về dữ liệu (hoặc object rỗng nếu chưa có nhân viên)
+        
         return res.status(200).send(data || {});
     } catch (error) {
-        console.error("Query Error:", error.message);
-        return res.status(500).send({ error: error.message });
+        console.error("Auth/Query Error:", error.message);
+        return res.status(403).send({ error: "Access Denied: " + error.message });
     }
 });
 
 // Tạo một API endpoint có tên là "addEmployee" để thêm nhân viên mới vào Realtime Database
 exports.addEmployee = onRequest(async (req, res) => {
-    // Chỉ nhận POST để ghi dữ liệu
     if (req.method !== "POST") {
         return res.status(405).send({ message: "Method Not Allowed" });
     }
 
-    if (!authorize(req)) 
-        return res.status(403).send({ message: "Unauthorized: Invalid Secret Key" });
-
-    const employeeData = req.body;
+    // Biến tạm để theo dõi tài khoản Auth vừa tạo (dùng cho việc rollback)
+    let createdUser = null;
 
     try {
+        // Kiểm tra xem người gọi API này có phải là Manager không
+        await verifyManagerRole(req);
+
+        const employeeData = req.body;
+        
+        // Hứng Email và Password (Xử lý linh hoạt việc C# gửi lên chữ hoa hay chữ thường)
+        const email = (employeeData.email || "").trim(); 
+        const password = (employeeData.Password || "").trim(); 
+        const fullName = (employeeData.ho_ten || "").trim();
+
+        if (!email || !password) {
+            console.log("Error:", employeeData);
+            return res.status(400).send({ error: "Email and Password are required!" });
+        }
+        // TẠO TÀI KHOẢN ĐĂNG NHẬP TRÊN FIREBASE AUTHENTICATION
+        // Hàm này sẽ tự động ném lỗi nếu Email đã tồn tại hoặc Password quá yếu
+        createdUser = await admin.auth().createUser({
+            email: email,
+            password: password,
+            displayName: fullName
+        });
+        // TẠO MÃ NHÂN VIÊN VÀ LƯU VÀO REALTIME DATABASE
         const ref = admin.database().ref('nhan_vien');
         const snapshot = await ref.once('value');
         const employees = snapshot.val() || {};
 
-        // --- LOGIC TỰ TẠO MÃ NHÂN VIÊN (STT) ---
         let maxIdNum = 0;
         Object.keys(employees).forEach(key => {
-            const match = key.match(/\d+/); // Tìm phần số trong chuỗi 'nv_001'
+            const match = key.match(/\d+/); 
             if (match) {
                 const num = parseInt(match[0]);
                 if (num > maxIdNum) maxIdNum = num;
             }
         });
 
-        // Tạo mã mới định dạng nv_xxx (VD: nv_005)
         const nextId = `nv_${(maxIdNum + 1).toString().padStart(3, '0')}`;
         
-        // Gán thông tin hệ thống tự tạo
-        employeeData.EmployeeId = nextId;
-        employeeData.Status = "active";
-        employeeData.CreatedAt = new Date().toISOString();
+        // Gán thêm thông tin hệ thống
+        employeeData.trang_thai = "active"; // Ép giá trị này vào field trang_thai
+        employeeData.ngay_vao_lam = admin.database.ServerValue.TIMESTAMP;
+        
+        // Liên kết với tài khoản Auth (Rất hữu ích sau này nếu muốn khóa/xóa tài khoản)
+        employeeData.AuthUid = createdUser.uid; 
 
-        // Lưu vào Realtime Database
+        // BẢO MẬT TỐI ĐA: Xóa bỏ thuộc tính Password trước khi lưu xuống Database
+        // Vì Firebase Auth đã giữ password được mã hóa rồi, DB không nên chứa pass thô.
+        delete employeeData.Password;
+        delete employeeData.password;
+
+        // Lưu toàn bộ thông tin (đã giấu pass) xuống Database
         await ref.child(nextId).set(employeeData);
 
         return res.status(200).send({ 
             success: true, 
             employeeId: nextId, 
-            message: "Employee added successfully!" 
+            message: "Employee account and profile created successfully!" 
         });
 
     } catch (error) {
         console.error("Add Employee Error:", error.message);
-        return res.status(500).send({ error: error.message });
+        // CƠ CHẾ ROLLBACK (HOÀN TÁC) CHI TIẾT: Nếu đã tạo tài khoản Auth nhưng lỗi xảy ra khi lưu Database, ta sẽ xóa tài khoản Auth vừa tạo để tránh "tài khoản ma" không có profile.
+        if (createdUser) {
+            // Nếu đã lỡ tạo Auth mà DB bị lỗi -> Phải xóa Auth ngay để tránh tài khoản ma
+            await admin.auth().deleteUser(createdUser.uid);
+            console.log(`Undo: Delete Auth account ${createdUser.email} do lỗi lưu Database.`);
+        }
+        // Trả về lỗi cụ thể cho C#
+        let friendlyMessage = error.message;
+        if (error.code === 'auth/email-already-exists') {
+            friendlyMessage = "This email address is already registered to another staff member.";
+        }
+        // Nếu lỗi xảy ra (ví dụ: Email đã được sử dụng), trả về ngay cho C# hiển thị
+        return res.status(400).send({ error: friendlyMessage });
     }
 });

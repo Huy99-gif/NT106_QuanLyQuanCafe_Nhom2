@@ -72,7 +72,7 @@
             txtNewPass.PlaceholderText = "12345678";
             txtNewPass.Size = new Size(280, 22);
             txtNewPass.TabIndex = 0;
-            txtNewPass.Validating += txtNewPass_Validating;
+            txtNewPass.TextChanged += txtNewPass_TextChanged;
             // 
             // pnlConfirmPassBg
             // 

@@ -40,7 +40,7 @@ namespace GUI
         private AuthBUS authBUS = new AuthBUS();
 
         // Biến static lưu trữ phiên đăng nhập hiện tại cho toàn bộ ứng dụng
-        public static Employee? CurrentUser;
+        public static EmployeeDTO? CurrentUser;
 
         //Hàm tạo sự kiện cho UI
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
@@ -126,8 +126,6 @@ namespace GUI
             {
                 // Đăng nhập và qua các ải kiểm tra nghiệp vụ thành công
                 CurrentUser = result.UserData!; // Lưu vào biến hệ thống
-
-
                 // BẮT ĐẦU THÊM ĐOẠN NÀY ĐỂ LƯU MẬT KHẨU
                 if (chkRememberMe.Checked)
                 {
@@ -141,11 +139,10 @@ namespace GUI
                 }
                 Properties.Settings.Default.Save();
                 // KẾT THÚC THÊM ĐOẠN LƯU MẬT KHẨU
-
-
                 // Điều hướng dựa vào Role
                 if (CurrentUser.Role == "manager")
                 {
+                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ManagerDashboard managerDashboard = new ManagerDashboard();
                     managerDashboard.Show();
                     this.Hide();
@@ -155,6 +152,15 @@ namespace GUI
                     MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
                     orstaffDashboard.Show();
+                    this.Hide();
+                }
+                else if (CurrentUser.Role == "admin")
+                {
+                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ManagerDashboard managerDashboard = new ManagerDashboard();
+                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
+                    orstaffDashboard.Show();
+                    managerDashboard.Show();
                     this.Hide();
                 }
             }
@@ -169,48 +175,6 @@ namespace GUI
             btnSignIn.Enabled = true;
             btnSignIn.Text = "Sign in";
 
-        }
-
-        private bool IsValidPassword(string password)
-        {
-            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$";
-            return Regex.IsMatch(password, pattern);
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            // Kiểm tra định dạng: chữ/số/dấu_chấm @ chữ/số . chữ/số
-            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-            return Regex.IsMatch(email, pattern);
-        }
-
-        private void txtEmail_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            string email = txtEmail.Text;
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                if (!IsValidEmail(email))
-                {
-                    MessageBox.Show("Invalid email format. Please enter a valid email address.", "Invalid Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                    txtEmail.SelectAll();
-                }
-            }
-        }
-
-        private void txtPassword_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            string password = txtPassword.Text;
-            if (!string.IsNullOrWhiteSpace(password))
-            {
-                if (!IsValidPassword(password))
-                {
-                    MessageBox.Show("Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character.",
-                                "Weak Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                    txtPassword.SelectAll();
-                }
-            }
         }
 
         private void txtEmail_TextChanged(object sender, EventArgs e)

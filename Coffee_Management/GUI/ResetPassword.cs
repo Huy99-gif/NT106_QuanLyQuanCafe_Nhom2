@@ -47,18 +47,6 @@ namespace GUI
             string newPass = txtNewPass.Text;
             string confirmPass = txtConfirmPass.Text;
 
-            if (string.IsNullOrWhiteSpace(newPass) || string.IsNullOrWhiteSpace(confirmPass))
-            {
-                MessageBox.Show("Please enter your new password.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (newPass != confirmPass)
-            {
-                MessageBox.Show("Passwords do not match. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             btnSave.Text = "Saving...";
             btnSave.Enabled = false;
 
@@ -88,27 +76,6 @@ namespace GUI
 
         }
 
-        private bool IsValidPassword(string password)
-        {
-            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$";
-            return Regex.IsMatch(password, pattern);
-        }
-
-        private void txtNewPass_Validating(object sender, CancelEventArgs e)
-        {
-            string newPass = txtNewPass.Text;
-            if (!string.IsNullOrWhiteSpace(newPass))
-            {
-                if (!IsValidPassword(newPass))
-                {
-                    MessageBox.Show("Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character.",
-                                "Weak Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                    txtNewPass.SelectAll();
-                }
-            }
-        }
-
         private void lblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Form? VerifyForm = Application.OpenForms["VerifyCode"];
@@ -117,6 +84,11 @@ namespace GUI
                 VerifyForm.Show();
             }
             this.Close();
+        }
+
+        private void txtNewPass_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

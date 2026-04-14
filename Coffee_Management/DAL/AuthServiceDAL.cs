@@ -7,7 +7,7 @@ using System.Configuration;
 
 namespace DAL
 {
-    public class AuthService
+    public class AuthServiceDAL
     {
         // Link URL nhận được từ Firebase Console sau khi Deploy
         private readonly string _functionUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/updateUserPassword";

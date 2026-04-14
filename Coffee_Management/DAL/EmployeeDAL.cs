@@ -1,16 +1,13 @@
 ﻿using DTO;
-using FireSharp.Config;
-using FireSharp.Interfaces;
-using FireSharp.Response;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http; // Thêm thư viện này ở trên cùng
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
 
 namespace DAL
 {
@@ -18,65 +15,81 @@ namespace DAL
     {
 
         // Khai báo các Endpoints
-        private readonly string _addEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/addEmployeee";
+        private readonly string _addEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/addEmployee";
         private readonly string _getAllEmployeesUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/getAllEmployees";
-        // Mã bí mật phải khớp với file index.js trên Cloud Functions
-        private readonly string? _secretKey = ConfigurationManager.AppSettings["MANAGER_SECRET_KEY"];
-        public async Task<(bool Success, string Message)> AddEmployeeCFAsync(Employee emp)
+
+        public async Task<(bool Success, string Message)> AddEmployeeCFAsync(EmployeeDTO emp)
         {
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Add("x-manager-secret", _secretKey);
-
-                var content = new StringContent(JsonConvert.SerializeObject(emp), Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync(_addEmployeeUrl, content);
-                dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    return (true, "Success");
-                }
-                else
-                {
-                    // Gán sẵn thông báo lỗi mặc định
-                    string errorMessage = "Internal Server Error";
-
-                    // Phải kiểm tra result có tồn tại không trước khi làm việc khác
-                    if (result != null)
+                    // Gắn Token vào Header 
+                    if (!string.IsNullOrEmpty(GlobalSession.Token))
                     {
-                        // Ưu tiên lấy biến message nếu server có trả về
-                        if (result.message != null)
-                        {
-                            errorMessage = (string)result.message;
-                        }
-                        //Nếu không có message, thử lấy biến error
-                        else if (result.error != null)
-                        {
-                            errorMessage = (string)result.error;
-                        }
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
                     }
-                    return (false, errorMessage);
+                    // Chuyển đối tượng EmployeeDTO thành JSON
+                    var content = new StringContent(JsonConvert.SerializeObject(emp), Encoding.UTF8, "application/json");
+                    // Gửi yêu cầu POST đến Cloud Function
+                    var response = await client.PostAsync(_addEmployeeUrl, content);
+                    string resultStr = await response.Content.ReadAsStringAsync();
+
+                    // Phòng thủ: Kiểm tra nếu Server sập hoặc trả về HTML
+                    if (resultStr.TrimStart().StartsWith("<"))
+                    {
+                        return (false, $"Server Error ({response.StatusCode}): Access Denied or Invalid URL.");
+                    }
+                    // Cố gắng phân tích JSON trả về
+                    dynamic? result = JsonConvert.DeserializeObject(resultStr);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return (true, "Success");
+                    }
+                    else
+                    {
+                        string errorMessage = "Internal Server Error";
+                        if (result != null)
+                        {
+                            if (result.message != null)
+                                errorMessage = (string)result.message;
+                            else if (result.error != null)
+                                errorMessage = (string)result.error;
+                        }
+                        return (false, errorMessage);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                // Bắt lỗi ngoại lệ và trả về thông báo lỗi
+                return (false, $"Exception: {ex.Message}");
             }
         }
 
-        public async Task<Dictionary<string, Employee>> GetAllEmployeesCFAsync()
+        public async Task<Dictionary<string, EmployeeDTO>> GetAllEmployeesCFAsync()
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("x-manager-secret", _secretKey);
-
+                // Gắn Token vào Header
+                if (!string.IsNullOrEmpty(GlobalSession.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+                }
+                // Gửi yêu cầu GET đến Cloud Function
                 var response = await client.GetAsync(_getAllEmployeesUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //Đọc nội dung phản hồi từ Server dưới dạng chuỗi thô 
                     string jsonResponse = await response.Content.ReadAsStringAsync();
-                    //Chuyển đổi chuỗi JSON thành Dictionary object
-                    var employeesDictionary = JsonConvert.DeserializeObject<Dictionary<string, Employee>>(jsonResponse);
-                    //Trả về kết quả
+                    // Phòng thủ HTML
+                    if (jsonResponse.TrimStart().StartsWith("<")) return null;
+                    // Cố gắng phân tích JSON trả về
+                    var employeesDictionary = JsonConvert.DeserializeObject<Dictionary<string, EmployeeDTO>>(jsonResponse);
                     return employeesDictionary;
                 }
+
                 return null;
             }
         }

@@ -16,7 +16,7 @@ namespace GUI
             btnCancel.CausesValidation = false; 
         }
 
-        public AddEmployee(Employee emp)
+        public AddEmployee(EmployeeDTO emp)
         {
             InitializeComponent();
             btnCancel.CausesValidation = false;
@@ -55,9 +55,9 @@ namespace GUI
             {
                 // 1. Khóa nút để tránh spam click
                 btnSave.Enabled = false;
-
+                btnSave.Text = "Saving...";
                 // 2. Thu thập dữ liệu từ Form
-                Employee newEmp = new Employee
+                EmployeeDTO newEmp = new EmployeeDTO
                 {
                     Email = txtEmail.Text.Trim(),
                     FullName = txtFullName.Text.Trim(),
@@ -84,6 +84,7 @@ namespace GUI
             finally
             {
                 btnSave.Enabled = true;
+                btnSave.Text = "Save";
             }
         }
 
