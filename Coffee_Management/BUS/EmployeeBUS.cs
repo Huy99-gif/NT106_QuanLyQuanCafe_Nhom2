@@ -61,5 +61,28 @@ namespace BUS
 
             return list;
         }
+
+        public async Task<(bool Success, string Message)> UpdateEmployeeAsync(string empId, EmployeeDTO updateData)
+        {
+            if (Validation.IsAnyEmpty(empId))
+                return (false, "Employee ID not found!");
+            if (Validation.IsAnyEmpty(updateData.FullName, updateData.PhoneNumber, updateData.Role, updateData.Status))
+            {
+                return (false, "Please fill in all required information.");
+            }
+            //Ràng buộc định dạng dữ liệu
+            if (!Validation.IsValidPhoneNumber(updateData.PhoneNumber))
+            {
+                return (false, "Invalid phone number format. Please enter a valid phone number.");
+            }
+            return await _employeeDal.UpdateEmployeeCFAsync(empId, updateData);
+        }
+
+        public async Task<(bool Success, string Message)> LockEmployeeAsync(string empId, string authUid)
+        {
+            if (Validation.IsAnyEmpty(empId, authUid))
+                return (false, "Invalid employee data!");
+            return await _employeeDal.LockEmployeeCFAsync(empId, authUid);
+        }
     }
 }
