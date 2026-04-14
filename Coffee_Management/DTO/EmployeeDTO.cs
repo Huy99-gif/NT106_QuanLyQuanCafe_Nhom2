@@ -37,7 +37,6 @@ namespace DTO
         public string? Role { get; set; }
 
         // Dùng để liên kết với Firebase Auth (giúp xóa/khóa tài khoản sau này)
-        [JsonIgnore]
         public string? AuthUid { get; set; }
     }
 }

@@ -36,8 +36,8 @@ namespace GUI
 
                 if (fullList == null || fullList.Count == 0) return;
 
-                // 2. LỌC CHỈ LẤY NHÂN VIÊN "ACTIVE" (Sử dụng LINQ)
-                var activeList = fullList.Where(emp => emp.Status == "active").ToList();
+                // 2. LỌC CHỈ LẤY NHÂN VIÊN "ACTIVE" VÀ KHÔNG PHẢI LÀ "ADMIN"
+                var activeList = fullList.Where(emp => emp.Status == "active" && emp.Role != "admin").ToList();
 
                 // 3. Tạo cấu trúc bảng
                 DataTable dt = new DataTable();

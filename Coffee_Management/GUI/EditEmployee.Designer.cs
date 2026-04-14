@@ -168,6 +168,7 @@
             cboStatus.Name = "cboStatus";
             cboStatus.Size = new Size(160, 28);
             cboStatus.TabIndex = 10;
+            cboStatus.SelectedIndexChanged += cboStatus_SelectedIndexChanged;
             // 
             // btnSave
             // 
