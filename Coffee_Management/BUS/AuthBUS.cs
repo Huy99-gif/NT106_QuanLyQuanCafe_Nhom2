@@ -49,6 +49,9 @@ namespace BUS
                 }
                 GlobalSession.Token = loginResult.Token;
                 GlobalSession.CurrentUser = loginResult.User;
+                // Thiết lập phiên làm việc kéo dài 60 phút. Trừ hao 1 phút (còn 59 phút) để app văng ra trước khi token thực sự chết
+                GlobalSession.ExpiryTime = DateTime.Now.AddMinutes(60);
+                //GlobalSession.ExpiryTime = DateTime.Now.AddSeconds(20); // Chờ 10 giây là văng
                 // 5. Nếu vượt qua mọi cửa ải -> Thành công
                 return (true, "Login successful.", loginResult.User);
             }

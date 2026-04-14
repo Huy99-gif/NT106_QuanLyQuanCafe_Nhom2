@@ -9,48 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace GUI
 {
-    public partial class OrderStaffDashboard : BaseDashboard
+    public partial class BaristaDashboard : BaseDashboard
     {
-        public OrderStaffDashboard()
+        public BaristaDashboard()
         {
             InitializeComponent();
-            this.Load += (s, e) => btnPOS.PerformClick();
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void lblLogo_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+
         }
 
-        private void AddUserControl(UserControl uc)
+        private void btnProfile_Click(object sender, EventArgs e)
         {
-            uc.Dock = DockStyle.Fill;
-            pnlMainContent.Controls.Clear();
-            pnlMainContent.Controls.Add(uc);
-            uc.BringToFront();
+
         }
 
-        private void btnPOS_Click(object sender, EventArgs e)
-        {
-            ucPOS_OrStaff uc = new ucPOS_OrStaff();
-            AddUserControl(uc);
-            lblTitle.Text = "POS / Order";
-        }
-
-        private void BtnLogout_Click(object? sender, EventArgs e)
-        {
-            Form? Login = Application.OpenForms["Login"];
-            if (Login != null)
-            {
-                Login.Show();
-            }
-            this.Close();
-        }
-
-        private void btnLogout_Click_1(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e)
         {
             Form? Login = Application.OpenForms["Login"];
             if (Login != null)
@@ -70,6 +48,11 @@ namespace GUI
                     f.Close(); // Đóng form
                 }
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -101,29 +101,18 @@ namespace GUI
             string email = txtEmail.Text;
             string password = txtPassword.Text;
 
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                MessageBox.Show("Please enter your email address.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Please enter your password.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // 2. Khóa nút bấm trong lúc chờ mạng
+            //Khóa nút bấm trong lúc chờ mạng
             btnSignIn.Enabled = false;
             btnSignIn.Text = "Processing...";
 
-            // 3. Gọi BUS thực hiện đăng nhập
+            //Gọi BUS thực hiện đăng nhập
             // Vì BUS trả về 1 Tuple (IsSuccess, Message, UserData), ta dùng 'var result' để hứng
             var result = await authBUS.LoginBUS(email, password);
 
             // 4. Xử lý kết quả và Phân quyền
             if (result.IsSuccess == true)
             {
+
                 // Đăng nhập và qua các ải kiểm tra nghiệp vụ thành công
                 CurrentUser = result.UserData!; // Lưu vào biến hệ thống
                 // BẮT ĐẦU THÊM ĐOẠN NÀY ĐỂ LƯU MẬT KHẨU
@@ -142,14 +131,14 @@ namespace GUI
                 // Điều hướng dựa vào Role
                 if (CurrentUser.Role == "manager")
                 {
-                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Hello manager {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ManagerDashboard managerDashboard = new ManagerDashboard();
                     managerDashboard.Show();
                     this.Hide();
                 }
-                else if (CurrentUser.Role == "staff")
+                else if (CurrentUser.Role == "order staff")
                 {
-                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Hello order staff {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
                     orstaffDashboard.Show();
                     this.Hide();
@@ -159,22 +148,26 @@ namespace GUI
                     MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ManagerDashboard managerDashboard = new ManagerDashboard();
                     OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
+                    BaristaDashboard baristaDashboard = new BaristaDashboard();
+                    SecurityDashboard securityDashboard = new SecurityDashboard();
+                    securityDashboard.Show();
+                    baristaDashboard.Show();
                     orstaffDashboard.Show();
                     managerDashboard.Show();
                     this.Hide();
                 }
                 else if (CurrentUser.Role == "barista")
                 {
-                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
-                    orstaffDashboard.Show();
+                    MessageBox.Show($"Hello barista {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BaristaDashboard baristaDashboard = new BaristaDashboard();
+                    baristaDashboard.Show();
                     this.Hide();
                 }
                 else if (CurrentUser.Role == "security")
                 {
-                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
-                    orstaffDashboard.Show();
+                    MessageBox.Show($"Hello security staff {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SecurityDashboard securityDashboard = new SecurityDashboard();
+                    securityDashboard.Show();
                     this.Hide();
                 }
             }
