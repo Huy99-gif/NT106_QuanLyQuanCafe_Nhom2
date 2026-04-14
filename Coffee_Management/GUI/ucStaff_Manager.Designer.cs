@@ -65,10 +65,9 @@
             pnlSummary.Controls.Add(lblPresentTitle);
             pnlSummary.Controls.Add(lblTotalStaffValue);
             pnlSummary.Controls.Add(lblTotalStaffTitle);
-            pnlSummary.Location = new Point(23, 27);
-            pnlSummary.Margin = new Padding(3, 4, 3, 4);
+            pnlSummary.Location = new Point(20, 20);
             pnlSummary.Name = "pnlSummary";
-            pnlSummary.Size = new Size(873, 107);
+            pnlSummary.Size = new Size(764, 80);
             pnlSummary.TabIndex = 0;
             // 
             // lblPayrollValue
@@ -76,9 +75,9 @@
             lblPayrollValue.AutoSize = true;
             lblPayrollValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
             lblPayrollValue.ForeColor = Color.IndianRed;
-            lblPayrollValue.Location = new Point(594, 47);
+            lblPayrollValue.Location = new Point(520, 35);
             lblPayrollValue.Name = "lblPayrollValue";
-            lblPayrollValue.Size = new Size(183, 37);
+            lblPayrollValue.Size = new Size(140, 30);
             lblPayrollValue.TabIndex = 0;
             lblPayrollValue.Text = "42,500,000 đ";
             // 
@@ -87,9 +86,9 @@
             lblPayrollTitle.AutoSize = true;
             lblPayrollTitle.Font = new Font("Segoe UI", 9.75F);
             lblPayrollTitle.ForeColor = Color.Gray;
-            lblPayrollTitle.Location = new Point(594, 20);
+            lblPayrollTitle.Location = new Point(520, 15);
             lblPayrollTitle.Name = "lblPayrollTitle";
-            lblPayrollTitle.Size = new Size(173, 23);
+            lblPayrollTitle.Size = new Size(131, 17);
             lblPayrollTitle.TabIndex = 1;
             lblPayrollTitle.Text = "Quỹ lương (Tạm tính)";
             // 
@@ -98,9 +97,9 @@
             lblLeaveValue.AutoSize = true;
             lblLeaveValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
             lblLeaveValue.ForeColor = Color.Orange;
-            lblLeaveValue.Location = new Point(400, 47);
+            lblLeaveValue.Location = new Point(350, 35);
             lblLeaveValue.Name = "lblLeaveValue";
-            lblLeaveValue.Size = new Size(116, 37);
+            lblLeaveValue.Size = new Size(90, 30);
             lblLeaveValue.TabIndex = 2;
             lblLeaveValue.Text = "1 người";
             // 
@@ -109,9 +108,9 @@
             lblLeaveTitle.AutoSize = true;
             lblLeaveTitle.Font = new Font("Segoe UI", 9.75F);
             lblLeaveTitle.ForeColor = Color.Gray;
-            lblLeaveTitle.Location = new Point(400, 20);
+            lblLeaveTitle.Location = new Point(350, 15);
             lblLeaveTitle.Name = "lblLeaveTitle";
-            lblLeaveTitle.Size = new Size(152, 23);
+            lblLeaveTitle.Size = new Size(117, 17);
             lblLeaveTitle.TabIndex = 3;
             lblLeaveTitle.Text = "Nghỉ phép (H.Nay)";
             // 
@@ -120,9 +119,9 @@
             lblPresentValue.AutoSize = true;
             lblPresentValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
             lblPresentValue.ForeColor = Color.MediumSeaGreen;
-            lblPresentValue.Location = new Point(206, 47);
+            lblPresentValue.Location = new Point(180, 35);
             lblPresentValue.Name = "lblPresentValue";
-            lblPresentValue.Size = new Size(116, 37);
+            lblPresentValue.Size = new Size(90, 30);
             lblPresentValue.TabIndex = 4;
             lblPresentValue.Text = "5 người";
             // 
@@ -131,9 +130,9 @@
             lblPresentTitle.AutoSize = true;
             lblPresentTitle.Font = new Font("Segoe UI", 9.75F);
             lblPresentTitle.ForeColor = Color.Gray;
-            lblPresentTitle.Location = new Point(206, 20);
+            lblPresentTitle.Location = new Point(180, 15);
             lblPresentTitle.Name = "lblPresentTitle";
-            lblPresentTitle.Size = new Size(173, 23);
+            lblPresentTitle.Size = new Size(132, 17);
             lblPresentTitle.TabIndex = 5;
             lblPresentTitle.Text = "Đi làm ca Hiện tại \U0001f7e2";
             // 
@@ -142,9 +141,9 @@
             lblTotalStaffValue.AutoSize = true;
             lblTotalStaffValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
             lblTotalStaffValue.ForeColor = Color.White;
-            lblTotalStaffValue.Location = new Point(23, 47);
+            lblTotalStaffValue.Location = new Point(20, 35);
             lblTotalStaffValue.Name = "lblTotalStaffValue";
-            lblTotalStaffValue.Size = new Size(132, 37);
+            lblTotalStaffValue.Size = new Size(102, 30);
             lblTotalStaffValue.TabIndex = 6;
             lblTotalStaffValue.Text = "15 người";
             // 
@@ -153,9 +152,9 @@
             lblTotalStaffTitle.AutoSize = true;
             lblTotalStaffTitle.Font = new Font("Segoe UI", 9.75F);
             lblTotalStaffTitle.ForeColor = Color.Gray;
-            lblTotalStaffTitle.Location = new Point(23, 20);
+            lblTotalStaffTitle.Location = new Point(20, 15);
             lblTotalStaffTitle.Name = "lblTotalStaffTitle";
-            lblTotalStaffTitle.Size = new Size(159, 23);
+            lblTotalStaffTitle.Size = new Size(121, 17);
             lblTotalStaffTitle.TabIndex = 7;
             lblTotalStaffTitle.Text = "Tổng Số Nhân Viên";
             // 
@@ -166,10 +165,9 @@
             pnlStaffList.Controls.Add(btnAddStaff);
             pnlStaffList.Controls.Add(dgvStaff);
             pnlStaffList.Controls.Add(lblStaffTitle);
-            pnlStaffList.Location = new Point(23, 160);
-            pnlStaffList.Margin = new Padding(3, 4, 3, 4);
+            pnlStaffList.Location = new Point(20, 120);
             pnlStaffList.Name = "pnlStaffList";
-            pnlStaffList.Size = new Size(514, 520);
+            pnlStaffList.Size = new Size(450, 390);
             pnlStaffList.TabIndex = 1;
             // 
             // btnDeleteStaff
@@ -178,10 +176,9 @@
             btnDeleteStaff.FlatAppearance.BorderSize = 0;
             btnDeleteStaff.FlatStyle = FlatStyle.Flat;
             btnDeleteStaff.ForeColor = Color.IndianRed;
-            btnDeleteStaff.Location = new Point(411, 20);
-            btnDeleteStaff.Margin = new Padding(3, 4, 3, 4);
+            btnDeleteStaff.Location = new Point(360, 15);
             btnDeleteStaff.Name = "btnDeleteStaff";
-            btnDeleteStaff.Size = new Size(80, 33);
+            btnDeleteStaff.Size = new Size(70, 25);
             btnDeleteStaff.TabIndex = 0;
             btnDeleteStaff.Text = "Xóa";
             btnDeleteStaff.UseVisualStyleBackColor = false;
@@ -193,10 +190,9 @@
             btnAddStaff.FlatStyle = FlatStyle.Flat;
             btnAddStaff.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAddStaff.ForeColor = Color.White;
-            btnAddStaff.Location = new Point(269, 20);
-            btnAddStaff.Margin = new Padding(3, 4, 3, 4);
+            btnAddStaff.Location = new Point(235, 15);
             btnAddStaff.Name = "btnAddStaff";
-            btnAddStaff.Size = new Size(131, 33);
+            btnAddStaff.Size = new Size(115, 25);
             btnAddStaff.TabIndex = 1;
             btnAddStaff.Text = "+ Thêm NV Mới";
             btnAddStaff.UseVisualStyleBackColor = false;
@@ -215,21 +211,21 @@
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
             dgvStaff.DefaultCellStyle = dataGridViewCellStyle1;
-            dgvStaff.Location = new Point(23, 67);
-            dgvStaff.Margin = new Padding(3, 4, 3, 4);
+            dgvStaff.Location = new Point(20, 50);
             dgvStaff.Name = "dgvStaff";
             dgvStaff.RowHeadersWidth = 51;
-            dgvStaff.Size = new Size(469, 427);
+            dgvStaff.Size = new Size(410, 320);
             dgvStaff.TabIndex = 1;
+            dgvStaff.CellContentClick += dgvStaff_CellContentClick;
             // 
             // lblStaffTitle
             // 
             lblStaffTitle.AutoSize = true;
             lblStaffTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblStaffTitle.ForeColor = Color.White;
-            lblStaffTitle.Location = new Point(17, 20);
+            lblStaffTitle.Location = new Point(15, 15);
             lblStaffTitle.Name = "lblStaffTitle";
-            lblStaffTitle.Size = new Size(202, 28);
+            lblStaffTitle.Size = new Size(163, 21);
             lblStaffTitle.TabIndex = 2;
             lblStaffTitle.Text = "Hồ sơ Nhân viên 📇";
             // 
@@ -239,10 +235,9 @@
             pnlTimekeeping.Controls.Add(btnCheckIn);
             pnlTimekeeping.Controls.Add(lstAttendance);
             pnlTimekeeping.Controls.Add(lblTimekeepingTitle);
-            pnlTimekeeping.Location = new Point(560, 160);
-            pnlTimekeeping.Margin = new Padding(3, 4, 3, 4);
+            pnlTimekeeping.Location = new Point(490, 120);
             pnlTimekeeping.Name = "pnlTimekeeping";
-            pnlTimekeeping.Size = new Size(336, 240);
+            pnlTimekeeping.Size = new Size(294, 180);
             pnlTimekeeping.TabIndex = 2;
             // 
             // btnCheckIn
@@ -251,10 +246,9 @@
             btnCheckIn.FlatAppearance.BorderSize = 0;
             btnCheckIn.FlatStyle = FlatStyle.Flat;
             btnCheckIn.ForeColor = Color.White;
-            btnCheckIn.Location = new Point(222, 16);
-            btnCheckIn.Margin = new Padding(3, 4, 3, 4);
+            btnCheckIn.Location = new Point(194, 12);
             btnCheckIn.Name = "btnCheckIn";
-            btnCheckIn.Size = new Size(97, 33);
+            btnCheckIn.Size = new Size(85, 25);
             btnCheckIn.TabIndex = 0;
             btnCheckIn.Text = "Quét RFID";
             btnCheckIn.UseVisualStyleBackColor = false;
@@ -266,11 +260,10 @@
             lstAttendance.Font = new Font("Segoe UI", 9.75F);
             lstAttendance.ForeColor = Color.White;
             lstAttendance.FormattingEnabled = true;
-            lstAttendance.ItemHeight = 21;
-            lstAttendance.Location = new Point(23, 67);
-            lstAttendance.Margin = new Padding(3, 4, 3, 4);
+            lstAttendance.ItemHeight = 17;
+            lstAttendance.Location = new Point(20, 50);
             lstAttendance.Name = "lstAttendance";
-            lstAttendance.Size = new Size(290, 126);
+            lstAttendance.Size = new Size(254, 85);
             lstAttendance.TabIndex = 1;
             // 
             // lblTimekeepingTitle
@@ -278,9 +271,9 @@
             lblTimekeepingTitle.AutoSize = true;
             lblTimekeepingTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblTimekeepingTitle.ForeColor = Color.White;
-            lblTimekeepingTitle.Location = new Point(17, 20);
+            lblTimekeepingTitle.Location = new Point(15, 15);
             lblTimekeepingTitle.Name = "lblTimekeepingTitle";
-            lblTimekeepingTitle.Size = new Size(198, 25);
+            lblTimekeepingTitle.Size = new Size(154, 20);
             lblTimekeepingTitle.TabIndex = 2;
             lblTimekeepingTitle.Text = "Chấm công Hôm nay";
             // 
@@ -290,10 +283,9 @@
             pnlLeaveRequests.Controls.Add(btnApproveLeave);
             pnlLeaveRequests.Controls.Add(lstLeaveq);
             pnlLeaveRequests.Controls.Add(lblLeaveReqTitle);
-            pnlLeaveRequests.Location = new Point(560, 427);
-            pnlLeaveRequests.Margin = new Padding(3, 4, 3, 4);
+            pnlLeaveRequests.Location = new Point(490, 320);
             pnlLeaveRequests.Name = "pnlLeaveRequests";
-            pnlLeaveRequests.Size = new Size(336, 253);
+            pnlLeaveRequests.Size = new Size(294, 190);
             pnlLeaveRequests.TabIndex = 3;
             // 
             // btnApproveLeave
@@ -302,10 +294,9 @@
             btnApproveLeave.FlatAppearance.BorderSize = 0;
             btnApproveLeave.FlatStyle = FlatStyle.Flat;
             btnApproveLeave.ForeColor = Color.White;
-            btnApproveLeave.Location = new Point(222, 16);
-            btnApproveLeave.Margin = new Padding(3, 4, 3, 4);
+            btnApproveLeave.Location = new Point(194, 12);
             btnApproveLeave.Name = "btnApproveLeave";
-            btnApproveLeave.Size = new Size(97, 33);
+            btnApproveLeave.Size = new Size(85, 25);
             btnApproveLeave.TabIndex = 0;
             btnApproveLeave.Text = "Duyệt (1)";
             btnApproveLeave.UseVisualStyleBackColor = false;
@@ -317,11 +308,10 @@
             lstLeaveq.Font = new Font("Segoe UI", 9.75F);
             lstLeaveq.ForeColor = Color.White;
             lstLeaveq.FormattingEnabled = true;
-            lstLeaveq.ItemHeight = 21;
-            lstLeaveq.Location = new Point(23, 67);
-            lstLeaveq.Margin = new Padding(3, 4, 3, 4);
+            lstLeaveq.ItemHeight = 17;
+            lstLeaveq.Location = new Point(20, 50);
             lstLeaveq.Name = "lstLeaveq";
-            lstLeaveq.Size = new Size(290, 147);
+            lstLeaveq.Size = new Size(254, 102);
             lstLeaveq.TabIndex = 1;
             // 
             // lblLeaveReqTitle
@@ -329,24 +319,23 @@
             lblLeaveReqTitle.AutoSize = true;
             lblLeaveReqTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblLeaveReqTitle.ForeColor = Color.Orange;
-            lblLeaveReqTitle.Location = new Point(17, 20);
+            lblLeaveReqTitle.Location = new Point(15, 15);
             lblLeaveReqTitle.Name = "lblLeaveReqTitle";
-            lblLeaveReqTitle.Size = new Size(201, 25);
+            lblLeaveReqTitle.Size = new Size(156, 20);
             lblLeaveReqTitle.TabIndex = 2;
             lblLeaveReqTitle.Text = "Duyệt đơn nghỉ phép";
             // 
             // ucStaff_Manager
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(45, 45, 48);
             Controls.Add(pnlLeaveRequests);
             Controls.Add(pnlTimekeeping);
             Controls.Add(pnlStaffList);
             Controls.Add(pnlSummary);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ucStaff_Manager";
-            Size = new Size(919, 707);
+            Size = new Size(804, 530);
             pnlSummary.ResumeLayout(false);
             pnlSummary.PerformLayout();
             pnlStaffList.ResumeLayout(false);

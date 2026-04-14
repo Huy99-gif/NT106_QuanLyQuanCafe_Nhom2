@@ -73,6 +73,7 @@
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(320, 22);
             txtEmail.TabIndex = 0;
+            txtEmail.TextChanged += txtEmail_TextChanged;
             txtEmail.Validating += txtEmail_Validating;
             // 
             // btnSendCode

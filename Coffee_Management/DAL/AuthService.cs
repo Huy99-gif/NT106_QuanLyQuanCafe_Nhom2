@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace DAL
 {
@@ -12,7 +13,7 @@ namespace DAL
         private readonly string _functionUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/updateUserPassword";
 
         // Mã bí mật phải khớp với file index.js trên Cloud Functions
-        private readonly string _secretKey = "Chuoi_Bi_Mat_Cua_Ban_Vua_Tao";
+        private readonly string? _secretKey = ConfigurationManager.AppSettings["FirebaseSecretKey"];
 
         public async Task<(bool Success, string Message)> UpdateFirebasePassword(string email, string newPassword)
         {
