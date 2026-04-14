@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BUS;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,41 +14,66 @@ namespace GUI
 {
     public partial class ucStaff_Manager : UserControl
     {
+        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
         public ucStaff_Manager()
         {
             InitializeComponent();
-            LoadDummyData();
+            this.Load += async (s, e) => await LoadRealData();
             btnAddStaff.Click += btnAddStaff_Click;
             btnCheckIn.Click += BtnCheckIn_Click;
             btnApproveLeave.Click += BtnApproveLeave_Click;
         }
 
-        private void LoadDummyData()
+        private async Task LoadRealData()
         {
-            DataTable dtStaff = new DataTable();
-            dtStaff.Columns.Add("Mã NV");
-            dtStaff.Columns.Add("Họ và Tên");
-            dtStaff.Columns.Add("Vị Trí");
-            dtStaff.Columns.Add("Ca Làm");
-            dtStaff.Rows.Add("NV01", "Nguyễn Văn A", "Pha Chế", "Ca Sáng");
-            dtStaff.Rows.Add("NV02", "Trần Thị B", "Phục Vụ", "Ca Sáng");
-            dtStaff.Rows.Add("NV03", "Lê Văn C", "Thu Ngân", "Ca Tối");
-            dtStaff.Rows.Add("NV04", "Phạm Bảo D", "Bảo Vệ", "Full-time");
-            dtStaff.Rows.Add("NV05", "Hoàng Kim E", "Phục Vụ", "Ca Tối");
-            dgvStaff.DataSource = dtStaff;
-            dgvStaff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvStaff.RowHeadersVisible = false;
+            try
+            {
+                // Thay đổi con trỏ chuột sang trạng thái chờ
+                this.Cursor = Cursors.WaitCursor;
 
-            lstAttendance.Items.Clear();
-            lstAttendance.Items.Add("✅ 06:45 - NV01 Nguyễn Văn A (Đúng giờ)");
-            lstAttendance.Items.Add("✅ 06:55 - NV02 Trần Thị B (Đúng giờ)");
-            lstAttendance.Items.Add("⚠️ 07:15 - NV04 Phạm Bảo D (Đi trễ)");
-            lstAttendance.Items.Add("❌ NV05 Hoàng Kim E (Chưa check-in)");
+                // Xóa DataSource cũ để người dùng thấy dữ liệu đang được làm mới
+                dgvStaff.DataSource = null;
+                // Gọi BUS để lấy danh sách từ Cloud Functions
+                List<EmployeeDTO> list = await _employeeBus.GetAllEmployeesAsync();
 
-            lstLeaveq.Items.Clear();
-            lstLeaveq.Items.Add("📩 NV03 Lê Văn C");
-            lstLeaveq.Items.Add("   Lý do: Đưa người nhà đi khám bệnh.");
-            lstLeaveq.Items.Add("   Thời gian: Ca Tối (Hôm nay)");
+                // Tạo DataTable để hiển thị lên GridView
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Mã NV");
+                dt.Columns.Add("Họ và Tên");
+                dt.Columns.Add("Email");
+                dt.Columns.Add("Vị Trí");
+                dt.Columns.Add("Trạng Thái");
+
+                foreach (var emp in list)
+                {
+                    dt.Rows.Add(
+                        emp.EmployeeId,
+                        emp.FullName,
+                        emp.Email,
+                        emp.Role,
+                        emp.Status ?? "active" // Nếu null thì mặc định active
+                    );
+                }
+
+                dgvStaff.DataSource = dt;
+
+                // Cập nhật số lượng nhân viên lên label nếu cần
+                lblPresentValue.Text = $"{list.Count} người";
+                // 5. Tinh chỉnh giao diện Grid (Cái này giúp App đẹp hơn)
+                dgvStaff.Columns["Mã NV"].Width = 80;
+                dgvStaff.Columns["Trạng Thái"].Width = 100;
+                // Tự động kéo giãn các cột còn lại
+                dgvStaff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}", "System Error");
+            }
+            finally
+            {
+                // Trả con trỏ chuột về bình thường
+                this.Cursor = Cursors.Default;
+            }
         }
 
         private void BtnCheckIn_Click(object? sender, EventArgs e)

@@ -57,7 +57,6 @@
             lblDescription.Size = new Size(307, 19);
             lblDescription.TabIndex = 1;
             lblDescription.Text = "Please enter the 8 digits code sent to your email.";
-            lblDescription.Click += lblDescription_Click;
             // 
             // pnlCodeBg
             // 
@@ -79,7 +78,6 @@
             txtCode.Size = new Size(320, 25);
             txtCode.TabIndex = 0;
             txtCode.TextAlign = HorizontalAlignment.Center;
-            txtCode.Validating += txtCode_Validating;
             // 
             // btnVerify
             // 

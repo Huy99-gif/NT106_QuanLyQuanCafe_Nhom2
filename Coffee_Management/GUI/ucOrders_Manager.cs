@@ -14,8 +14,8 @@ namespace GUI
     public partial class ucOrders_Manager : UserControl
     {
         
-        private List<TableModel>? _originalTableData;
-        private List<WarningWaitModel> _kitchenWarnings = new List<WarningWaitModel>();
+        private List<TableModelDTO>? _originalTableData;
+        private List<WarningWaitModelDTO> _kitchenWarnings = new List<WarningWaitModelDTO>();
 
         public ucOrders_Manager()
         {
@@ -30,13 +30,13 @@ namespace GUI
             cboTableStatus.Items.AddRange(new string[] { "Tất cả", "Đang phục vụ", "Chờ lên món", "Chờ thanh toán" });
             cboTableStatus.SelectedIndex = 0;
             // Tạo dữ liệu mẫu cho DataGridView
-            _originalTableData = new List<TableModel>
+            _originalTableData = new List<TableModelDTO>
             {
-                new TableModel { TableId = 1, TableName = "Bàn 01", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "150,000 đ" },
-                new TableModel { TableId = 2, TableName = "Bàn 02", Status = "Chờ lên món", Progress = "Thiếu 2 món", TotalAmount = "85,000 đ" },
-                new TableModel { TableId = 5, TableName = "Bàn 05", Status = "Chờ lên món", Progress = "Thiếu 1 món", TotalAmount = "45,000 đ" },
-                new TableModel { TableId = 8, TableName = "Bàn 08", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "210,000 đ" },
-                new TableModel { TableId = 12, TableName = "Bàn 12", Status = "Chờ thanh toán", Progress = "Đã xong", TotalAmount = "320,000 đ" }
+                new TableModelDTO { TableId = 1, TableName = "Bàn 01", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "150,000 đ" },
+                new TableModelDTO { TableId = 2, TableName = "Bàn 02", Status = "Chờ lên món", Progress = "Thiếu 2 món", TotalAmount = "85,000 đ" },
+                new TableModelDTO { TableId = 5, TableName = "Bàn 05", Status = "Chờ lên món", Progress = "Thiếu 1 món", TotalAmount = "45,000 đ" },
+                new TableModelDTO { TableId = 8, TableName = "Bàn 08", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "210,000 đ" },
+                new TableModelDTO { TableId = 12, TableName = "Bàn 12", Status = "Chờ thanh toán", Progress = "Đã xong", TotalAmount = "320,000 đ" }
             };
 
             dgvTableStatus.DataSource = _originalTableData;
@@ -49,12 +49,12 @@ namespace GUI
             dgvTableStatus.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTableStatus.RowHeadersVisible = false;
 
-            _kitchenWarnings = new List<WarningWaitModel>
+            _kitchenWarnings = new List<WarningWaitModelDTO>
             {
-                new WarningWaitModel { TableName = "Bàn 02", DrinkName = "Cà phê sữa đá", WaitTimeMinutes = 18 },
-                new WarningWaitModel { TableName = "Bàn 05", DrinkName = "Trà đào cam sả", WaitTimeMinutes = 15 },
-                new WarningWaitModel { TableName = "Bàn 15", DrinkName = "Sinh tố dâu", WaitTimeMinutes = 25 },
-                new WarningWaitModel { TableName = "Bàn VIP 1", DrinkName = "Bò bít tết", WaitTimeMinutes = 30 }
+                new WarningWaitModelDTO { TableName = "Bàn 02", DrinkName = "Cà phê sữa đá", WaitTimeMinutes = 18 },
+                new WarningWaitModelDTO { TableName = "Bàn 05", DrinkName = "Trà đào cam sả", WaitTimeMinutes = 15 },
+                new WarningWaitModelDTO { TableName = "Bàn 15", DrinkName = "Sinh tố dâu", WaitTimeMinutes = 25 },
+                new WarningWaitModelDTO { TableName = "Bàn VIP 1", DrinkName = "Bò bít tết", WaitTimeMinutes = 30 }
             };
             lstKitchenWarning.DataSource = null;
             lstKitchenWarning.DataSource = _kitchenWarnings;
@@ -97,7 +97,7 @@ namespace GUI
             if (lstKitchenWarning.SelectedItem != null)
             {
                 // 1. Lấy thông tin dòng vừa được double-click và ép kiểu về WarningWaitModel
-                var monDaXong = (WarningWaitModel)lstKitchenWarning.SelectedItem;
+                var monDaXong = (WarningWaitModelDTO)lstKitchenWarning.SelectedItem;
 
                 // Tùy chọn: Hiển thị thông báo xác nhận nhỏ (bạn có thể bỏ đi nếu muốn thao tác nhanh)
                 // MessageBox.Show($"Đã hoàn thành: {monDaXong.FoodName} ở {monDaXong.TableName}", "Thông báo");

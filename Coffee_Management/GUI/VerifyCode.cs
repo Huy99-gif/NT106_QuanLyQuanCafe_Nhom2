@@ -17,7 +17,7 @@ namespace GUI
     {
         private DateTime _expiryTime; // Biến lưu thời điểm mã sẽ hết hạn
         private int timeLeft = 60;
-        private EmailCode emailBUS = new EmailCode();
+        private EmailCodeBUS emailBUS = new EmailCodeBUS();
         // 2 Biến toàn cục để hứng dữ liệu từ Form 1 truyền sang
         private string _systemCode;
         private string _userEmail;
@@ -44,7 +44,15 @@ namespace GUI
         {
             string userCode = txtCode.Text;
 
-            if (string.IsNullOrWhiteSpace(userCode))
+            if (!Validation.IsAnyEmpty(userCode))
+            {
+                if (!Validation.IsValidVerificationCode(userCode))
+                {
+                    MessageBox.Show("Invalid verification code!\nThe code must be exactly 8 digits, including both letters and numbers.", "Invalid Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            else 
             {
                 MessageBox.Show("Please enter the verification code!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -70,35 +78,6 @@ namespace GUI
             else
             {
                 MessageBox.Show("Invalid verification code. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private bool IsValidVerificationCode(string code)
-        {
-            // Giải thích Regex:
-            // ^      : Bắt đầu chuỗi
-            // \d{8}  : Chính xác 8 chữ số (từ 0-9)
-            // $      : Kết thúc chuỗi
-            string pattern = @"^\d{8}$";
-            return Regex.IsMatch(code, pattern);
-        }
-
-        private void lblDescription_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCode_Validating(object sender, CancelEventArgs e)
-        {
-            string code = txtCode.Text;
-            if (!string.IsNullOrWhiteSpace(code))
-            {
-                if (!IsValidVerificationCode(code))
-                {
-                    MessageBox.Show("Invalid verification code!\nThe code must be exactly 8 digits, including both letters and numbers.", "Invalid Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                    txtCode.SelectAll();
-                }
             }
         }
 

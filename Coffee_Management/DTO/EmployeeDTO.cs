@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public class Employee
+    public class EmployeeDTO
     {
         // Không tạo thêm thuộc tính cho EmployeeId vì nó không cần thiết
         [JsonIgnore]
@@ -16,7 +16,6 @@ namespace DTO
         [JsonProperty("avatar_url")]
         public string? AvatarUrl { get; set; }
 
-        [JsonIgnore] // RẤT QUAN TRỌNG: Chỉ dùng để tạo Auth, không đẩy lên Database
         public string? Password { get; set; }
 
         [JsonProperty("email")]
@@ -36,5 +35,9 @@ namespace DTO
 
         [JsonProperty("vai_tro")]
         public string? Role { get; set; }
+
+        // Dùng để liên kết với Firebase Auth (giúp xóa/khóa tài khoản sau này)
+        [JsonIgnore]
+        public string? AuthUid { get; set; }
     }
 }

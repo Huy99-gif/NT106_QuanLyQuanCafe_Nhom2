@@ -154,7 +154,6 @@
             txtPassword.Size = new Size(306, 22);
             txtPassword.TabIndex = 0;
             txtPassword.Enter += TxtPassword_Enter;
-            txtPassword.Validating += txtPassword_Validating;
             // 
             // pnlEmailBg
             // 
@@ -179,7 +178,6 @@
             txtEmail.Size = new Size(306, 22);
             txtEmail.TabIndex = 0;
             txtEmail.TextChanged += txtEmail_TextChanged;
-            txtEmail.Validating += txtEmail_Validating;
             // 
             // lblTitle
             // 

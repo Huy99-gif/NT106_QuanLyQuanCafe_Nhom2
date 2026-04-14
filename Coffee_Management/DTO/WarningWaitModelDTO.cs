@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public class WarningWaitModel
+    public class WarningWaitModelDTO
     {
         public string? TableName { get; set; }    
         public string? DrinkName { get; set; }     
