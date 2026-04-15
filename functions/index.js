@@ -11,12 +11,10 @@ const appSecretParam = defineString('APP_SECRET_KEY');
 // Đọc thông tin email từ biến môi trường (nếu cần gửi email)
 const emailUserParam = defineString('EMAIL_USER');
 const emailPassParam = defineString('EMAIL_PASS');
-const managerSecretParam = defineString('MANAGER_SECRET_KEY');
 
 // Khởi tạo Admin SDK - cấp quyền quản trị tối cao trên Firebase
 admin.initializeApp();
 
-const authorize = (req) => req.headers['x-manager-secret'] === managerSecretParam.value();
 /**
  * Hàm updateUserPassword: Được gọi từ WinForms để đổi mật khẩu
  * req: Đối tượng chứa dữ liệu gửi lên (Request)
@@ -372,5 +370,64 @@ exports.addEmployee = onRequest(async (req, res) => {
         }
         // Nếu lỗi xảy ra (ví dụ: Email đã được sử dụng), trả về ngay cho C# hiển thị
         return res.status(400).send({ error: friendlyMessage });
+    }
+});
+
+// Tạo một API endpoint có tên là "updateEmployee" để cập nhật thông tin nhân viên (trừ email và password) trong Realtime Database
+exports.updateEmployee = onRequest(async (req, res) => {
+    if (req.method !== "POST") return res.status(405).send({ message: "Method Not Allowed" });
+
+    try {
+        // BẢO MẬT: Chỉ Manager có token hợp lệ mới qua được ải này
+        await verifyManagerRole(req);
+
+        const { employeeId, updateData } = req.body;
+
+        if (!employeeId || !updateData) {
+            return res.status(400).send({ error: "Missing employeeId or updateData" });
+        }
+
+        // Không cho phép sửa đổi những trường cốt lõi qua API này
+        delete updateData.AuthUid; 
+        delete updateData.email; // Đổi email phức tạp hơn, cần admin.auth().updateUser
+
+        // Cập nhật vào Realtime Database
+        await admin.database().ref(`nhan_vien/${employeeId}`).update(updateData);
+
+        return res.status(200).send({ success: true, message: "Cập nhật hồ sơ thành công!" });
+    } catch (error) {
+        console.error("Update Error:", error.message);
+        return res.status(403).send({ error: "Access Denied: " + error.message });
+    }
+});
+
+// Tạo một API endpoint có tên là "lockEmployee" để khóa tài khoản nhân viên trong Realtime Database
+exports.lockEmployee = onRequest(async (req, res) => {
+    if (req.method !== "POST") return res.status(405).send({ message: "Method Not Allowed" });
+
+    try {
+        // BẢO MẬT: Phân quyền Manager
+        await verifyManagerRole(req);
+
+        const { employeeId, authUid } = req.body;
+
+        if (!employeeId || !authUid) {
+            return res.status(400).send({ error: "Missing employeeId or authUid" });
+        }
+
+        // 1. Cập nhật trạng thái trong Database thành "inactive"
+        await admin.database().ref(`nhan_vien/${employeeId}`).update({
+            trang_thai: "inactive"
+        });
+
+        //Disable tài khoản trên Firebase Authentication (Người này không thể Login được nữa)
+        await admin.auth().updateUser(authUid, {
+            disabled: true
+        });
+
+        return res.status(200).send({ success: true, message: "Staff account has been locked" });
+    } catch (error) {
+        console.error("Lock Error:", error.message);
+        return res.status(403).send({ error: "Access Denied: " + error.message });
     }
 });

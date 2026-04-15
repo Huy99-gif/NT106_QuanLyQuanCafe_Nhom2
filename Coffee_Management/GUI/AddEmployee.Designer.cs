@@ -92,9 +92,8 @@
             {
                 "admin",      // Toàn quyền hệ thống
                 "manager",    // Quản lý cửa hàng (được thêm/xóa nhân viên, xem báo cáo)
-                "cashier",    // Thu ngân (chỉ được thanh toán, in hóa đơn)
                 "barista",    // Pha chế (chỉ xem danh sách món cần làm)
-                "waiter",     // Phục vụ (chỉ được tạo order tại bàn)
+                "staff",      // Phục vụ + thu ngân
                 "security"    // Bảo vệ (chỉ dùng để điểm danh/quản lý xe)
             });
             cboRole.Location = new Point(40, 280);

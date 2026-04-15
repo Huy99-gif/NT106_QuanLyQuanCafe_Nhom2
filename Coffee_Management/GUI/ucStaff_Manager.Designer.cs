@@ -35,7 +35,7 @@
             lblTotalStaffValue = new Label();
             lblTotalStaffTitle = new Label();
             pnlStaffList = new Panel();
-            btnDeleteStaff = new Button();
+            btnEditStaff = new Button();
             btnAddStaff = new Button();
             dgvStaff = new DataGridView();
             lblStaffTitle = new Label();
@@ -124,6 +124,7 @@
             lblPresentValue.Size = new Size(90, 30);
             lblPresentValue.TabIndex = 4;
             lblPresentValue.Text = "5 người";
+            lblPresentValue.Click += lblPresentValue_Click;
             // 
             // lblPresentTitle
             // 
@@ -161,7 +162,7 @@
             // pnlStaffList
             // 
             pnlStaffList.BackColor = Color.FromArgb(30, 30, 30);
-            pnlStaffList.Controls.Add(btnDeleteStaff);
+            pnlStaffList.Controls.Add(btnEditStaff);
             pnlStaffList.Controls.Add(btnAddStaff);
             pnlStaffList.Controls.Add(dgvStaff);
             pnlStaffList.Controls.Add(lblStaffTitle);
@@ -170,18 +171,19 @@
             pnlStaffList.Size = new Size(450, 390);
             pnlStaffList.TabIndex = 1;
             // 
-            // btnDeleteStaff
+            // btnEditStaff
             // 
-            btnDeleteStaff.BackColor = Color.FromArgb(45, 45, 48);
-            btnDeleteStaff.FlatAppearance.BorderSize = 0;
-            btnDeleteStaff.FlatStyle = FlatStyle.Flat;
-            btnDeleteStaff.ForeColor = Color.IndianRed;
-            btnDeleteStaff.Location = new Point(360, 15);
-            btnDeleteStaff.Name = "btnDeleteStaff";
-            btnDeleteStaff.Size = new Size(70, 25);
-            btnDeleteStaff.TabIndex = 0;
-            btnDeleteStaff.Text = "Xóa";
-            btnDeleteStaff.UseVisualStyleBackColor = false;
+            btnEditStaff.BackColor = Color.FromArgb(45, 45, 48);
+            btnEditStaff.FlatAppearance.BorderSize = 0;
+            btnEditStaff.FlatStyle = FlatStyle.Flat;
+            btnEditStaff.ForeColor = Color.IndianRed;
+            btnEditStaff.Location = new Point(360, 15);
+            btnEditStaff.Name = "btnEditStaff";
+            btnEditStaff.Size = new Size(70, 25);
+            btnEditStaff.TabIndex = 0;
+            btnEditStaff.Text = "Sửa";
+            btnEditStaff.UseVisualStyleBackColor = false;
+            btnEditStaff.Click += btnEditStaff_Click;
             // 
             // btnAddStaff
             // 
@@ -216,7 +218,7 @@
             dgvStaff.RowHeadersWidth = 51;
             dgvStaff.Size = new Size(410, 320);
             dgvStaff.TabIndex = 1;
-            dgvStaff.CellContentClick += dgvStaff_CellContentClick;
+            dgvStaff.CellContentDoubleClick += dgvStaff_CellContentDoubleClick;
             // 
             // lblStaffTitle
             // 
@@ -364,7 +366,7 @@
         private System.Windows.Forms.Label lblStaffTitle;
         private System.Windows.Forms.DataGridView dgvStaff;
         private System.Windows.Forms.Button btnAddStaff;
-        private System.Windows.Forms.Button btnDeleteStaff;
+        private System.Windows.Forms.Button btnEditStaff;
 
         private System.Windows.Forms.Panel pnlTimekeeping;
         private System.Windows.Forms.Label lblTimekeepingTitle;

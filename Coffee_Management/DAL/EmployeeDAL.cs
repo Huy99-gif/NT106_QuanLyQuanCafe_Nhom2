@@ -17,7 +17,8 @@ namespace DAL
         // Khai báo các Endpoints
         private readonly string _addEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/addEmployee";
         private readonly string _getAllEmployeesUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/getAllEmployees";
-
+        private readonly string _updateEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/updateEmployee";
+        private readonly string _lockEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/lockEmployee";
         public async Task<(bool Success, string Message)> AddEmployeeCFAsync(EmployeeDTO emp)
         {
             try
@@ -91,6 +92,40 @@ namespace DAL
                 }
 
                 return null;
+            }
+        }
+
+        public async Task<(bool Success, string Message)> UpdateEmployeeCFAsync(string empId, EmployeeDTO updateData)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+
+                var payload = new { employeeId = empId, updateData = updateData };
+                var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(_updateEmployeeUrl, content);
+                var resultStr = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode) return (true, "Updated successfull!");
+                return (false, "Server Error: " + resultStr);
+            }
+        }
+
+        public async Task<(bool Success, string Message)> LockEmployeeCFAsync(string empId, string authUid)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+
+                var payload = new { employeeId = empId, authUid = authUid };
+                var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(_lockEmployeeUrl, content);
+                var resultStr = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode) return (true, "Account Locked!");
+                return (false, "Server Error: " + resultStr);
             }
         }
     }

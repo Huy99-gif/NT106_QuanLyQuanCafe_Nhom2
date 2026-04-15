@@ -163,6 +163,20 @@ namespace GUI
                     managerDashboard.Show();
                     this.Hide();
                 }
+                else if (CurrentUser.Role == "barista")
+                {
+                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
+                    orstaffDashboard.Show();
+                    this.Hide();
+                }
+                else if (CurrentUser.Role == "security")
+                {
+                    MessageBox.Show($"Hello {CurrentUser.FullName}!\n{result.Message}", "Login Successed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OrderStaffDashboard orstaffDashboard = new OrderStaffDashboard();
+                    orstaffDashboard.Show();
+                    this.Hide();
+                }
             }
             else
             {
