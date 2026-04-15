@@ -1,12 +1,16 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace GUI
+﻿namespace GUI
 {
-    partial class OrderStaffDashboard
+    partial class BaristaDashboard
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,9 +26,10 @@ namespace GUI
         {
             pnlSidebar = new Panel();
             btnLogout = new Button();
-            btnSettings = new Button();
-            btnTables = new Button();
-            btnPOS = new Button();
+            btnAttendance = new Button();
+            btnChat = new Button();
+            btnLeaveRequest = new Button();
+            btnProfile = new Button();
             pnlLogo = new Panel();
             lblLogo = new Label();
             pnlMainContent = new Panel();
@@ -42,9 +47,10 @@ namespace GUI
             // 
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnLogout);
-            pnlSidebar.Controls.Add(btnSettings);
-            pnlSidebar.Controls.Add(btnTables);
-            pnlSidebar.Controls.Add(btnPOS);
+            pnlSidebar.Controls.Add(btnAttendance);
+            pnlSidebar.Controls.Add(btnChat);
+            pnlSidebar.Controls.Add(btnLeaveRequest);
+            pnlSidebar.Controls.Add(btnProfile);
             pnlSidebar.Controls.Add(pnlLogo);
             pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
@@ -63,51 +69,64 @@ namespace GUI
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 0;
-            btnLogout.Text = "Logout";
-            btnLogout.Click += btnLogout_Click_1;
+            btnLogout.Text = "   Logout";
+            btnLogout.Click += btnLogout_Click;
             // 
-            // btnSettings
+            // btnAttendance
             // 
-            btnSettings.Dock = DockStyle.Top;
-            btnSettings.FlatAppearance.BorderSize = 0;
-            btnSettings.FlatStyle = FlatStyle.Flat;
-            btnSettings.Font = new Font("Segoe UI", 11F);
-            btnSettings.ForeColor = Color.White;
-            btnSettings.Location = new Point(0, 170);
-            btnSettings.Name = "btnSettings";
-            btnSettings.Size = new Size(220, 50);
-            btnSettings.TabIndex = 1;
-            btnSettings.Text = "  Profile and Chat";
-            btnSettings.TextAlign = ContentAlignment.MiddleLeft;
+            btnAttendance.Dock = DockStyle.Top;
+            btnAttendance.FlatAppearance.BorderSize = 0;
+            btnAttendance.FlatStyle = FlatStyle.Flat;
+            btnAttendance.Font = new Font("Segoe UI", 11F);
+            btnAttendance.ForeColor = Color.White;
+            btnAttendance.Location = new Point(0, 220);
+            btnAttendance.Name = "btnAttendance";
+            btnAttendance.Size = new Size(220, 50);
+            btnAttendance.TabIndex = 1;
+            btnAttendance.Text = "   Attendance";
+            btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // btnTables
+            // btnChat
             // 
-            btnTables.Dock = DockStyle.Top;
-            btnTables.FlatAppearance.BorderSize = 0;
-            btnTables.FlatStyle = FlatStyle.Flat;
-            btnTables.Font = new Font("Segoe UI", 11F);
-            btnTables.ForeColor = Color.White;
-            btnTables.Location = new Point(0, 120);
-            btnTables.Name = "btnTables";
-            btnTables.Size = new Size(220, 50);
-            btnTables.TabIndex = 3;
-            btnTables.Text = "  Tables Map";
-            btnTables.TextAlign = ContentAlignment.MiddleLeft;
+            btnChat.Dock = DockStyle.Top;
+            btnChat.FlatAppearance.BorderSize = 0;
+            btnChat.FlatStyle = FlatStyle.Flat;
+            btnChat.Font = new Font("Segoe UI", 11F);
+            btnChat.ForeColor = Color.White;
+            btnChat.Location = new Point(0, 170);
+            btnChat.Name = "btnChat";
+            btnChat.Size = new Size(220, 50);
+            btnChat.TabIndex = 2;
+            btnChat.Text = "   Internal Chat";
+            btnChat.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // btnPOS
+            // btnLeaveRequest
             // 
-            btnPOS.Dock = DockStyle.Top;
-            btnPOS.FlatAppearance.BorderSize = 0;
-            btnPOS.FlatStyle = FlatStyle.Flat;
-            btnPOS.Font = new Font("Segoe UI", 11F);
-            btnPOS.ForeColor = Color.White;
-            btnPOS.Location = new Point(0, 70);
-            btnPOS.Name = "btnPOS";
-            btnPOS.Size = new Size(220, 50);
-            btnPOS.TabIndex = 4;
-            btnPOS.Text = "  POS / Order";
-            btnPOS.TextAlign = ContentAlignment.MiddleLeft;
-            btnPOS.Click += btnPOS_Click;
+            btnLeaveRequest.Dock = DockStyle.Top;
+            btnLeaveRequest.FlatAppearance.BorderSize = 0;
+            btnLeaveRequest.FlatStyle = FlatStyle.Flat;
+            btnLeaveRequest.Font = new Font("Segoe UI", 11F);
+            btnLeaveRequest.ForeColor = Color.White;
+            btnLeaveRequest.Location = new Point(0, 120);
+            btnLeaveRequest.Name = "btnLeaveRequest";
+            btnLeaveRequest.Size = new Size(220, 50);
+            btnLeaveRequest.TabIndex = 3;
+            btnLeaveRequest.Text = "   Leave Request";
+            btnLeaveRequest.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnProfile
+            // 
+            btnProfile.Dock = DockStyle.Top;
+            btnProfile.FlatAppearance.BorderSize = 0;
+            btnProfile.FlatStyle = FlatStyle.Flat;
+            btnProfile.Font = new Font("Segoe UI", 11F);
+            btnProfile.ForeColor = Color.White;
+            btnProfile.Location = new Point(0, 70);
+            btnProfile.Name = "btnProfile";
+            btnProfile.Size = new Size(220, 50);
+            btnProfile.TabIndex = 4;
+            btnProfile.Text = "   Profile";
+            btnProfile.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // pnlLogo
             // 
@@ -124,11 +143,11 @@ namespace GUI
             lblLogo.AutoSize = true;
             lblLogo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblLogo.ForeColor = Color.MediumSeaGreen;
-            lblLogo.Location = new Point(43, 19);
+            lblLogo.Location = new Point(40, 20);
             lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(128, 30);
+            lblLogo.Size = new Size(139, 30);
             lblLogo.TabIndex = 0;
-            lblLogo.Text = "Order Staff";
+            lblLogo.Text = "Barista Staff";
             // 
             // pnlMainContent
             // 
@@ -187,7 +206,7 @@ namespace GUI
             pnlHeader.Size = new Size(804, 70);
             pnlHeader.TabIndex = 1;
             // 
-            // OrderStaffDashboard
+            // BaristaDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -196,7 +215,7 @@ namespace GUI
             Controls.Add(pnlHeader);
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "OrderStaffDashboard";
+            Name = "BaristaDashboard";
             StartPosition = FormStartPosition.CenterScreen;
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
@@ -212,9 +231,10 @@ namespace GUI
 
         private System.Windows.Forms.Panel pnlSidebar;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Button btnSettings;
-        private System.Windows.Forms.Button btnTables;
-        private System.Windows.Forms.Button btnPOS;
+        private System.Windows.Forms.Button btnAttendance;
+        private System.Windows.Forms.Button btnChat;
+        private System.Windows.Forms.Button btnLeaveRequest;
+        private System.Windows.Forms.Button btnProfile;
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.Label lblLogo;
         private System.Windows.Forms.Panel pnlMainContent;

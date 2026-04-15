@@ -17,7 +17,9 @@ namespace GUI
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
 
         // Biến lưu trữ ID nhân viên đang được sửa
-        private string _currentEmpId;
+        private string? _currentEmpId;
+        private string? _currentAuthUid;
+
 
         // Constructor nhận dữ liệu từ Form Main truyền sang
         public EditEmployee(EmployeeDTO emp)
@@ -34,7 +36,7 @@ namespace GUI
             Dictionary<string, string> roles = new Dictionary<string, string>
             {
                 { "manager", "Manager" },
-                { "staff", "Order Staff" },
+                { "order staff", "Order Staff" },
                 { "barista", "Barista" },
                 { "security", "Security" }
             };
@@ -57,7 +59,7 @@ namespace GUI
         private void BindData(EmployeeDTO emp)
         {
             _currentEmpId = emp.EmployeeId; // Lưu ID để lát gọi API
-
+            _currentAuthUid = emp.AuthUid; // Lưu AuthUid để lát gọi API
             txtEmpId.Text = emp.EmployeeId;
             txtFullName.Text = emp.FullName;
             txtPhone.Text = emp.PhoneNumber;
@@ -83,8 +85,15 @@ namespace GUI
                     Status = cboStatus.SelectedValue?.ToString()
                 };
 
-                // Gọi hàm Update đã có Validation bên BUS
-                var result = await _employeeBus.UpdateEmployeeAsync(_currentEmpId, empUpdate);
+                Task<(bool Success, string Message)> task;
+
+                if (empUpdate.Status == "active")
+                    task = _employeeBus.UpdateEmployeeAsync(_currentEmpId, empUpdate);
+                else
+                    task = _employeeBus.LockEmployeeAsync(_currentEmpId, _currentAuthUid);
+
+                // 2. Thực thi và đợi kết quả (Chỉ await 1 lần duy nhất ở đây)
+                var result = await task;
 
                 if (result.Success)
                 {
@@ -113,6 +122,11 @@ namespace GUI
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
