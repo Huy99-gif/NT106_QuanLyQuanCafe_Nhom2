@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class OrderStaffDashboard : Form
+    public partial class OrderStaffDashboard : BaseDashboard
     {
         public OrderStaffDashboard()
         {

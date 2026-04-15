@@ -13,6 +13,8 @@ namespace DTO
 
         //Lưu trữ toàn bộ thông tin của người đang đăng nhập (Tên, Email, Quyền...)
         public static EmployeeDTO? CurrentUser { get; set; }
+        // Lưu thời điểm "chết" của phiên làm việc
+        public static DateTime ExpiryTime { get; set; }
 
         // Hàm gọi khi người dùng bấm ĐĂNG XUẤT (Xóa sạch trí nhớ)
         public static void Logout()

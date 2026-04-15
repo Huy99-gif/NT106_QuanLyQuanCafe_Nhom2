@@ -101,29 +101,18 @@ namespace GUI
             string email = txtEmail.Text;
             string password = txtPassword.Text;
 
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                MessageBox.Show("Please enter your email address.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Please enter your password.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // 2. Khóa nút bấm trong lúc chờ mạng
+            //Khóa nút bấm trong lúc chờ mạng
             btnSignIn.Enabled = false;
             btnSignIn.Text = "Processing...";
 
-            // 3. Gọi BUS thực hiện đăng nhập
+            //Gọi BUS thực hiện đăng nhập
             // Vì BUS trả về 1 Tuple (IsSuccess, Message, UserData), ta dùng 'var result' để hứng
             var result = await authBUS.LoginBUS(email, password);
 
             // 4. Xử lý kết quả và Phân quyền
             if (result.IsSuccess == true)
             {
+
                 // Đăng nhập và qua các ải kiểm tra nghiệp vụ thành công
                 CurrentUser = result.UserData!; // Lưu vào biến hệ thống
                 // BẮT ĐẦU THÊM ĐOẠN NÀY ĐỂ LƯU MẬT KHẨU

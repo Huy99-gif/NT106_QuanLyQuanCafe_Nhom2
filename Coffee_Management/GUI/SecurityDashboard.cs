@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class SecurityDashboard : Form
+    public partial class SecurityDashboard : BaseDashboard
     {
         public SecurityDashboard()
         {

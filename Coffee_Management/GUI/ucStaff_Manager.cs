@@ -108,7 +108,7 @@ namespace GUI
             btnApproveLeave.Enabled = false;
         }
 
-        private void btnAddStaff_Click(object sender, EventArgs e)
+        private async void btnAddStaff_Click(object sender, EventArgs e)
         {
             AddEmployee frmAdd = new AddEmployee();
             // Mở form lên dưới dạng hộp thoại (người dùng phải đóng form này mới thao tác tiếp được với nền bên dưới)
@@ -116,7 +116,7 @@ namespace GUI
             {
                 // Đoạn code này sẽ chạy nếu bên form AddEmployee bạn lưu thành công 
                 // và đã gán: this.DialogResult = DialogResult.OK;
-
+                await LoadRealData();
                 MessageBox.Show("The new employee list has been updated!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Gọi hàm load lại dữ liệu lên DataGridView ở đây (nếu có)

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ManagerDashboard : Form
+    public partial class ManagerDashboard : BaseDashboard
     {
         public ManagerDashboard()
         {

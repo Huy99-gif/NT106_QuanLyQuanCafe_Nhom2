@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class BaristaDashboard : Form
+    public partial class BaristaDashboard : BaseDashboard
     {
         public BaristaDashboard()
         {

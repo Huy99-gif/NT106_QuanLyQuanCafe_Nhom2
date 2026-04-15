@@ -88,12 +88,12 @@
             cboRole.Font = new Font("Segoe UI", 11F);
             cboRole.ForeColor = Color.White;
             cboRole.FormattingEnabled = true;
+            cboRole.Items.AddRange(new object[] { "admin", "manager", "barista", "order staff", "security" });
             cboRole.Items.AddRange(new object[]
             {
-                "admin",      // Toàn quyền hệ thống
                 "manager",    // Quản lý cửa hàng (được thêm/xóa nhân viên, xem báo cáo)
                 "barista",    // Pha chế (chỉ xem danh sách món cần làm)
-                "order staff",      // Phục vụ + thu ngân
+                "order staff",// Phục vụ + thu ngân
                 "security"    // Bảo vệ (chỉ dùng để điểm danh/quản lý xe)
             });
             cboRole.Location = new Point(40, 280);
@@ -183,7 +183,7 @@
             panel1.Controls.Add(txtPhone);
             panel1.Controls.Add(dtpHireDate);
             panel1.Controls.Add(cboRole);
-            panel1.Location = new Point(321, 80);
+            panel1.Location = new Point(56, 46);
             panel1.Name = "panel1";
             panel1.Size = new Size(448, 480);
             panel1.TabIndex = 20;
@@ -193,7 +193,7 @@
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(18, 18, 18);
-            ClientSize = new Size(1090, 661);
+            ClientSize = new Size(558, 582);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 10.2F);
             FormBorderStyle = FormBorderStyle.None;
