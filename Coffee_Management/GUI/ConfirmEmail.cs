@@ -32,7 +32,7 @@ namespace GUI
 
         private async void btnSendCode_Click(object sender, EventArgs e)
         {
-            string email = txtEmail.Text;
+            string email = txtEmail.Text.Trim();
 
             btnSendCode.Enabled = false;
             btnSendCode.Text = "Sending...";

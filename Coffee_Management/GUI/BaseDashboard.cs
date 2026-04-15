@@ -30,7 +30,8 @@ namespace GUI
         private void SessionTimer_Tick(object sender, EventArgs e)
         {
             // Nếu chưa đăng nhập hoặc không có thời gian thì bỏ qua
-            if (GlobalSession.ExpiryTime == DateTime.MinValue) return;
+            if (GlobalSession.ExpiryTime == DateTime.MinValue) 
+                return;
 
             TimeSpan remaining = GlobalSession.ExpiryTime - DateTime.Now;
 

@@ -12,7 +12,7 @@ namespace QLCafe.ChatServer
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Thêm dịch vụ SignalR và CORS (Mở cửa cho máy khác truy cập)
+            // Đăng ký dịch vụ SignalR và CORS
             builder.Services.AddSignalR();
             builder.Services.AddCors(options =>
             {

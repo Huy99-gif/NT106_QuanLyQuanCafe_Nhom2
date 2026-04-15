@@ -9,8 +9,7 @@ namespace DTO
 {
     public class EmployeeDTO
     {
-        // Không tạo thêm thuộc tính cho EmployeeId vì nó không cần thiết
-        [JsonIgnore]
+        [JsonProperty("employeeId")]
         public string? EmployeeId { get; set; }
         // Ánh xạ các thuộc tính JSON với tên khác nhau
         [JsonProperty("avatar_url")]
