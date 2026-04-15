@@ -226,6 +226,36 @@ exports.loginEmployee = onRequest(async (req, res) => {
     }
 });
 
+//HÀM XÁC THỰC DÙNG CHUNG: Xác thực Token và trả về thông tin user
+async function verifyAndGetUser(req) {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new Error('Missing or invalid authorization header');
+    }
+
+    const token = authHeader.split('Bearer ')[1];
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const userEmail = decodedToken.email;
+
+    const db = admin.database();
+    const snapshot = await db.ref('nhan_vien')
+                             .orderByChild('email')
+                             .equalTo(userEmail)
+                             .once('value');
+
+    if (!snapshot.exists()) {
+        throw new Error('User not found in database');
+    }
+
+    const data = snapshot.val();
+    const employeeId = Object.keys(data)[0];
+    const employeeData = data[employeeId];
+    employeeData.EmployeeId = employeeId;
+
+    return employeeData; 
+}
+
 // Hàm phụ để xác thực Token và kiểm tra vai trò quản lý (Manager Role)
 async function verifyManagerRole(req) {
     const authHeader = req.headers.authorization;
@@ -275,12 +305,34 @@ exports.getAllEmployees = onRequest(async (req, res) => {
     }
 
     try {
-        // Yêu cầu phải có Token hợp lệ VÀ phải là Quản lý mới được xem danh sách
-        await verifyManagerRole(req);
-        const snapshot = await admin.database().ref('nhan_vien').once('value');
-        const data = snapshot.val();
+        // Xác thực người gọi API là ai (Bất kỳ ai có token hợp lệ đều qua được)
+        const requestUser = await verifyAndGetUser(req);
         
-        return res.status(200).send(data || {});
+        // Lấy toàn bộ dữ liệu từ node 'nhan_vien'
+        const snapshot = await admin.database().ref('nhan_vien').once('value');
+        const allEmployees = snapshot.val() || {};
+
+        // Xử lý phân quyền trả về dữ liệu
+        const userRole = (requestUser.vai_tro || "").toLowerCase();
+
+        if (userRole === 'manager' || userRole === 'admin') {
+            // Manager/Admin: Trả về toàn bộ danh sách
+            return res.status(200).send(allEmployees);
+        } else {
+            // Staff (Nhân viên): Lọc chỉ lấy những người là Manager hoặc Admin
+            const managersOnly = {};
+            
+            Object.keys(allEmployees).forEach(key => {
+                const emp = allEmployees[key];
+                const targetRole = (emp.vai_tro || "").toLowerCase();
+                if (targetRole === 'manager') {
+                    managersOnly[key] = emp;
+                }
+            });
+
+            return res.status(200).send(managersOnly);
+        }
+
     } catch (error) {
         console.error("Auth/Query Error:", error.message);
         return res.status(403).send({ error: "Access Denied: " + error.message });
@@ -435,5 +487,40 @@ exports.lockEmployee = onRequest(async (req, res) => {
     } catch (error) {
         console.error("Lock Error:", error.message);
         return res.status(403).send({ error: "Access Denied: " + error.message });
+    }
+});
+//Function Lưu tin nhắn chat vào Realtime Database
+exports.saveChatMessage = onRequest(async (req, res) => {
+    if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
+
+    try {
+        const requestUser = await verifyAndGetUser(req);
+        const { roomId, chatData } = req.body; // roomId có dạng chat_nv001_nv002
+        const msgId = `msg_${chatData.thoi_gian}`;
+
+        await admin.database().ref(`tin_nhan/${roomId}/${msgId}`).set(chatData);
+        
+        return res.status(200).send({ success: true });
+    } catch (error) {
+        console.error("Save Chat Message Error:", error.message);
+        return res.status(500).send({ error: error.message });
+    }
+});
+// Function Lấy lịch sử chat từ Realtime Database dựa trên roomId
+exports.getChatHistory = onRequest(async (req, res) => {
+    const { roomId } = req.query;
+    try {
+        const requestUser = await verifyAndGetUser(req);
+        const snapshot = await admin.database().ref(`tin_nhan/${roomId}`)
+                                    .orderByChild("thoi_gian")
+                                    .once("value");
+        const history = [];
+        snapshot.forEach((child) => {
+            history.push(child.val());
+        });
+        return res.status(200).send(history);
+    } catch (error) {
+        console.error("Get Chat History Error:", error.message);
+        return res.status(500).send({ error: error.message });
     }
 });

@@ -37,7 +37,6 @@
             pnlChat = new Panel();
             btnOpenChatWindow = new Button();
             cmbChatTarget = new ComboBox();
-            cmbChatMode = new ComboBox();
             btnSend = new Button();
             txtMessage = new TextBox();
             lstChatHistory = new ListBox();
@@ -123,7 +122,6 @@
             pnlChat.BackColor = Color.FromArgb(30, 30, 30);
             pnlChat.Controls.Add(btnOpenChatWindow);
             pnlChat.Controls.Add(cmbChatTarget);
-            pnlChat.Controls.Add(cmbChatMode);
             pnlChat.Controls.Add(btnSend);
             pnlChat.Controls.Add(txtMessage);
             pnlChat.Controls.Add(lstChatHistory);
@@ -140,7 +138,7 @@
             btnOpenChatWindow.FlatStyle = FlatStyle.Flat;
             btnOpenChatWindow.Font = new Font("Segoe UI", 8F);
             btnOpenChatWindow.ForeColor = Color.White;
-            btnOpenChatWindow.Location = new Point(400, 45);
+            btnOpenChatWindow.Location = new Point(412, 11);
             btnOpenChatWindow.Name = "btnOpenChatWindow";
             btnOpenChatWindow.Size = new Size(85, 25);
             btnOpenChatWindow.TabIndex = 4;
@@ -154,24 +152,11 @@
             cmbChatTarget.ForeColor = Color.White;
             cmbChatTarget.FormattingEnabled = true;
             cmbChatTarget.Items.AddRange(new object[] { "Tất cả nhân sự" });
-            cmbChatTarget.Location = new Point(115, 45);
+            cmbChatTarget.Location = new Point(15, 45);
             cmbChatTarget.Name = "cmbChatTarget";
-            cmbChatTarget.Size = new Size(114, 23);
+            cmbChatTarget.Size = new Size(470, 23);
             cmbChatTarget.TabIndex = 6;
             cmbChatTarget.Text = "Tất cả nhân sự";
-            // 
-            // cmbChatMode
-            // 
-            cmbChatMode.BackColor = Color.FromArgb(45, 45, 48);
-            cmbChatMode.FlatStyle = FlatStyle.Flat;
-            cmbChatMode.ForeColor = Color.White;
-            cmbChatMode.FormattingEnabled = true;
-            cmbChatMode.Items.AddRange(new object[] { "Group", "Private" });
-            cmbChatMode.Location = new Point(15, 45);
-            cmbChatMode.Name = "cmbChatMode";
-            cmbChatMode.Size = new Size(95, 23);
-            cmbChatMode.TabIndex = 5;
-            cmbChatMode.Text = "Group";
             // 
             // btnSend
             // 
@@ -251,9 +236,6 @@
         private ListBox lstChatHistory;
         private TextBox txtMessage;
         private Button btnSend;
-
-        // --- KHAI BÁO CÁC BIẾN MỚI ---
-        private ComboBox cmbChatMode;
         private ComboBox cmbChatTarget;
         private Button btnOpenChatWindow;
     }
