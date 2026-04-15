@@ -15,8 +15,10 @@ namespace DTO
         [JsonPropertyName("noi_dung")]
         public string? Message { get; set; }
 
-        [JsonPropertyName("thoi_gian")] 
+        [JsonPropertyName("thoi_gian")]
         public long Timestamp { get; set; }
 
+        [JsonPropertyName("loai_tin_nhan")]
+        public string? MessageType { get; set; } = "text";
     }
 }

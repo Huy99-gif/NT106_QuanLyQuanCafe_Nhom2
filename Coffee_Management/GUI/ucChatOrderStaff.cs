@@ -1,5 +1,6 @@
 ﻿using BUS;
 using DTO;
+using Microsoft.AspNetCore.SignalR.Client; // Thêm thư viện SignalR Client
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ namespace GUI
     public partial class ucChatOrderStaff : UserControl
     {
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
+        private HubConnection _connection; // Biến giữ kết nối SignalR
 
         // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
         private ChatManager _chatManager;
@@ -32,6 +34,7 @@ namespace GUI
             btnSend.Click += BtnSend_Click;
             btnOpenChatWindow.Click += (s, e) => MessageBox.Show("Opening Messenger window...");
             txtMessage.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BtnSend_Click(s, e); } };
+        }
 
             // CHỈ 1 DÒNG ĐỂ ĐỔI PHÒNG
             cmbChatTarget.SelectedIndexChanged += async (s, e) => await _chatManager.SwitchChatRoom(GetIdFromCombo());
@@ -65,6 +68,7 @@ namespace GUI
             }
         }
 
+        // Đổi thành async void để gửi tin
         private async void BtnSend_Click(object? sender, EventArgs e)
         {
             string message = txtMessage.Text.Trim();
