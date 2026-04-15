@@ -89,6 +89,13 @@
             cboRole.ForeColor = Color.White;
             cboRole.FormattingEnabled = true;
             cboRole.Items.AddRange(new object[] { "admin", "manager", "barista", "order staff", "security" });
+            cboRole.Items.AddRange(new object[]
+            {
+                "manager",    // Quản lý cửa hàng (được thêm/xóa nhân viên, xem báo cáo)
+                "barista",    // Pha chế (chỉ xem danh sách món cần làm)
+                "order staff",// Phục vụ + thu ngân
+                "security"    // Bảo vệ (chỉ dùng để điểm danh/quản lý xe)
+            });
             cboRole.Location = new Point(40, 280);
             cboRole.Name = "cboRole";
             cboRole.Size = new Size(365, 28);
