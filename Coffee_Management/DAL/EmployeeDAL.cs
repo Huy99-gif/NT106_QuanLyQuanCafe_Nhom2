@@ -107,7 +107,8 @@ namespace DAL
                 var response = await client.PostAsync(_updateEmployeeUrl, content);
                 var resultStr = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode) return (true, "Updated successfull!");
+                if (response.IsSuccessStatusCode) 
+                    return (true, "Updated successfull!");
                 return (false, "Server Error: " + resultStr);
             }
         }

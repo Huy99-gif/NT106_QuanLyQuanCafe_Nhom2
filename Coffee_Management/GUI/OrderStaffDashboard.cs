@@ -1,4 +1,5 @@
 ﻿using DTO;
+using BUS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,17 +41,15 @@ namespace GUI
             lblTitle.Text = "POS / Order";
         }
 
-        private void BtnLogout_Click(object? sender, EventArgs e)
+        private void btnChat_Click(object sender, EventArgs e)
         {
-            Form? Login = Application.OpenForms["Login"];
-            if (Login != null)
-            {
-                Login.Show();
-            }
-            this.Close();
+            // Load UserControl Chat đã tích hợp SignalR và Firebase
+            ucChatOrderStaff uc = new ucChatOrderStaff();
+            AddUserControl(uc);
+            lblTitle.Text = "Internal Chat";
         }
 
-        private void btnLogout_Click_1(object sender, EventArgs e)
+        private void BtnLogout_Click(object? sender, EventArgs e)
         {
             Form? Login = Application.OpenForms["Login"];
             if (Login != null)
@@ -65,6 +64,27 @@ namespace GUI
 
                 // Nếu không phải là form Login thì đóng nó lại
                 // (Dùng f.Name để kiểm tra)
+                if (f.Name != "Login")
+                {
+                    f.Close(); // Đóng form
+                }
+            }
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            // Giữ nguyên logic logout giống hàm trên
+            Form? Login = Application.OpenForms["Login"];
+            if (Login != null)
+            {
+                Login.Show();
+            }
+            GlobalSession.Logout();
+            //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
+            for (int i = Application.OpenForms.Count - 1; i >= 0; i--)
+            {
+                Form? f = Application.OpenForms[i];
+
                 if (f.Name != "Login")
                 {
                     f.Close(); // Đóng form

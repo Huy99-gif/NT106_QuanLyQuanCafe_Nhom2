@@ -37,7 +37,7 @@ namespace GUI
                 if (fullList == null || fullList.Count == 0) return;
 
                 // 2. LỌC CHỈ LẤY NHÂN VIÊN "ACTIVE" VÀ KHÔNG PHẢI LÀ "ADMIN"
-                var activeList = fullList.Where(emp => emp.Status == "active" && emp.Role != "admin").ToList();
+                var List = fullList.Where(emp => emp.Role != "admin").ToList();
 
                 // 3. Tạo cấu trúc bảng
                 DataTable dt = new DataTable();
@@ -50,7 +50,7 @@ namespace GUI
                 dt.Columns.Add("Email");
 
                 // 4. Đổ danh sách ĐÃ LỌC (activeList) vào bảng
-                foreach (var emp in activeList)
+                foreach (var emp in List)
                 {
                     dt.Rows.Add(
                         emp.EmployeeId,
@@ -80,7 +80,7 @@ namespace GUI
                 dgvStaff.Columns["Vị Trí"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvStaff.Columns["Trạng Thái"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-
+                var activeList = fullList.Where(emp => emp.Status == "active" && emp.Role != "admin").ToList();
                 // Cập nhật label đếm số lượng nhân viên đang làm
                 lblPresentValue.Text = $"{activeList.Count} người";
             }

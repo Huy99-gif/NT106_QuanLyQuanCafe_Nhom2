@@ -9,15 +9,14 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ucSettings_Manager : UserControl
+    public partial class ucChatOrderStaff : UserControl
     {
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
-        private List<EmployeeDTO> _allEmployees = new List<EmployeeDTO>();
 
         // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
         private ChatManager _chatManager;
 
-        public ucSettings_Manager()
+        public ucChatOrderStaff()
         {
             InitializeComponent();
 
@@ -26,43 +25,43 @@ namespace GUI
 
             this.Load += async (s, e) =>
             {
-                await LoadEmployeeData();
+                await LoadStaffData();
                 await _chatManager.ConnectToChatServer(); // CHỈ 1 DÒNG
             };
 
             btnSend.Click += BtnSend_Click;
-            btnOpenChatWindow.Click += BtnOpenChatWindow_Click;
-            btnChangePassword.Click += BtnChangePassword_Click;
-            btnUpdateProfile.Click += BtnUpdateProfile_Click;
+            btnOpenChatWindow.Click += (s, e) => MessageBox.Show("Opening Messenger window...");
+            txtMessage.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BtnSend_Click(s, e); } };
 
             // CHỈ 1 DÒNG ĐỂ ĐỔI PHÒNG
             cmbChatTarget.SelectedIndexChanged += async (s, e) => await _chatManager.SwitchChatRoom(GetIdFromCombo());
         }
 
-        private async Task LoadEmployeeData()
+        private async Task LoadStaffData()
         {
             try
             {
-                _allEmployees = await _employeeBus.GetAllEmployeesAsync();
-                if (_allEmployees == null || _allEmployees.Count == 0) return;
+                List<EmployeeDTO> allEmployees = await _employeeBus.GetAllEmployeesAsync();
 
                 cmbChatTarget.Items.Clear();
-                cmbChatTarget.Items.Add("--- Everyone (Group Chat) ---");
+                cmbChatTarget.Items.Add("--- Send to Everyone (Group Chat) ---");
 
-                foreach (var emp in _allEmployees.Where(x => x.Status == "active"))
+                if (allEmployees != null)
                 {
-                    cmbChatTarget.Items.Add($"[{emp.EmployeeId}] {emp.FullName} ({emp.Role})");
+                    foreach (var emp in allEmployees.Where(x => x.Status == "active"))
+                    {
+                        cmbChatTarget.Items.Add($"[{emp.EmployeeId}] {emp.FullName} ({emp.Role})");
+                    }
                 }
 
                 if (cmbChatTarget.Items.Count > 0) cmbChatTarget.SelectedIndex = 0;
 
                 lstChatHistory.Items.Clear();
-                lstChatHistory.Items.Add("[System]: Internal communication channel connected.");
-                lstChatHistory.Items.Add("");
+                lstChatHistory.Items.Add("[System]: Connected to QLCafe Chat.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could not load employee list: {ex.Message}", "System Error");
+                lstChatHistory.Items.Add($"[Error]: Cannot load staff list. {ex.Message}");
             }
         }
 
@@ -76,21 +75,6 @@ namespace GUI
 
             txtMessage.Clear();
             txtMessage.Focus();
-        }
-
-        private void BtnOpenChatWindow_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("This feature will open a standalone Messenger-style window.", "Floating Chat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void BtnChangePassword_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("Opening Password Reset form...", "Security");
-        }
-
-        private void BtnUpdateProfile_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("Opening Profile Editor...", "Account Settings");
         }
 
         private string GetIdFromCombo()

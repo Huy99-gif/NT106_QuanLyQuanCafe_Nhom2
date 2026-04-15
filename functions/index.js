@@ -99,7 +99,8 @@ exports.sendVerificationEmail = onRequest(async (req, res) => {
 
 // Tạo một API endpoint có tên là "checkEmailExists" để kiểm tra xem email đã tồn tại trong Firebase Auth chưa
 exports.checkEmailExists = onRequest(async (req, res) => {
-    if (req.method !== 'POST') return res.status(405).send({ message: "Method Not Allowed" });
+    if (req.method !== 'POST') 
+        return res.status(405).send({ message: "Method Not Allowed" });
 
     const { email } = req.body;
     if (!email) return res.status(400).send({ message: "Missing email." });
@@ -114,22 +115,25 @@ exports.checkEmailExists = onRequest(async (req, res) => {
         if (error.code === 'auth/user-not-found') {
             return res.status(404).send({ exists: false, message: "Email address not found." });
         }
+        console.error("Error checking email existence:", error);
         return res.status(500).send({ message: "Server error: " + error.message });
     }
 });
 
 // Tạo một API endpoint có tên là "generateAndSendOTP" để tạo mã OTP và gửi qua email
 exports.generateAndSendOTP = onRequest(async (req, res) => {
-    if (req.method !== 'POST') return res.status(405).send({ message: "Method Not Allowed" });
+    if (req.method !== 'POST') 
+        return res.status(405).send({ message: "Method Not Allowed" });
 
     const { toEmail } = req.body;
-    if (!toEmail) return res.status(400).send({ message: "Missing recipient information." });
+    if (!toEmail) 
+        return res.status(400).send({ message: "Missing recipient information." });
 
     try {
-        // 1. Server TỰ TẠO mã OTP 6 số ngẫu nhiên (không phải do C# tạo)
+        //Server TỰ TẠO mã OTP 6 số ngẫu nhiên (không phải do C# tạo)
         const generatedCode = Math.floor(10000000 + Math.random() * 90000000).toString();
 
-        // 2. Cấu hình trạm phát
+        //Cấu hình trạm phát
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -140,7 +144,7 @@ exports.generateAndSendOTP = onRequest(async (req, res) => {
             }
         });
 
-        // 3. Soạn thư
+        //Soạn thư
         const mailOptions = {
             from: `"Hệ thống QLCafe" <${emailUserParam.value()}>`,
             to: toEmail,
@@ -148,10 +152,10 @@ exports.generateAndSendOTP = onRequest(async (req, res) => {
             text: `Hello, \n\nYour password reset verification code is: ${generatedCode} \n\nNote: This code is valid for 60 seconds only. After this time, it will expire and you will need to request a new one. \n\nPlease do not share this code with anyone. If you did not request this, please ignore this email. \n\nBest regards, \nQLCafe System`
         };
 
-        // 4. Gửi thư
+        //Gửi thư
         await transporter.sendMail(mailOptions);
         
-        // 5. QUAN TRỌNG: Trả cái mã vừa tạo về cho C# để C# mang lên GUI
+        //QUAN TRỌNG: Trả cái mã vừa tạo về cho C# để C# mang lên GUI
         return res.status(200).send({ 
             message: "Verification code has been sent successfully!", 
             code: generatedCode 
@@ -226,6 +230,36 @@ exports.loginEmployee = onRequest(async (req, res) => {
     }
 });
 
+//HÀM XÁC THỰC DÙNG CHUNG: Xác thực Token và trả về thông tin user
+async function verifyAndGetUser(req) {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new Error('Missing or invalid authorization header');
+    }
+
+    const token = authHeader.split('Bearer ')[1];
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    const userEmail = decodedToken.email;
+
+    const db = admin.database();
+    const snapshot = await db.ref('nhan_vien')
+                             .orderByChild('email')
+                             .equalTo(userEmail)
+                             .once('value');
+
+    if (!snapshot.exists()) {
+        throw new Error('User not found in database');
+    }
+
+    const data = snapshot.val();
+    const employeeId = Object.keys(data)[0];
+    const employeeData = data[employeeId];
+    employeeData.EmployeeId = employeeId;
+
+    return employeeData; 
+}
+
 // Hàm phụ để xác thực Token và kiểm tra vai trò quản lý (Manager Role)
 async function verifyManagerRole(req) {
     const authHeader = req.headers.authorization;
@@ -275,12 +309,34 @@ exports.getAllEmployees = onRequest(async (req, res) => {
     }
 
     try {
-        // Yêu cầu phải có Token hợp lệ VÀ phải là Quản lý mới được xem danh sách
-        await verifyManagerRole(req);
-        const snapshot = await admin.database().ref('nhan_vien').once('value');
-        const data = snapshot.val();
+        // Xác thực người gọi API là ai (Bất kỳ ai có token hợp lệ đều qua được)
+        const requestUser = await verifyAndGetUser(req);
         
-        return res.status(200).send(data || {});
+        // Lấy toàn bộ dữ liệu từ node 'nhan_vien'
+        const snapshot = await admin.database().ref('nhan_vien').once('value');
+        const allEmployees = snapshot.val() || {};
+
+        // Xử lý phân quyền trả về dữ liệu
+        const uoserRle = (requestUser.vai_tro || "").toLowerCase();
+
+        if (userRole === 'manager' || userRole === 'admin') {
+            // Manager/Admin: Trả về toàn bộ danh sách
+            return res.status(200).send(allEmployees);
+        } else {
+            // Staff (Nhân viên): Lọc chỉ lấy những người là Manager hoặc Admin
+            const managersOnly = {};
+            
+            Object.keys(allEmployees).forEach(key => {
+                const emp = allEmployees[key];
+                const targetRole = (emp.vai_tro || "").toLowerCase();
+                if (targetRole === 'manager') {
+                    managersOnly[key] = emp;
+                }
+            });
+
+            return res.status(200).send(managersOnly);
+        }
+
     } catch (error) {
         console.error("Auth/Query Error:", error.message);
         return res.status(403).send({ error: "Access Denied: " + error.message });
@@ -336,7 +392,13 @@ exports.addEmployee = onRequest(async (req, res) => {
         
         // Gán thêm thông tin hệ thống
         employeeData.trang_thai = "active"; // Ép giá trị này vào field trang_thai
-        employeeData.ngay_vao_lam = admin.database.ServerValue.TIMESTAMP;
+        if (!employeeData.ngay_vao_lam) {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const yyyy = today.getFullYear();
+            employeeData.ngay_vao_lam = `${dd}/${mm}/${yyyy}`;
+        }
         
         // Liên kết với tài khoản Auth (Rất hữu ích sau này nếu muốn khóa/xóa tài khoản)
         employeeData.AuthUid = createdUser.uid; 
@@ -429,5 +491,45 @@ exports.lockEmployee = onRequest(async (req, res) => {
     } catch (error) {
         console.error("Lock Error:", error.message);
         return res.status(403).send({ error: "Access Denied: " + error.message });
+    }
+});
+//Function Lưu tin nhắn chat vào Realtime Database
+exports.saveChatMessage = onRequest(async (req, res) => {
+    if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
+    try {
+        const requestUser = await verifyAndGetUser(req);
+        const { roomId, chatData } = req.body;
+
+        // Lấy thời gian chuẩn từ Server để làm khóa (ID)
+        const serverTime = Date.now();
+        
+        // Đảm bảo chatData có đủ các trường mà Node.js/Firebase mong muốn
+        // Cần khớp với các thuộc tính [JsonPropertyName] bên C#
+        chatData.thoi_gian = serverTime; 
+
+        const msgId = `msg_${serverTime}`;
+        await admin.database().ref(`tin_nhan/${roomId}/${msgId}`).set(chatData);
+        
+        return res.status(200).send({ success: true });
+    } catch (error) {
+        return res.status(500).send({ error: error.message });
+    }
+});
+// Function Lấy lịch sử chat từ Realtime Database dựa trên roomId
+exports.getChatHistory = onRequest(async (req, res) => {
+    const { roomId } = req.query;
+    try {
+        const requestUser = await verifyAndGetUser(req);
+        const snapshot = await admin.database().ref(`tin_nhan/${roomId}`)
+                                    .orderByChild("thoi_gian")
+                                    .once("value");
+        const history = [];
+        snapshot.forEach((child) => {
+            history.push(child.val());
+        });
+        return res.status(200).send(history);
+    } catch (error) {
+        console.error("Get Chat History Error:", error.message);
+        return res.status(500).send({ error: error.message });
     }
 });
