@@ -336,7 +336,13 @@ exports.addEmployee = onRequest(async (req, res) => {
         
         // Gán thêm thông tin hệ thống
         employeeData.trang_thai = "active"; // Ép giá trị này vào field trang_thai
-        employeeData.ngay_vao_lam = admin.database.ServerValue.TIMESTAMP;
+        if (!employeeData.ngay_vao_lam) {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const yyyy = today.getFullYear();
+            employeeData.ngay_vao_lam = `${dd}/${mm}/${yyyy}`;
+        }
         
         // Liên kết với tài khoản Auth (Rất hữu ích sau này nếu muốn khóa/xóa tài khoản)
         employeeData.AuthUid = createdUser.uid; 
