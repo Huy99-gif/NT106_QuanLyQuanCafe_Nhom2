@@ -15,50 +15,27 @@ namespace GUI
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
         private HubConnection _connection; // Biến giữ kết nối SignalR
 
+        // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
+        private ChatManager _chatManager;
+
         public ucChatOrderStaff()
         {
             InitializeComponent();
 
+            // 2. GIAO PHÓ LISTBOX CHO ÔNG MANAGER
+            _chatManager = new ChatManager(this, lstChatHistory);
+
             this.Load += async (s, e) =>
             {
                 await LoadStaffData();
-                await ConnectToChatServer(); // Khởi chạy nối mạng Chat
+                await _chatManager.ConnectToChatServer(); // CHỈ 1 DÒNG
             };
 
             btnSend.Click += BtnSend_Click;
             btnOpenChatWindow.Click += (s, e) => MessageBox.Show("Opening Messenger window...");
             txtMessage.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BtnSend_Click(s, e); } };
-        }
-
-        // --- HÀM KẾT NỐI TỚI SERVER MÀN HÌNH ĐEN ---
-        private async Task ConnectToChatServer()
-        {
-            try
-            {
-                // Gắn IP từ màn hình Console của bạn vào đây
-                string serverUrl = "http://192.168.2.24:8080/chathub";
-
-                _connection = new HubConnectionBuilder()
-                    .WithUrl(serverUrl)
-                    .WithAutomaticReconnect()
-                    .Build();
-
-                _connection.On<string, string>("ReceiveMessage", (senderName, message) =>
-                {
-                    this.Invoke(new Action(() => {
-                        lstChatHistory.Items.Add($"[{senderName}]: {message}");
-                        lstChatHistory.Items.Add("");
-                        lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
-                    }));
-                });
-
-                await _connection.StartAsync();
-                lstChatHistory.Items.Add("[System]: Successfully connected to the Chat Server (192.168.2.24)");
-            }
-            catch (Exception ex)
-            {
-                lstChatHistory.Items.Add($"[Error]: Lost connection to the chat server. {ex.Message}");
-            }
+            // CHỈ 1 DÒNG ĐỂ ĐỔI PHÒNG
+            cmbChatTarget.SelectedIndexChanged += async (s, e) => await _chatManager.SwitchChatRoom(GetIdFromCombo());
         }
 
         private async Task LoadStaffData()
@@ -95,19 +72,17 @@ namespace GUI
             string message = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(message)) return;
 
-            if (_connection != null && _connection.State == HubConnectionState.Connected)
-            {
-                string senderName = "Order Staff: " + GlobalSession.CurrentUser.FullName;
-                // Truyền tên người gửi là Order Staff
-                await _connection.InvokeAsync("SendMessage", senderName, message);
-            }
-            else
-            {
-                MessageBox.Show("Losing connection to the chat server!", "Network error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            // 3. ĐẨY MESSAGE CHO MANAGER GỬI ĐI
+            await _chatManager.SendMessageAsync(message);
 
             txtMessage.Clear();
             txtMessage.Focus();
+        }
+
+        private string GetIdFromCombo()
+        {
+            if (cmbChatTarget.SelectedIndex <= 0) return "Everyone";
+            return cmbChatTarget.SelectedItem.ToString().Split(']')[0].Trim('[');
         }
     }
 }

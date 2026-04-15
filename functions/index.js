@@ -99,7 +99,8 @@ exports.sendVerificationEmail = onRequest(async (req, res) => {
 
 // Tạo một API endpoint có tên là "checkEmailExists" để kiểm tra xem email đã tồn tại trong Firebase Auth chưa
 exports.checkEmailExists = onRequest(async (req, res) => {
-    if (req.method !== 'POST') return res.status(405).send({ message: "Method Not Allowed" });
+    if (req.method !== 'POST') 
+        return res.status(405).send({ message: "Method Not Allowed" });
 
     const { email } = req.body;
     if (!email) return res.status(400).send({ message: "Missing email." });
@@ -114,22 +115,25 @@ exports.checkEmailExists = onRequest(async (req, res) => {
         if (error.code === 'auth/user-not-found') {
             return res.status(404).send({ exists: false, message: "Email address not found." });
         }
+        console.error("Error checking email existence:", error);
         return res.status(500).send({ message: "Server error: " + error.message });
     }
 });
 
 // Tạo một API endpoint có tên là "generateAndSendOTP" để tạo mã OTP và gửi qua email
 exports.generateAndSendOTP = onRequest(async (req, res) => {
-    if (req.method !== 'POST') return res.status(405).send({ message: "Method Not Allowed" });
+    if (req.method !== 'POST') 
+        return res.status(405).send({ message: "Method Not Allowed" });
 
     const { toEmail } = req.body;
-    if (!toEmail) return res.status(400).send({ message: "Missing recipient information." });
+    if (!toEmail) 
+        return res.status(400).send({ message: "Missing recipient information." });
 
     try {
-        // 1. Server TỰ TẠO mã OTP 6 số ngẫu nhiên (không phải do C# tạo)
+        //Server TỰ TẠO mã OTP 6 số ngẫu nhiên (không phải do C# tạo)
         const generatedCode = Math.floor(10000000 + Math.random() * 90000000).toString();
 
-        // 2. Cấu hình trạm phát
+        //Cấu hình trạm phát
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -140,7 +144,7 @@ exports.generateAndSendOTP = onRequest(async (req, res) => {
             }
         });
 
-        // 3. Soạn thư
+        //Soạn thư
         const mailOptions = {
             from: `"Hệ thống QLCafe" <${emailUserParam.value()}>`,
             to: toEmail,
@@ -148,10 +152,10 @@ exports.generateAndSendOTP = onRequest(async (req, res) => {
             text: `Hello, \n\nYour password reset verification code is: ${generatedCode} \n\nNote: This code is valid for 60 seconds only. After this time, it will expire and you will need to request a new one. \n\nPlease do not share this code with anyone. If you did not request this, please ignore this email. \n\nBest regards, \nQLCafe System`
         };
 
-        // 4. Gửi thư
+        //Gửi thư
         await transporter.sendMail(mailOptions);
         
-        // 5. QUAN TRỌNG: Trả cái mã vừa tạo về cho C# để C# mang lên GUI
+        //QUAN TRỌNG: Trả cái mã vừa tạo về cho C# để C# mang lên GUI
         return res.status(200).send({ 
             message: "Verification code has been sent successfully!", 
             code: generatedCode 
@@ -313,7 +317,7 @@ exports.getAllEmployees = onRequest(async (req, res) => {
         const allEmployees = snapshot.val() || {};
 
         // Xử lý phân quyền trả về dữ liệu
-        const userRole = (requestUser.vai_tro || "").toLowerCase();
+        const uoserRle = (requestUser.vai_tro || "").toLowerCase();
 
         if (userRole === 'manager' || userRole === 'admin') {
             // Manager/Admin: Trả về toàn bộ danh sách
@@ -492,17 +496,22 @@ exports.lockEmployee = onRequest(async (req, res) => {
 //Function Lưu tin nhắn chat vào Realtime Database
 exports.saveChatMessage = onRequest(async (req, res) => {
     if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
-
     try {
         const requestUser = await verifyAndGetUser(req);
-        const { roomId, chatData } = req.body; // roomId có dạng chat_nv001_nv002
-        const msgId = `msg_${chatData.thoi_gian}`;
+        const { roomId, chatData } = req.body;
 
+        // Lấy thời gian chuẩn từ Server để làm khóa (ID)
+        const serverTime = Date.now();
+        
+        // Đảm bảo chatData có đủ các trường mà Node.js/Firebase mong muốn
+        // Cần khớp với các thuộc tính [JsonPropertyName] bên C#
+        chatData.thoi_gian = serverTime; 
+
+        const msgId = `msg_${serverTime}`;
         await admin.database().ref(`tin_nhan/${roomId}/${msgId}`).set(chatData);
         
         return res.status(200).send({ success: true });
     } catch (error) {
-        console.error("Save Chat Message Error:", error.message);
         return res.status(500).send({ error: error.message });
     }
 });

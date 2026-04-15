@@ -27,13 +27,14 @@ namespace BUS
 
         public string GetRoomId(string id1, string id2)
         {
+            // Nếu chat chung thì vào phòng global
             if (string.IsNullOrEmpty(id2) || id2 == "Everyone")
             {
                 return "room_global";
             }
 
-            // Ví dụ: Sếp là "nv001", Nhân viên là "nv002"
-            // Dù Sếp mở chat hay Nhân viên mở chat, kết quả luôn là "chat_nv001_nv002"
+            // Sắp xếp ID để đảm bảo: dù là (NV01, NV02) hay (NV02, NV01) 
+            // thì kết quả trả về luôn là "chat_NV01_NV02"
             List<string> ids = new List<string> { id1, id2 };
             ids.Sort();
 

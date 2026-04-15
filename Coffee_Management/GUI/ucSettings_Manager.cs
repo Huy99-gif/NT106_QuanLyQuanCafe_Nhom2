@@ -1,11 +1,9 @@
 ﻿using BUS;
 using DTO;
-using Microsoft.AspNetCore.SignalR.Client; // Thêm thư viện SignalR Client
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text; // THÊM MỚI
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,22 +13,21 @@ namespace GUI
     {
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
         private List<EmployeeDTO> _allEmployees = new List<EmployeeDTO>();
-        private HubConnection _connection; // Biến giữ kết nối SignalR
 
-        // --- THÊM MỚI: CÁC BIẾN CHO FIREBASE VÀ PHÒNG CHAT ---
-        private readonly ChatBUS _chatBus = new ChatBUS();
-        private string _currentRoomId = "room_global";
-        // --------------------------------------------------
+        // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
+        private ChatManager _chatManager;
 
         public ucSettings_Manager()
         {
             InitializeComponent();
 
-            // Nạp dữ liệu Employee VÀ kết nối Chat Server khi mở Tab
+            // 2. GIAO PHÓ LISTBOX CHO ÔNG MANAGER
+            _chatManager = new ChatManager(this, lstChatHistory);
+
             this.Load += async (s, e) =>
             {
                 await LoadEmployeeData();
-                await ConnectToChatServer();
+                await _chatManager.ConnectToChatServer(); // CHỈ 1 DÒNG
             };
 
             btnSend.Click += BtnSend_Click;
@@ -38,56 +35,8 @@ namespace GUI
             btnChangePassword.Click += BtnChangePassword_Click;
             btnUpdateProfile.Click += BtnUpdateProfile_Click;
 
-            // --- THÊM MỚI: SỰ KIỆN CHỌN NGƯỜI ĐỂ TẢI LỊCH SỬ RIÊNG ---
-            cmbChatTarget.SelectedIndexChanged += async (s, e) => await SwitchChatRoom();
-            // -------------------------------------------------------
-        }
-
-        // --- HÀM KẾT NỐI TỚI SERVER MÀN HÌNH ĐEN ---
-        private async Task ConnectToChatServer()
-        {
-            try
-            {
-                // Gắn IP từ màn hình Console của bạn vào đây
-                string serverUrl = "http://192.168.2.24:8080/chathub";
-
-                _connection = new HubConnectionBuilder()
-                    .WithUrl(serverUrl)
-                    .WithAutomaticReconnect() // Tự động kết nối lại nếu rớt mạng
-                    .Build();
-
-                // Lắng nghe tin nhắn từ Server trả về
-                _connection.On<string, string>("ReceiveMessage", (senderName, message) =>
-                {
-                    // Phải dùng Invoke để đưa tin nhắn lên UI an toàn
-                    this.Invoke(new Action(() => {
-                        lstChatHistory.Items.Add($"[{senderName}]: {message}");
-                        lstChatHistory.Items.Add(""); // Dòng trống cho thoáng
-                        lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1; // Cuộn xuống cuối
-                    }));
-                });
-
-                // --- THÊM MỚI: LẮNG NGHE TIN NHẮN THEO PHÒNG (ROOMID) ---
-                _connection.On<string, string, string>("ReceiveMessageWithRoom", (senderId, message, roomId) =>
-                {
-                    this.Invoke(new Action(() => {
-                        if (roomId == _currentRoomId) // Chỉ hiện nếu đang mở đúng phòng
-                        {
-                            lstChatHistory.Items.Add($"[{senderId}]: {message}");
-                            lstChatHistory.Items.Add("");
-                            lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
-                        }
-                    }));
-                });
-                // ------------------------------------------------------
-
-                await _connection.StartAsync();
-                lstChatHistory.Items.Add("[System]: Successfully connected to the Chat Server (192.168.2.24).");
-            }
-            catch (Exception ex)
-            {
-                lstChatHistory.Items.Add($"[Error]: Lost connection to the chat server. {ex.Message}");
-            }
+            // CHỈ 1 DÒNG ĐỂ ĐỔI PHÒNG
+            cmbChatTarget.SelectedIndexChanged += async (s, e) => await _chatManager.SwitchChatRoom(GetIdFromCombo());
         }
 
         private async Task LoadEmployeeData()
@@ -117,35 +66,13 @@ namespace GUI
             }
         }
 
-        // Đổi thành async void để xài được lệnh await gửi tin nhắn
         private async void BtnSend_Click(object? sender, EventArgs e)
         {
             string message = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(message)) return;
 
-            // Kiểm tra xem đã nối mạng với Server chưa
-            if (_connection != null && _connection.State == HubConnectionState.Connected)
-            {
-                string senderName = "Manager: " + GlobalSession.CurrentUser.FullName;
-                // Gửi tên Manager và nội dung lên Server
-                await _connection.InvokeAsync("SendMessage", senderName, message);
-
-                // --- THÊM MỚI: LƯU VÀO FIREBASE VÀ GỬI KÈM ROOMID ---
-                string myId = GlobalSession.CurrentUser.EmployeeId;
-                await _connection.InvokeAsync("SendMessageWithRoom", myId, message, _currentRoomId);
-
-                var chatDto = new ChatMessageDTO
-                {
-                    SenderId = myId,
-                    Message = message,
-                    Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                };
-                await _chatBus.SaveMessage(_currentRoomId, chatDto);
-            }
-            else
-            {
-                MessageBox.Show("Losing connection to the chat server!", "Network error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            // 3. ĐẨY MESSAGE CHO MANAGER GỬI ĐI
+            await _chatManager.SendMessageAsync(message);
 
             txtMessage.Clear();
             txtMessage.Focus();
@@ -164,34 +91,6 @@ namespace GUI
         private void BtnUpdateProfile_Click(object? sender, EventArgs e)
         {
             MessageBox.Show("Opening Profile Editor...", "Account Settings");
-        }
-
-        // --- THÊM MỚI: CÁC HÀM XỬ LÝ CHUYỂN PHÒNG CHAT ---
-        private async Task SwitchChatRoom()
-        {
-            string myId = GlobalSession.CurrentUser.EmployeeId;
-            string targetId = GetIdFromCombo();
-            _currentRoomId = _chatBus.GetRoomId(myId, targetId);
-
-            lstChatHistory.Items.Clear();
-            lstChatHistory.Items.Add($"[System]: Loading chat history with {targetId}...");
-
-            try
-            {
-                var history = await _chatBus.GetHistory(_currentRoomId);
-                lstChatHistory.Items.Clear();
-                foreach (var msg in history)
-                {
-                    string sender = (msg.SenderId == myId) ? "Me" : msg.SenderId;
-                    lstChatHistory.Items.Add($"[{sender}]: {msg.Message}");
-                    lstChatHistory.Items.Add("");
-                }
-                lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
-            }
-            catch (Exception ex)
-            {
-                lstChatHistory.Items.Add("[Error]: Fail to load history. " + ex.Message);
-            }
         }
 
         private string GetIdFromCombo()

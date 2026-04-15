@@ -16,7 +16,7 @@ namespace DTO
         public string? Message { get; set; }
 
         [JsonPropertyName("thoi_gian")]
-        public long? Timestamp { get; set; }
+        public long Timestamp { get; set; }
 
         [JsonPropertyName("loai_tin_nhan")]
         public string? MessageType { get; set; } = "text";
