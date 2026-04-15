@@ -21,8 +21,9 @@ namespace GUI
         private void InitializeComponent()
         {
             pnlSidebar = new Panel();
+            btnProfile = new Button();
             btnLogout = new Button();
-            btnSettings = new Button();
+            btnChat = new Button();
             btnTables = new Button();
             btnPOS = new Button();
             pnlLogo = new Panel();
@@ -41,8 +42,9 @@ namespace GUI
             // pnlSidebar
             // 
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
+            pnlSidebar.Controls.Add(btnProfile);
             pnlSidebar.Controls.Add(btnLogout);
-            pnlSidebar.Controls.Add(btnSettings);
+            pnlSidebar.Controls.Add(btnChat);
             pnlSidebar.Controls.Add(btnTables);
             pnlSidebar.Controls.Add(btnPOS);
             pnlSidebar.Controls.Add(pnlLogo);
@@ -51,6 +53,20 @@ namespace GUI
             pnlSidebar.Name = "pnlSidebar";
             pnlSidebar.Size = new Size(220, 600);
             pnlSidebar.TabIndex = 0;
+            // 
+            // btnProfile
+            // 
+            btnProfile.Dock = DockStyle.Top;
+            btnProfile.FlatAppearance.BorderSize = 0;
+            btnProfile.FlatStyle = FlatStyle.Flat;
+            btnProfile.Font = new Font("Segoe UI", 11F);
+            btnProfile.ForeColor = Color.White;
+            btnProfile.Location = new Point(0, 220);
+            btnProfile.Name = "btnProfile";
+            btnProfile.Size = new Size(220, 50);
+            btnProfile.TabIndex = 6;
+            btnProfile.Text = "  Profile ";
+            btnProfile.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnLogout
             // 
@@ -66,19 +82,21 @@ namespace GUI
             btnLogout.Text = "Logout";
             btnLogout.Click += btnLogout_Click_1;
             // 
-            // btnSettings
+            // btnChat
             // 
-            btnSettings.Dock = DockStyle.Top;
-            btnSettings.FlatAppearance.BorderSize = 0;
-            btnSettings.FlatStyle = FlatStyle.Flat;
-            btnSettings.Font = new Font("Segoe UI", 11F);
-            btnSettings.ForeColor = Color.White;
-            btnSettings.Location = new Point(0, 170);
-            btnSettings.Name = "btnSettings";
-            btnSettings.Size = new Size(220, 50);
-            btnSettings.TabIndex = 1;
-            btnSettings.Text = "  Profile and Chat";
-            btnSettings.TextAlign = ContentAlignment.MiddleLeft;
+            btnChat.Dock = DockStyle.Top;
+            btnChat.FlatAppearance.BorderSize = 0;
+            btnChat.FlatStyle = FlatStyle.Flat;
+            btnChat.Font = new Font("Segoe UI", 11F);
+            btnChat.ForeColor = Color.White;
+            btnChat.ImageAlign = ContentAlignment.MiddleLeft;
+            btnChat.Location = new Point(0, 170);
+            btnChat.Name = "btnChat";
+            btnChat.Size = new Size(220, 50);
+            btnChat.TabIndex = 1;
+            btnChat.Text = "  Chat";
+            btnChat.TextAlign = ContentAlignment.MiddleLeft;
+            btnChat.Click += btnChat_Click;
             // 
             // btnTables
             // 
@@ -212,7 +230,7 @@ namespace GUI
 
         private System.Windows.Forms.Panel pnlSidebar;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnTables;
         private System.Windows.Forms.Button btnPOS;
         private System.Windows.Forms.Panel pnlLogo;
@@ -222,5 +240,6 @@ namespace GUI
         private Label lblTitle;
         private Button btnClose;
         private Panel pnlHeader;
+        private Button btnProfile;
     }
 }
