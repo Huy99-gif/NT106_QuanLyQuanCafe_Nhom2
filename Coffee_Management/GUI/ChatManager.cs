@@ -27,16 +27,13 @@ namespace GUI
             _lstChatHistory = lstChatHistory;
         }
 
-        // --- HÀM 1: KẾT NỐI SERVER (HỖ TRỢ CẢ LOCAL LẪN CLOUD) ---
+        // --- HÀM 1: KẾT NỐI SERVER---
         public async Task ConnectToChatServer()
         {
             try
             {
                 // Đọc IP hoặc Link từ file App.config
                 string? savedIP = ConfigurationManager.AppSettings["ChatServerIP"];
-
-                // Nếu trong config là IP (vd: 192.168.x.x) thì ráp thêm cổng 8080.
-                // Nếu trong config là Link Render (bắt đầu bằng http) thì xài luôn.
                 string? serverUrl = savedIP.StartsWith("http") ? savedIP : $"http://{savedIP}:8080/chathub";
 
                 _connection = new HubConnectionBuilder()
@@ -80,7 +77,7 @@ namespace GUI
             }
         }
 
-        // --- HÀM 2: CHUYỂN PHÒNG & TẢI LỊCH SỬ (TỐI ƯU GIAO DIỆN) ---
+        // --- HÀM 2: CHUYỂN PHÒNG & TẢI LỊCH SỬ---
         public async Task SwitchChatRoom(string targetId)
         {
             if (GlobalSession.CurrentUser == null) return;
@@ -96,7 +93,7 @@ namespace GUI
             {
                 var history = await _chatBus.GetHistory(CurrentRoomId);
 
-                // TỐI ƯU 1: KHÓA VẼ GIAO DIỆN (CHỐNG GIẬT LAG)
+                //SỬ DỤNG BeginUpdate/EndUpdate để tránh nhấp nháy khi load nhiều tin nhắn
                 _lstChatHistory.BeginUpdate();
                 _lstChatHistory.Items.Clear();
 
@@ -118,7 +115,7 @@ namespace GUI
 
                 _lstChatHistory.TopIndex = _lstChatHistory.Items.Count - 1;
 
-                // TỐI ƯU 1: MỞ LẠI GIAO DIỆN
+                // Nếu không có tin nhắn nào thì hiển thị thông báo
                 _lstChatHistory.EndUpdate();
             }
             catch (Exception ex)
@@ -127,17 +124,17 @@ namespace GUI
             }
         }
 
-        // --- HÀM 3: GỬI TIN NHẮN (TỐI ƯU XỬ LÝ NGẦM) ---
+        // --- HÀM 3: GỬI TIN NHẮN---
         public async Task SendMessageAsync(string message)
         {
             if (_connection != null && _connection.State == HubConnectionState.Connected)
             {
                 string? myId = GlobalSession.CurrentUser.EmployeeId;
 
-                // 1. Nhảy tin nhắn lên màn hình qua SignalR (Mất 0.01 giây)
+                // Gửi tin nhắn lên màn hình qua SignalR
                 await _connection.InvokeAsync("SendMessageWithRoom", myId, message, CurrentRoomId);
 
-                // 2. TỐI ƯU 2: FIRE AND FORGET (Giao việc lưu Firebase cho luồng chạy ngầm)
+                // Giao việc lưu Firebase cho luồng chạy ngầm
                 _ = Task.Run(async () =>
                 {
                     try
@@ -152,14 +149,13 @@ namespace GUI
                     }
                     catch (Exception ex)
                     {
-                        // Lỗi mạng ẩn thì ghi log, không làm đứng App của người dùng
                         Console.WriteLine("Firebase save error: " + ex.Message);
                     }
                 });
             }
             else
             {
-                MessageBox.Show("Mất kết nối với Server! Vui lòng kiểm tra lại mạng.", "Network error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lost connection to server! Please check your network.", "Network error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

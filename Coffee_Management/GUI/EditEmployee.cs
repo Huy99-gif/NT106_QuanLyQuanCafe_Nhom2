@@ -16,10 +16,9 @@ namespace GUI
     {
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
 
-        // Biến lưu trữ ID nhân viên đang được sửa
+        // Lưu trữ thông tin cũ để gọi API sau khi người dùng sửa xong 
         private string? _currentEmpId;
         private string? _currentAuthUid;
-
 
         // Constructor nhận dữ liệu từ Form Main truyền sang
         public EditEmployee(EmployeeDTO emp)
@@ -29,7 +28,6 @@ namespace GUI
             BindData(emp);
         }
 
-        // Cài đặt danh sách chức vụ và trạng thái
         private void LoadRolesAndStatus()
         {
             // Binding Chức vụ (Roles)
@@ -55,7 +53,6 @@ namespace GUI
             cboStatus.ValueMember = "Key";
         }
 
-        // Điền dữ liệu cũ vào các TextBox
         private void BindData(EmployeeDTO emp)
         {
             _currentEmpId = emp.EmployeeId; // Lưu ID để lát gọi API
@@ -68,7 +65,6 @@ namespace GUI
             cboStatus.SelectedValue = emp.Status ?? "active";
         }
 
-        // Xử lý nút Lưu (Save)
         private async void btnSave_Click(object sender, EventArgs e)
         {
             btnSave.Enabled = false;
@@ -92,7 +88,6 @@ namespace GUI
                 else
                     task = _employeeBus.LockEmployeeAsync(_currentEmpId, _currentAuthUid);
 
-                // 2. Thực thi và đợi kết quả (Chỉ await 1 lần duy nhất ở đây)
                 var result = await task;
 
                 if (result.Success)
@@ -117,7 +112,6 @@ namespace GUI
             }
         }
 
-        // Xử lý nút Hủy (Cancel)
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;

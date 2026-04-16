@@ -89,6 +89,7 @@
             btnAttendance.TabIndex = 1;
             btnAttendance.Text = "   Attendance";
             btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
+            btnAttendance.Click += btnAttendance_Click;
             // 
             // btnChat
             // 
@@ -103,6 +104,7 @@
             btnChat.TabIndex = 2;
             btnChat.Text = "   Internal Chat";
             btnChat.TextAlign = ContentAlignment.MiddleLeft;
+            btnChat.Click += btnChat_Click;
             // 
             // btnLeaveRequest
             // 
@@ -117,6 +119,7 @@
             btnLeaveRequest.TabIndex = 3;
             btnLeaveRequest.Text = "   Leave Request";
             btnLeaveRequest.TextAlign = ContentAlignment.MiddleLeft;
+            btnLeaveRequest.Click += btnLeaveRequest_Click;
             // 
             // btnProfile
             // 
@@ -131,6 +134,7 @@
             btnProfile.TabIndex = 4;
             btnProfile.Text = "   Profile";
             btnProfile.TextAlign = ContentAlignment.MiddleLeft;
+            btnProfile.Click += btnProfile_Click;
             // 
             // pnlLogo
             // 

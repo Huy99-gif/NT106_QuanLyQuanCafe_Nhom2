@@ -35,8 +35,8 @@
             pnlMainContent = new Panel();
             lblWelcome = new Label();
             lblTitle = new Label();
-            btnClose = new Button();
             pnlHeader = new Panel();
+            btnClose = new Button();
             pnlSidebar.SuspendLayout();
             pnlLogo.SuspendLayout();
             pnlMainContent.SuspendLayout();
@@ -185,20 +185,6 @@
             lblTitle.TabIndex = 1;
             lblTitle.Text = "DASHBOARD";
             // 
-            // btnClose
-            // 
-            btnClose.Dock = DockStyle.Right;
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.FlatStyle = FlatStyle.Flat;
-            btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            btnClose.ForeColor = Color.White;
-            btnClose.Location = new Point(754, 0);
-            btnClose.Name = "btnClose";
-            btnClose.Size = new Size(50, 70);
-            btnClose.TabIndex = 0;
-            btnClose.Text = "X";
-            btnClose.Click += btnClose_Click;
-            // 
             // pnlHeader
             // 
             pnlHeader.BackColor = Color.FromArgb(30, 30, 30);
@@ -210,6 +196,19 @@
             pnlHeader.Size = new Size(804, 70);
             pnlHeader.TabIndex = 1;
             // 
+            // btnClose
+            // 
+            btnClose.Dock = DockStyle.Right;
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnClose.ForeColor = Color.White;
+            btnClose.Location = new Point(742, 0);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(62, 70);
+            btnClose.TabIndex = 7;
+            btnClose.Text = "X";
+            // 
             // BaristaDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -220,8 +219,8 @@
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "BaristaDashboard";
-            this.Text = "Barista Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
+            Text = "Barista Dashboard";
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();
@@ -245,7 +244,7 @@
         private System.Windows.Forms.Panel pnlMainContent;
         private System.Windows.Forms.Label lblWelcome;
         private Label lblTitle;
-        private Button btnClose;
         private Panel pnlHeader;
+        private Button btnClose;
     }
 }

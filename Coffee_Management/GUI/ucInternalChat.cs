@@ -84,5 +84,10 @@ namespace GUI
             if (cmbChatTarget.SelectedIndex <= 0) return "Everyone";
             return cmbChatTarget.SelectedItem.ToString().Split(']')[0].Trim('[');
         }
+
+        private void lblChatTitle_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

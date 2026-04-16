@@ -86,5 +86,10 @@ namespace GUI
             AddUserControl(uc);
             lblTitle.Text = "Personal Profile";
         }
+
+        private void btnClose_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
