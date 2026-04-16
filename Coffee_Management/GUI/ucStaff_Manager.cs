@@ -19,8 +19,6 @@ namespace GUI
         {
             InitializeComponent();
             this.Load += async (s, e) => await LoadRealData();
-            btnAddStaff.Click += btnAddStaff_Click;
-            btnCheckIn.Click += BtnCheckIn_Click;
             btnApproveLeave.Click += BtnApproveLeave_Click;
         }
 

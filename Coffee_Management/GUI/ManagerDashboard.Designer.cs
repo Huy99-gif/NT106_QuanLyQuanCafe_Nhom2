@@ -245,7 +245,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ManagerDashboard";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Manager Dashboard - QLCafe";
+            Text = "Manager Dashboard";
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();

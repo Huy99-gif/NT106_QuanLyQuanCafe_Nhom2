@@ -220,6 +220,7 @@
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "BaristaDashboard";
+            this.Text = "Barista Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);

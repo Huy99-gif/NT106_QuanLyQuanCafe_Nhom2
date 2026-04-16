@@ -215,6 +215,7 @@ namespace GUI
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "OrderStaffDashboard";
+            this.Text = "Order Staff Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);

@@ -32,8 +32,8 @@ namespace GUI
             // Thêm đoạn "tự động hóa" này vào đây
             this.Load += (s, e) =>
                 ApplyDragToAllControls(this);
-               // Mẹo cực quan trọng: Thuộc tính DesignMode giúp Timer KHÔNG chạy 
-               // lúc bạn đang kéo thả giao diện trong Visual Studio, tránh gây lỗi Designer.
+            // Mẹo cực quan trọng: Thuộc tính DesignMode giúp Timer KHÔNG chạy 
+            // lúc bạn đang kéo thả giao diện trong Visual Studio, tránh gây lỗi Designer.
             if (!this.DesignMode)
             {
                 SetupSessionTimer();
@@ -74,7 +74,7 @@ namespace GUI
         private void SessionTimer_Tick(object sender, EventArgs e)
         {
             // Nếu chưa đăng nhập hoặc không có thời gian thì bỏ qua
-            if (GlobalSession.ExpiryTime == DateTime.MinValue) 
+            if (GlobalSession.ExpiryTime == DateTime.MinValue)
                 return;
 
             TimeSpan remaining = GlobalSession.ExpiryTime - DateTime.Now;
@@ -126,6 +126,18 @@ namespace GUI
                 // Đóng Form Dashboard hiện tại (Out tab)
                 this.Close();
             }
+        }
+
+        private void InitializeComponent()
+        {
+            SuspendLayout();
+            // 
+            // BaseDashboard
+            // 
+            ClientSize = new Size(284, 261);
+            Name = "BaseDashboard";
+            ResumeLayout(false);
+
         }
 
         // Tự động dọn dẹp Timer khi Form đóng để giải phóng RAM

@@ -220,6 +220,7 @@
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "SecurityDashboard";
+            this.Text = "Security Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
