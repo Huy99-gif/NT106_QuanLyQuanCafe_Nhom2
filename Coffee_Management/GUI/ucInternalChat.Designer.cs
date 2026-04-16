@@ -1,6 +1,6 @@
 ﻿namespace GUI
 {
-    partial class ucChatOrderStaff
+    partial class ucInternalChat
     {
         /// <summary> 
         /// Required designer variable.

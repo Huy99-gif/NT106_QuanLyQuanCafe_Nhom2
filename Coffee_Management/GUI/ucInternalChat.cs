@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ucChatOrderStaff : UserControl
+    public partial class ucInternalChat : UserControl
     {
         private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
         private HubConnection _connection; // Biến giữ kết nối SignalR
@@ -18,7 +18,7 @@ namespace GUI
         // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
         private ChatManager _chatManager;
 
-        public ucChatOrderStaff()
+        public ucInternalChat()
         {
             InitializeComponent();
 

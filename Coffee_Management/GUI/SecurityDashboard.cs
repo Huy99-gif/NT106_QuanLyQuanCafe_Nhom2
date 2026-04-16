@@ -44,5 +44,42 @@ namespace GUI
         {
              Application.Exit();
         }
+
+        private void AddUserControl(UserControl uc)
+        {
+            uc.Dock = DockStyle.Fill;
+            pnlMainContent.Controls.Clear();
+            pnlMainContent.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void btnChat_Click(object sender, EventArgs e)
+        {
+            // Dùng UC chat chung cho toàn bộ nhân viên
+            ucInternalChat uc = new ucInternalChat();
+            AddUserControl(uc);
+            lblTitle.Text = "Internal Chat";
+        }
+
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            ucProfile uc = new ucProfile();
+            AddUserControl(uc);
+            lblTitle.Text = "Personal Profile";
+        }
+
+        private void btnAttendance_Click(object sender, EventArgs e)
+        {
+            ucAttendance uc = new ucAttendance();
+            AddUserControl(uc);
+            lblTitle.Text = "Timekeeping & Attendance";
+        }
+
+        private void btnLeaveRequest_Click(object sender, EventArgs e)
+        {
+            ucLeaveRequest uc = new ucLeaveRequest();
+            AddUserControl(uc);
+            lblTitle.Text = "Leave Request";
+        }
     }
 }

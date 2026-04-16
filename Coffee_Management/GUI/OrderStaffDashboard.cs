@@ -44,7 +44,7 @@ namespace GUI
         private void btnChat_Click(object sender, EventArgs e)
         {
             // Load UserControl Chat đã tích hợp SignalR và Firebase
-            ucChatOrderStaff uc = new ucChatOrderStaff();
+            ucInternalChat uc = new ucInternalChat();
             AddUserControl(uc);
             lblTitle.Text = "Internal Chat";
         }
