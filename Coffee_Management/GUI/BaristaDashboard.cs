@@ -11,41 +11,44 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class BaristaDashboard : BaseDashboard
+    public partial class BaristaDashboard : Form
     {
+        private readonly BaseDashboard _dashboardManager;
         public BaristaDashboard()
         {
             InitializeComponent();
+            _dashboardManager = new BaseDashboard(this);
         }
 
-        private void lblLogo_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void BtnLogout_Click(object sender, EventArgs e)
         {
             Form? Login = Application.OpenForms["Login"];
             if (Login != null)
             {
                 Login.Show();
             }
+            else
+            {
+                Login loginForm = new();
+                loginForm.Show();
+            }
             GlobalSession.Logout();
             //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
             for (int i = Application.OpenForms.Count - 1; i >= 0; i--)
             {
+
                 Form? f = Application.OpenForms[i];
 
                 // Nếu không phải là form Login thì đóng nó lại
                 // (Dùng f.Name để kiểm tra)
-                if (f.Name != "Login")
+                if (f?.Name != "Login")
                 {
-                    f.Close(); // Đóng form
+                    f?.Close(); // Đóng form
                 }
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -58,38 +61,45 @@ namespace GUI
             uc.BringToFront();
         }
 
-        private void btnChat_Click(object sender, EventArgs e)
+        private void BtnChat_Click(object sender, EventArgs e)
         {
             // Dùng UC chat chung cho toàn bộ nhân viên
-            ucInternalChat uc = new ucInternalChat();
+            ucInternalChat uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Internal Chat";
+            lblTitle.Text = "Chat";
         }
 
-        private void btnAttendance_Click(object sender, EventArgs e)
+        private void BtnAttendance_Click(object sender, EventArgs e)
         {
-            ucAttendance uc = new ucAttendance();
+            ucAttendance uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Timekeeping & Attendance";
+            lblTitle.Text = "Chấm công";
         }
 
-        private void btnLeaveRequest_Click(object sender, EventArgs e)
+        private void BtnLeaveRequest_Click(object sender, EventArgs e)
         {
-            ucLeaveRequest uc = new ucLeaveRequest();
+            ucLeaveRequest uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Leave Request";
+            lblTitle.Text = "Xin nghỉ";
         }
 
-        private void btnProfile_Click_1(object sender, EventArgs e)
+        private void BtnProfile_Click_1(object sender, EventArgs e)
         {
-            ucProfile uc = new ucProfile();
+            ucProfile uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Personal Profile";
+            lblTitle.Text = "Profile";
         }
 
-        private void btnClose_Click_1(object sender, EventArgs e)
+        private void BtnClose_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnOverview_Click(object sender, EventArgs e)
+        {
+            ucOverview_Staff uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Tổng quan";
         }
     }
 }

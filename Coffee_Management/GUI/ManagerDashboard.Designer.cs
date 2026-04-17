@@ -65,9 +65,9 @@
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 6;
-            btnLogout.Text = "Logout";
+            btnLogout.Text = "Đăng xuất";
             btnLogout.UseVisualStyleBackColor = true;
-            btnLogout.Click += btnLogout_Click;
+            btnLogout.Click += BtnLogout_Click;
             // 
             // btnSettings
             // 
@@ -81,10 +81,10 @@
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(220, 50);
             btnSettings.TabIndex = 5;
-            btnSettings.Text = "  Settings and Chat";
+            btnSettings.Text = "  Cài đặt và Chat";
             btnSettings.TextAlign = ContentAlignment.MiddleLeft;
             btnSettings.UseVisualStyleBackColor = true;
-            btnSettings.Click += btnSettings_Click;
+            btnSettings.Click += BtnSettings_Click;
             // 
             // btnStaff
             // 
@@ -98,10 +98,10 @@
             btnStaff.Name = "btnStaff";
             btnStaff.Size = new Size(220, 50);
             btnStaff.TabIndex = 4;
-            btnStaff.Text = "  Manage Staff";
+            btnStaff.Text = "  Quản lý Nhân viên";
             btnStaff.TextAlign = ContentAlignment.MiddleLeft;
             btnStaff.UseVisualStyleBackColor = true;
-            btnStaff.Click += btnStaff_Click;
+            btnStaff.Click += BtnStaff_Click;
             // 
             // btnOrders
             // 
@@ -115,10 +115,10 @@
             btnOrders.Name = "btnOrders";
             btnOrders.Size = new Size(220, 50);
             btnOrders.TabIndex = 3;
-            btnOrders.Text = "  Orders and Bills";
+            btnOrders.Text = "  Đơn hàng và Hóa đơn";
             btnOrders.TextAlign = ContentAlignment.MiddleLeft;
             btnOrders.UseVisualStyleBackColor = true;
-            btnOrders.Click += btnOrders_Click;
+            btnOrders.Click += BtnOrders_Click;
             // 
             // btnProducts
             // 
@@ -132,10 +132,10 @@
             btnProducts.Name = "btnProducts";
             btnProducts.Size = new Size(220, 50);
             btnProducts.TabIndex = 2;
-            btnProducts.Text = "  Products and Menu";
+            btnProducts.Text = "  Sản phẩm và Thực đơn";
             btnProducts.TextAlign = ContentAlignment.MiddleLeft;
             btnProducts.UseVisualStyleBackColor = true;
-            btnProducts.Click += btnProducts_Click;
+            btnProducts.Click += BtnProducts_Click;
             // 
             // btnHome
             // 
@@ -149,10 +149,10 @@
             btnHome.Name = "btnHome";
             btnHome.Size = new Size(220, 50);
             btnHome.TabIndex = 1;
-            btnHome.Text = "  Overview";
+            btnHome.Text = "  Tổng quan";
             btnHome.TextAlign = ContentAlignment.MiddleLeft;
             btnHome.UseVisualStyleBackColor = true;
-            btnHome.Click += btnHome_Click;
+            btnHome.Click += BtnHome_Click;
             // 
             // pnlLogo
             // 
@@ -171,10 +171,10 @@
             lblLogo.ForeColor = Color.Firebrick;
             lblLogo.Location = new Point(47, 19);
             lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(106, 30);
+            lblLogo.Size = new Size(92, 30);
             lblLogo.TabIndex = 0;
-            lblLogo.Text = "Manager";
-            lblLogo.Click += lblLogo_Click;
+            lblLogo.Text = "Quản lý";
+            lblLogo.Click += LblLogo_Click;
             // 
             // pnlMainContent
             // 
@@ -210,7 +210,7 @@
             btnClose.Size = new Size(50, 70);
             btnClose.TabIndex = 0;
             btnClose.Text = "X";
-            btnClose.Click += btnClose_Click_1;
+            btnClose.Click += BtnClose_Click_1;
             // 
             // lblTitle
             // 
@@ -219,21 +219,21 @@
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(25, 23);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(130, 25);
+            lblTitle.Size = new Size(178, 25);
             lblTitle.TabIndex = 1;
-            lblTitle.Text = "DASHBOARD";
-            lblTitle.Click += lblTitle_Click_1;
+            lblTitle.Text = "BẢNG ĐIỀU KHIỂN";
+            lblTitle.Click += LblTitle_Click_1;
             // 
             // lblWelcome
             // 
             lblWelcome.AutoSize = true;
             lblWelcome.Font = new Font("Segoe UI", 18F);
             lblWelcome.ForeColor = Color.Gray;
-            lblWelcome.Location = new Point(260, 220);
+            lblWelcome.Location = new Point(153, 288);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(280, 32);
+            lblWelcome.Size = new Size(522, 32);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Select a tab from the left";
+            lblWelcome.Text = "Vui lòng chọn một mục từ thanh menu bên trái";
             // 
             // ManagerDashboard
             // 
@@ -245,7 +245,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ManagerDashboard";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Manager Dashboard";
+            Text = "Giao diện Quản lý";
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();

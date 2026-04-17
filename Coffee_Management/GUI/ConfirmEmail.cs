@@ -14,57 +14,50 @@ namespace GUI
 {
     public partial class ConfirmEmail : Form
     {
-        private EmailCodeBUS emailBUS = new EmailCodeBUS();
         public ConfirmEmail()
         {
             InitializeComponent();
         }
 
-        private void lblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Form? loginForm = Application.OpenForms["Login"];
             if (loginForm != null)
             {
                 loginForm.Show();
             }
+            else
+            {
+                 Login login = new();
+                 login.Show();
+            }
             this.Close();
         }
 
-        private async void btnSendCode_Click(object sender, EventArgs e)
+        private async void BtnSendCode_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text.Trim();
 
             btnSendCode.Enabled = false;
-            btnSendCode.Text = "Sending...";
+            btnSendCode.Text = "Đang gửi...";
 
             // Gọi BUS gửi mail
-            var result = await emailBUS.ProcessPasswordResetAsync(email);
+            var result = await EmailBUS.ProcessPasswordResetAsync(email);
 
             if (result.IsSuccess)
             {
-                MessageBox.Show(result.Message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MsgBox.Show(result.Message, "Thành công", MsgBox.MessageBoxType.Info);
                 // QUAN TRỌNG: Mở Form 2 và truyền Mã code + Email sang đó
-                VerifyCode verifyForm = new VerifyCode(result.Code, email);
+                VerifyCode verifyForm = new (result.Code ?? "", email);
                 verifyForm.Show();
                 this.Hide(); // Ẩn Form 1 đi
             }
             else
             {
-                MessageBox.Show(result.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show(result.Message, "Lỗi", MsgBox.MessageBoxType.Error);
                 btnSendCode.Enabled = true;
-                btnSendCode.Text = "Send Code";
+                btnSendCode.Text = "Gửi Code";
             }
-        }
-
-        private void ConfirmEmail_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtEmail_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

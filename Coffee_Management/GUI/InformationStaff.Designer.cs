@@ -1,4 +1,7 @@
-﻿namespace GUI
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace GUI
 {
     partial class InformationStaff
     {
@@ -47,11 +50,11 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(61, 22);
+            lblTitle.Location = new Point(83, 22);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(284, 30);
+            lblTitle.Size = new Size(265, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "EMPLOYEE INFORMATION";
+            lblTitle.Text = "THÔNG TIN NHÂN VIÊN";
             // 
             // lblEmpId
             // 
@@ -60,9 +63,9 @@
             lblEmpId.ForeColor = Color.LightGray;
             lblEmpId.Location = new Point(30, 80);
             lblEmpId.Name = "lblEmpId";
-            lblEmpId.Size = new Size(89, 19);
+            lblEmpId.Size = new Size(96, 19);
             lblEmpId.TabIndex = 1;
-            lblEmpId.Text = "Employee ID:";
+            lblEmpId.Text = "Mã nhân viên:";
             // 
             // txtEmpId
             // 
@@ -83,9 +86,9 @@
             lblFullName.ForeColor = Color.LightGray;
             lblFullName.Location = new Point(30, 140);
             lblFullName.Name = "lblFullName";
-            lblFullName.Size = new Size(73, 19);
+            lblFullName.Size = new Size(72, 19);
             lblFullName.TabIndex = 3;
-            lblFullName.Text = "Full Name:";
+            lblFullName.Text = "Họ và tên:";
             // 
             // txtFullName
             // 
@@ -106,9 +109,9 @@
             lblPhone.ForeColor = Color.LightGray;
             lblPhone.Location = new Point(30, 200);
             lblPhone.Name = "lblPhone";
-            lblPhone.Size = new Size(105, 19);
+            lblPhone.Size = new Size(92, 19);
             lblPhone.TabIndex = 5;
-            lblPhone.Text = "Phone Number:";
+            lblPhone.Text = "Số điện thoại:";
             // 
             // txtPhone
             // 
@@ -129,9 +132,9 @@
             lblRole.ForeColor = Color.LightGray;
             lblRole.Location = new Point(30, 260);
             lblRole.Name = "lblRole";
-            lblRole.Size = new Size(38, 19);
+            lblRole.Size = new Size(62, 19);
             lblRole.TabIndex = 7;
-            lblRole.Text = "Role:";
+            lblRole.Text = "Chức vụ:";
             // 
             // txtRole
             // 
@@ -152,9 +155,9 @@
             lblStatus.ForeColor = Color.LightGray;
             lblStatus.Location = new Point(220, 260);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(50, 19);
+            lblStatus.Size = new Size(73, 19);
             lblStatus.TabIndex = 9;
-            lblStatus.Text = "Status:";
+            lblStatus.Text = "Trạng thái:";
             // 
             // txtStatus
             // 
@@ -179,9 +182,9 @@
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(150, 40);
             btnClose.TabIndex = 11;
-            btnClose.Text = "CLOSE";
+            btnClose.Text = "ĐÓNG";
             btnClose.UseVisualStyleBackColor = false;
-            btnClose.Click += btnClose_Click;
+            btnClose.Click += BtnClose_Click;
             // 
             // InformationStaff
             // 
@@ -206,7 +209,7 @@
             MinimizeBox = false;
             Name = "InformationStaff";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Employee Information";
+            Text = "Thông tin nhân viên";
             ResumeLayout(false);
             PerformLayout();
 

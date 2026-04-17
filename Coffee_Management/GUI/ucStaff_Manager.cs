@@ -14,7 +14,6 @@ namespace GUI
 {
     public partial class ucStaff_Manager : UserControl
     {
-        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
         public ucStaff_Manager()
         {
             InitializeComponent();
@@ -30,7 +29,7 @@ namespace GUI
                 dgvStaff.DataSource = null;
 
                 // 1. Lấy TẤT CẢ danh sách từ Server về
-                List<EmployeeDTO> fullList = await _employeeBus.GetAllEmployeesAsync();
+                List<EmployeeDTO> fullList = await EmployeeBUS.GetAllEmployeesAsync();
 
                 if (fullList == null || fullList.Count == 0) return;
 
@@ -84,7 +83,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading data: {ex.Message}", "System Error");
+                MsgBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi hệ thống", MsgBox.MessageBoxType.Error);
             }
             finally
             {
@@ -95,12 +94,12 @@ namespace GUI
 
         private void BtnCheckIn_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show("Tính năng Quét thẻ RFID / Vân tay / Nhập mã NV để điểm danh ca làm việc.", "Chấm Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MsgBox.Show("Tính năng Quét thẻ RFID / Vân tay / Nhập mã NV để điểm danh ca làm việc.", "Chấm Công", MsgBox.MessageBoxType.Info);
         }
 
         private void BtnApproveLeave_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show("Đã DUYỆT đơn xin nghỉ của [NV03 Lê Văn C]. Dữ liệu đã cập nhật vào tính lương cuối tháng.", "Duyệt Nghỉ Phép", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MsgBox.Show("Đã DUYỆT đơn xin nghỉ của [NV03 Lê Văn C]. Dữ liệu đã cập nhật vào tính lương cuối tháng.", "Duyệt Nghỉ Phép", MsgBox.MessageBoxType.Success);
             lstLeaveq.Items.Clear();
             lstLeaveq.Items.Add("✔️ Không còn đơn xin nghỉ nào cần duyệt.");
             btnApproveLeave.Enabled = false;
@@ -115,7 +114,7 @@ namespace GUI
                 // Đoạn code này sẽ chạy nếu bên form AddEmployee bạn lưu thành công 
                 // và đã gán: this.DialogResult = DialogResult.OK;
                 await LoadRealData();
-                MessageBox.Show("The new employee list has been updated!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MsgBox.Show("Danh sách nhân viên mới đã được cập nhật!", "Thông báo", MsgBox.MessageBoxType.Success);
 
                 // Gọi hàm load lại dữ liệu lên DataGridView ở đây (nếu có)
                 // Ví dụ: LoadStaffData();
@@ -134,7 +133,7 @@ namespace GUI
             // 1. Kiểm tra xem người dùng đã chọn dòng nào chưa
             if (dgvStaff.CurrentRow == null || dgvStaff.CurrentRow.Index < 0)
             {
-                MessageBox.Show("Please select an employee from the list to edit!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show("Vui lòng chọn một nhân viên từ danh sách để chỉnh sửa!", "Thông báo", MsgBox.MessageBoxType.Warning);
                 return;
             }
 

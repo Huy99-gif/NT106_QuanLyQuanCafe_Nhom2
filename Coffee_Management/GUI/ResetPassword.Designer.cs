@@ -1,8 +1,19 @@
-﻿namespace GUI
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace GUI
 {
     partial class ResetPassword
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 
         protected override void Dispose(bool disposing)
         {
@@ -39,7 +50,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(239, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Create New Password";
+            lblTitle.Text = "Tạo mật khẩu mới";
             // 
             // lblDescription
             // 
@@ -50,7 +61,7 @@
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(249, 19);
             lblDescription.TabIndex = 1;
-            lblDescription.Text = "Please enter your new password below.";
+            lblDescription.Text = "Vui lòng nhập mật khẩu mới của bạn dưới đây.";
             // 
             // pnlNewPassBg
             // 
@@ -72,7 +83,7 @@
             txtNewPass.PlaceholderText = "12345678";
             txtNewPass.Size = new Size(280, 22);
             txtNewPass.TabIndex = 0;
-            txtNewPass.TextChanged += txtNewPass_TextChanged;
+            txtNewPass.TextChanged += TxtNewPass_TextChanged;
             // 
             // pnlConfirmPassBg
             // 
@@ -96,8 +107,8 @@
             btnShowConfirmPass.TabIndex = 1;
             btnShowConfirmPass.Text = "👁️";
             btnShowConfirmPass.UseVisualStyleBackColor = true;
-            btnShowConfirmPass.MouseDown += btnShowConfirmPass_MouseDown;
-            btnShowConfirmPass.MouseUp += btnShowConfirmPass_MouseUp;
+            btnShowConfirmPass.MouseDown += BtnShowConfirmPass_MouseDown;
+            btnShowConfirmPass.MouseUp += BtnShowConfirmPass_MouseUp;
             // 
             // txtConfirmPass
             // 
@@ -111,7 +122,7 @@
             txtConfirmPass.Size = new Size(280, 22);
             txtConfirmPass.TabIndex = 0;
             txtConfirmPass.UseSystemPasswordChar = true;
-            txtConfirmPass.Enter += txtConfirmPass_Enter;
+            txtConfirmPass.Enter += TxtConfirmPass_Enter;
             // 
             // btnSave
             // 
@@ -125,9 +136,9 @@
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(120, 40);
             btnSave.TabIndex = 4;
-            btnSave.Text = "Save";
+            btnSave.Text = "Lưu";
             btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += btnSave_Click;
+            btnSave.Click += BtnSave_Click;
             // 
             // lblBackToLogin
             // 
@@ -139,8 +150,8 @@
             lblBackToLogin.Size = new Size(92, 19);
             lblBackToLogin.TabIndex = 6;
             lblBackToLogin.TabStop = true;
-            lblBackToLogin.Text = "Back to Login";
-            lblBackToLogin.LinkClicked += lblBackToLogin_LinkClicked;
+            lblBackToLogin.Text = "Quay lại đăng nhập";
+            lblBackToLogin.LinkClicked += LblBackToLogin_LinkClicked;
             // 
             // ResetPassword
             // 
@@ -157,7 +168,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ResetPassword";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Create New Password";
+            Text = "Tạo mật khẩu mới";
             pnlNewPassBg.ResumeLayout(false);
             pnlNewPassBg.PerformLayout();
             pnlConfirmPassBg.ResumeLayout(false);

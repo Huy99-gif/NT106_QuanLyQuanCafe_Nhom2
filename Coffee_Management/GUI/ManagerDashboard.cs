@@ -11,14 +11,16 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ManagerDashboard : BaseDashboard
+    public partial class ManagerDashboard : Form
     {
+        private readonly BaseDashboard _dashboardManager;
         public ManagerDashboard()
         {
             InitializeComponent();
+            _dashboardManager = new BaseDashboard(this);
         }
 
-        private void lblLogo_Click(object sender, EventArgs e)
+        private void LblLogo_Click(object sender, EventArgs e)
         {
 
         }
@@ -31,52 +33,57 @@ namespace GUI
             uc.BringToFront();
         }
 
-        private void btnHome_Click(object sender, EventArgs e)
+        private void BtnHome_Click(object sender, EventArgs e)
         {
-            ucOverview_Manager uc = new ucOverview_Manager();
+            ucOverview_Manager uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Overview";
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void btnProducts_Click(object sender, EventArgs e)
+        private void BtnProducts_Click(object sender, EventArgs e)
         {
-            ucProducts_Manager uc = new ucProducts_Manager();
+            ucProducts_Manager uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Product and Menu";
         }
 
-        private void btnOrders_Click(object sender, EventArgs e)
+        private void BtnOrders_Click(object sender, EventArgs e)
         {
-            ucOrders_Manager uc = new ucOrders_Manager();
+            ucOrders_Manager uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Orders and Bills";
         }
 
-        private void btnStaff_Click(object sender, EventArgs e)
+        private void BtnStaff_Click(object sender, EventArgs e)
         {
-            ucStaff_Manager uc = new ucStaff_Manager();
+            ucStaff_Manager uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Manage Staff";
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
+        private void BtnSettings_Click(object sender, EventArgs e)
         {
-            ucSettings_Manager uc = new ucSettings_Manager();
+            ucSettings_Manager uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Settings";
         }
 
-        private void btnLogout_Click(object? sender, EventArgs e)
+        private void BtnLogout_Click(object? sender, EventArgs e)
         {
             Form? Login = Application.OpenForms["Login"];
             if (Login != null)
             {
                 Login.Show();
+            }
+            else
+            {
+                Login log = new();
+                log.Show();
             }
             GlobalSession.Logout();
             //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
@@ -93,17 +100,17 @@ namespace GUI
             }
         }
 
-        private void lblTitle_Click(object sender, EventArgs e)
+        private void LblTitle_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void lblTitle_Click_1(object sender, EventArgs e)
+        private void LblTitle_Click_1(object sender, EventArgs e)
         {
 
         }
 
-        private void btnClose_Click_1(object sender, EventArgs e)
+        private void BtnClose_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
         }

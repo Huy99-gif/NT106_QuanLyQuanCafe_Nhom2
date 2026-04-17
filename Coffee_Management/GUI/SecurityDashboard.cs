@@ -11,11 +11,13 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class SecurityDashboard : BaseDashboard
+    public partial class SecurityDashboard : Form
     {
+        private readonly BaseDashboard _dashboardManager;
         public SecurityDashboard()
         {
             InitializeComponent();
+            _dashboardManager = new BaseDashboard(this);
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -24,6 +26,11 @@ namespace GUI
             if (Login != null)
             {
                 Login.Show();
+            }
+            else
+            {
+                Login log = new();
+                log.Show();
             }
             GlobalSession.Logout();
             //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
@@ -41,7 +48,7 @@ namespace GUI
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
-             Application.Exit();
+            Application.Exit();
         }
 
         private void AddUserControl(UserControl uc)
@@ -55,30 +62,37 @@ namespace GUI
         private void btnChat_Click(object sender, EventArgs e)
         {
             // Dùng UC chat chung cho toàn bộ nhân viên
-            ucInternalChat uc = new ucInternalChat();
+            ucInternalChat uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Internal Chat";
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            ucProfile uc = new ucProfile();
+            ucProfile uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Personal Profile";
         }
 
         private void btnAttendance_Click(object sender, EventArgs e)
         {
-            ucAttendance uc = new ucAttendance();
+            ucAttendance uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Timekeeping & Attendance";
         }
 
         private void btnLeaveRequest_Click(object sender, EventArgs e)
         {
-            ucLeaveRequest uc = new ucLeaveRequest();
+            ucLeaveRequest uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Leave Request";
+        }
+
+        private void btnOverview_Click(object sender, EventArgs e)
+        {
+            ucOverview_Staff uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Overview";
         }
     }
 }

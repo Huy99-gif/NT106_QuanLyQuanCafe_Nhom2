@@ -49,7 +49,7 @@
             txtPassword.ForeColor = Color.White;
             txtPassword.Location = new Point(40, 330);
             txtPassword.Name = "txtPassword";
-            txtPassword.PlaceholderText = "Login Password";
+            txtPassword.PlaceholderText = "Mật khẩu đăng nhập";
             txtPassword.Size = new Size(365, 20);
             txtPassword.TabIndex = 17;
             // 
@@ -61,19 +61,16 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(40, 390);
+            btnSave.Location = new Point(194, 390);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(170, 45);
+            btnSave.Size = new Size(79, 45);
             btnSave.TabIndex = 15;
-            btnSave.Text = "Save Information";
+            btnSave.Text = "Lưu";
             btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += btnSave_Click;
+            btnSave.Click += BtnSave_Click;
             // 
             // dtpHireDate
             // 
-            dtpHireDate.CalendarForeColor = Color.White;
-            dtpHireDate.CalendarMonthBackground = Color.FromArgb(43, 43, 43);
-            dtpHireDate.CalendarTitleBackColor = Color.FromArgb(52, 152, 219);
             dtpHireDate.Font = new Font("Segoe UI", 11F);
             dtpHireDate.Format = DateTimePickerFormat.Short;
             dtpHireDate.Location = new Point(40, 230);
@@ -88,20 +85,10 @@
             cboRole.Font = new Font("Segoe UI", 11F);
             cboRole.ForeColor = Color.White;
             cboRole.FormattingEnabled = true;
-            cboRole.Items.AddRange(new object[] { "admin", "manager", "barista", "order staff", "security" });
-            cboRole.Items.AddRange(new object[]
-            {
-                "manager",    // Quản lý cửa hàng (được thêm/xóa nhân viên, xem báo cáo)
-                "barista",    // Pha chế (chỉ xem danh sách món cần làm)
-                "order staff",// Phục vụ + thu ngân
-                "security"    // Bảo vệ (chỉ dùng để điểm danh/quản lý xe)
-            });
             cboRole.Location = new Point(40, 280);
             cboRole.Name = "cboRole";
             cboRole.Size = new Size(365, 28);
             cboRole.TabIndex = 13;
-            cboRole.Text = "-- Select Role --";
-            cboRole.SelectedIndexChanged += cboRole_SelectedIndexChanged;
             // 
             // txtPhone
             // 
@@ -111,7 +98,7 @@
             txtPhone.ForeColor = Color.White;
             txtPhone.Location = new Point(40, 180);
             txtPhone.Name = "txtPhone";
-            txtPhone.PlaceholderText = "Phone Number";
+            txtPhone.PlaceholderText = "Số điện thoại";
             txtPhone.Size = new Size(365, 20);
             txtPhone.TabIndex = 12;
             // 
@@ -135,27 +122,25 @@
             txtFullName.ForeColor = Color.White;
             txtFullName.Location = new Point(40, 80);
             txtFullName.Name = "txtFullName";
-            txtFullName.PlaceholderText = "Full Name";
+            txtFullName.PlaceholderText = "Họ và tên";
             txtFullName.Size = new Size(365, 20);
             txtFullName.TabIndex = 10;
-            txtFullName.TextChanged += txtFullName_TextChanged;
             // 
             // btnCancel
             // 
             btnCancel.BackColor = Color.FromArgb(231, 76, 60);
-            btnCancel.CausesValidation = false;
             btnCancel.Cursor = Cursors.Hand;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(235, 390);
+            btnCancel.Location = new Point(298, 390);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(170, 45);
+            btnCancel.Size = new Size(107, 45);
             btnCancel.TabIndex = 18;
-            btnCancel.Text = "Cancel";
+            btnCancel.Text = "Hủy bỏ";
             btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
+            btnCancel.Click += BtnCancel_Click;
             // 
             // textBox1
             // 
@@ -168,7 +153,7 @@
             textBox1.ReadOnly = true;
             textBox1.Size = new Size(448, 29);
             textBox1.TabIndex = 19;
-            textBox1.Text = "CREATE EMPLOYEE ACCOUNT";
+            textBox1.Text = "TẠO ACCOUNT NHÂN VIÊN";
             textBox1.TextAlign = HorizontalAlignment.Center;
             // 
             // panel1
@@ -183,7 +168,7 @@
             panel1.Controls.Add(txtPhone);
             panel1.Controls.Add(dtpHireDate);
             panel1.Controls.Add(cboRole);
-            panel1.Location = new Point(56, 46);
+            panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(448, 480);
             panel1.TabIndex = 20;
@@ -193,13 +178,12 @@
             AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(18, 18, 18);
-            ClientSize = new Size(558, 582);
+            ClientSize = new Size(474, 503);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 10.2F);
             FormBorderStyle = FormBorderStyle.None;
             Name = "AddEmployee";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Employee Management";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -214,7 +198,6 @@
         private TextBox txtPhone;
         private TextBox txtEmail;
         private TextBox txtFullName;
-        private TextBox txtEmpID;
         private Button btnCancel;
         private TextBox textBox1;
         private Panel panel1;

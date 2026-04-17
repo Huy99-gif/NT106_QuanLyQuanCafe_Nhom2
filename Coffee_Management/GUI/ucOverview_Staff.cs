@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ucProfile : UserControl
+    public partial class ucOverview_Staff : UserControl
     {
-        public ucProfile()
+        public ucOverview_Staff()
         {
             InitializeComponent();
-        }
-
-        private void grpSecurity_Enter(object sender, EventArgs e)
-        {
-
         }
     }
 }

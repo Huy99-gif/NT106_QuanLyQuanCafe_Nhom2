@@ -52,7 +52,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(178, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "EDIT EMPLOYEE";
+            lblTitle.Text = "SỬA NHÂN VIÊN";
             // 
             // lblEmpId
             // 
@@ -63,7 +63,7 @@
             lblEmpId.Name = "lblEmpId";
             lblEmpId.Size = new Size(89, 19);
             lblEmpId.TabIndex = 1;
-            lblEmpId.Text = "Employee ID:";
+            lblEmpId.Text = "Mã nhân viên:";
             // 
             // txtEmpId
             // 
@@ -86,7 +86,7 @@
             lblFullName.Name = "lblFullName";
             lblFullName.Size = new Size(73, 19);
             lblFullName.TabIndex = 3;
-            lblFullName.Text = "Full Name:";
+            lblFullName.Text = "Họ và tên:";
             // 
             // txtFullName
             // 
@@ -108,7 +108,7 @@
             lblPhone.Name = "lblPhone";
             lblPhone.Size = new Size(105, 19);
             lblPhone.TabIndex = 5;
-            lblPhone.Text = "Phone Number:";
+            lblPhone.Text = "Số điện thoại:";
             // 
             // txtPhone
             // 
@@ -130,7 +130,7 @@
             lblRole.Name = "lblRole";
             lblRole.Size = new Size(38, 19);
             lblRole.TabIndex = 7;
-            lblRole.Text = "Role:";
+            lblRole.Text = "Chức vụ:";
             // 
             // cboRole
             // 
@@ -154,7 +154,7 @@
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(50, 19);
             lblStatus.TabIndex = 9;
-            lblStatus.Text = "Status:";
+            lblStatus.Text = "Trạng thái:";
             // 
             // cboStatus
             // 
@@ -168,7 +168,6 @@
             cboStatus.Name = "cboStatus";
             cboStatus.Size = new Size(160, 28);
             cboStatus.TabIndex = 10;
-            cboStatus.SelectedIndexChanged += cboStatus_SelectedIndexChanged;
             // 
             // btnSave
             // 
@@ -181,9 +180,9 @@
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(150, 40);
             btnSave.TabIndex = 11;
-            btnSave.Text = "SAVE CHANGES";
+            btnSave.Text = "LƯU THAY ĐỔI";
             btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += btnSave_Click;
+            btnSave.Click += BtnSave_Click;
             // 
             // btnCancel
             // 
@@ -196,9 +195,9 @@
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(120, 40);
             btnCancel.TabIndex = 12;
-            btnCancel.Text = "CANCEL";
+            btnCancel.Text = "HỦY";
             btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
+            btnCancel.Click += BtnCancel_Click;
             // 
             // EditEmployee
             // 
@@ -224,7 +223,7 @@
             MinimizeBox = false;
             Name = "EditEmployee";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Edit Employee";
+            Text = "Sửa nhân viên";
             ResumeLayout(false);
             PerformLayout();
 

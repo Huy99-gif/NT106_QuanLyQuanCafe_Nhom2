@@ -8,50 +8,51 @@ namespace BUS
 {
     public class EmployeeBUS
     {
-        private readonly EmployeeDAL _employeeDal = new EmployeeDAL();
 
-        public async Task<bool> AddEmployeeAsync(EmployeeDTO emp)
+        public static async Task<bool> AddEmployeeAsync(EmployeeDTO emp)
         {
             if (Validation.IsAnyEmpty(emp.Email, emp.Password, emp.FullName, emp.PhoneNumber, emp.HireDate, emp.Role))
             {
-                throw new Exception("Please fill in all the information");
+                throw new Exception("Vui lòng nhập đầy đủ thông tin!");
             }
             else
             {
                 if (!Validation.IsValidEmail(emp.Email))
                 {
-                    throw new Exception("Invalid email format. Please enter a valid email address.");
+                    throw new Exception("Địa chỉ email không hợp lệ.\nVui lòng nhập lại địa chỉ email!");
                 }
                 if (!Validation.IsValidPassword(emp.Password))
                 {
-                    throw new Exception("Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character.");
+                    throw new Exception("Mật khẩu phải dài ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và một ký tự đặc biệt.");
                 }
                 if (!Validation.IsValidPhoneNumber(emp.PhoneNumber))
                 {
-                    throw new Exception("Invalid phone number format. Please enter a valid phone number.");
+                    throw new Exception("Số điện thoại không hợp lệ.\nVui lòng nhập lại số điện thoại hợp lệ!");
                 }
                 if (!Validation.IsValidHireDate(emp.HireDate))
                 {
-                    throw new Exception("Invalid hire date format. Please enter a valid date (e.g., YYYY-MM-DD).");
+                    throw new Exception("Ngày bắt đầu làm việc không hợp lệ.\nVui lòng nhập lại ngày hợp lệ (ví dụ: YYYY-MM-DD)!");
                 }
             }
             // Gọi DAL kết nối tới Cloud Functions
-            var result = await _employeeDal.AddEmployeeCFAsync(emp);
+            var (Success, Message) = await EmployeeDAL.AddEmployeeCFAsync(emp);
 
             // Nếu Server trả về lỗi (Ví dụ: Password yếu, Email đã tồn tại)
-            if (!result.Success)
+            if (!Success)
             {
-                throw new Exception(result.Message);
+                throw new Exception(Message);
             }
 
             return true;
         }
 
-        public async Task<List<EmployeeDTO>> GetAllEmployeesAsync()
+        public static async Task<List<EmployeeDTO>> GetAllEmployeesAsync()
         {
-            var dict = await _employeeDal.GetAllEmployeesCFAsync();
+            var dict = await EmployeeDAL.GetAllEmployeesCFAsync();
 
-            if (dict == null) return new List<EmployeeDTO>();
+            // Nếu Server trả về null (Không có nhân viên nào hoặc lỗi kết nối), trả về List rỗng
+            if (dict == null) 
+                return [];
 
             // Chuyển Dictionary thành List và gán Key của Firebase vào EmployeeId
             var list = dict.Select(x => {
@@ -62,27 +63,27 @@ namespace BUS
             return list;
         }
 
-        public async Task<(bool Success, string Message)> UpdateEmployeeAsync(string empId, EmployeeDTO updateData)
+        public static async Task<(bool Success, string Message)> UpdateEmployeeAsync(string empId, EmployeeDTO updateData)
         {
             if (Validation.IsAnyEmpty(empId))
-                return (false, "Employee ID not found!");
+                return (false, "Không tìm thấy mã nhân viên.");
             if (Validation.IsAnyEmpty(updateData.FullName, updateData.PhoneNumber, updateData.Role, updateData.Status))
             {
-                return (false, "Please fill in all required information.");
+                return (false, "Vui lòng điền đầy đủ thông tin bắt buộc.");
             }
             //Ràng buộc định dạng dữ liệu
             if (!Validation.IsValidPhoneNumber(updateData.PhoneNumber))
             {
-                return (false, "Invalid phone number format. Please enter a valid phone number.");
+                return (false, "Số điện thoại không hợp lệ.\nVui lòng nhập lại số điện thoại hợp lệ!");
             }
-            return await _employeeDal.UpdateEmployeeCFAsync(empId, updateData);
+            return await  EmployeeDAL.UpdateEmployeeCFAsync(empId, updateData);
         }
 
-        public async Task<(bool Success, string Message)> LockEmployeeAsync(string empId, string authUid)
+        public static async Task<(bool Success, string Message)> LockEmployeeAsync(string empId, string authUid)
         {
             if (Validation.IsAnyEmpty(empId, authUid))
-                return (false, "Invalid employee data!");
-            return await _employeeDal.LockEmployeeCFAsync(empId, authUid);
+                return (false, "Không tìm thấy mã nhân viên hoặc mã xác thực.");
+            return await EmployeeDAL.LockEmployeeCFAsync(empId, authUid);
         }
     }
 }

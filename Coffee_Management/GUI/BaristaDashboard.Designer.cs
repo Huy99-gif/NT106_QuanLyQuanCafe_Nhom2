@@ -26,10 +26,11 @@
         {
             pnlSidebar = new Panel();
             btnLogout = new Button();
-            btnAttendance = new Button();
-            btnChat = new Button();
-            btnLeaveRequest = new Button();
             btnProfile = new Button();
+            btnChat = new Button();
+            btnAttendance = new Button();
+            btnLeaveRequest = new Button();
+            btnOverview = new Button();
             pnlLogo = new Panel();
             lblLogo = new Label();
             pnlMainContent = new Panel();
@@ -47,10 +48,11 @@
             // 
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnLogout);
-            pnlSidebar.Controls.Add(btnAttendance);
-            pnlSidebar.Controls.Add(btnChat);
-            pnlSidebar.Controls.Add(btnLeaveRequest);
             pnlSidebar.Controls.Add(btnProfile);
+            pnlSidebar.Controls.Add(btnChat);
+            pnlSidebar.Controls.Add(btnAttendance);
+            pnlSidebar.Controls.Add(btnLeaveRequest);
+            pnlSidebar.Controls.Add(btnOverview);
             pnlSidebar.Controls.Add(pnlLogo);
             pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
@@ -69,23 +71,23 @@
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 0;
-            btnLogout.Text = "   Logout";
-            btnLogout.Click += btnLogout_Click;
+            btnLogout.Text = "Đăng xuất";
+            btnLogout.Click += BtnLogout_Click;
             // 
-            // btnAttendance
+            // btnProfile
             // 
-            btnAttendance.Dock = DockStyle.Top;
-            btnAttendance.FlatAppearance.BorderSize = 0;
-            btnAttendance.FlatStyle = FlatStyle.Flat;
-            btnAttendance.Font = new Font("Segoe UI", 11F);
-            btnAttendance.ForeColor = Color.White;
-            btnAttendance.Location = new Point(0, 220);
-            btnAttendance.Name = "btnAttendance";
-            btnAttendance.Size = new Size(220, 50);
-            btnAttendance.TabIndex = 1;
-            btnAttendance.Text = "   Attendance";
-            btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
-            btnAttendance.Click += btnAttendance_Click;
+            btnProfile.Dock = DockStyle.Top;
+            btnProfile.FlatAppearance.BorderSize = 0;
+            btnProfile.FlatStyle = FlatStyle.Flat;
+            btnProfile.Font = new Font("Segoe UI", 11F);
+            btnProfile.ForeColor = Color.White;
+            btnProfile.Location = new Point(0, 270);
+            btnProfile.Name = "btnProfile";
+            btnProfile.Size = new Size(220, 50);
+            btnProfile.TabIndex = 4;
+            btnProfile.Text = "   Profile";
+            btnProfile.TextAlign = ContentAlignment.MiddleLeft;
+            btnProfile.Click += BtnProfile_Click_1;
             // 
             // btnChat
             // 
@@ -94,13 +96,28 @@
             btnChat.FlatStyle = FlatStyle.Flat;
             btnChat.Font = new Font("Segoe UI", 11F);
             btnChat.ForeColor = Color.White;
-            btnChat.Location = new Point(0, 170);
+            btnChat.Location = new Point(0, 220);
             btnChat.Name = "btnChat";
             btnChat.Size = new Size(220, 50);
-            btnChat.TabIndex = 2;
-            btnChat.Text = "   Internal Chat";
+            btnChat.TabIndex = 3;
+            btnChat.Text = "   Chat";
             btnChat.TextAlign = ContentAlignment.MiddleLeft;
-            btnChat.Click += btnChat_Click;
+            btnChat.Click += BtnChat_Click;
+            // 
+            // btnAttendance
+            // 
+            btnAttendance.Dock = DockStyle.Top;
+            btnAttendance.FlatAppearance.BorderSize = 0;
+            btnAttendance.FlatStyle = FlatStyle.Flat;
+            btnAttendance.Font = new Font("Segoe UI", 11F);
+            btnAttendance.ForeColor = Color.White;
+            btnAttendance.Location = new Point(0, 170);
+            btnAttendance.Name = "btnAttendance";
+            btnAttendance.Size = new Size(220, 50);
+            btnAttendance.TabIndex = 2;
+            btnAttendance.Text = "   Chấm công";
+            btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
+            btnAttendance.Click += BtnAttendance_Click;
             // 
             // btnLeaveRequest
             // 
@@ -112,25 +129,25 @@
             btnLeaveRequest.Location = new Point(0, 120);
             btnLeaveRequest.Name = "btnLeaveRequest";
             btnLeaveRequest.Size = new Size(220, 50);
-            btnLeaveRequest.TabIndex = 3;
-            btnLeaveRequest.Text = "   Leave Request";
+            btnLeaveRequest.TabIndex = 1;
+            btnLeaveRequest.Text = "   Xin nghỉ";
             btnLeaveRequest.TextAlign = ContentAlignment.MiddleLeft;
-            btnLeaveRequest.Click += btnLeaveRequest_Click;
+            btnLeaveRequest.Click += BtnLeaveRequest_Click;
             // 
-            // btnProfile
+            // btnOverview
             // 
-            btnProfile.Dock = DockStyle.Top;
-            btnProfile.FlatAppearance.BorderSize = 0;
-            btnProfile.FlatStyle = FlatStyle.Flat;
-            btnProfile.Font = new Font("Segoe UI", 11F);
-            btnProfile.ForeColor = Color.White;
-            btnProfile.Location = new Point(0, 70);
-            btnProfile.Name = "btnProfile";
-            btnProfile.Size = new Size(220, 50);
-            btnProfile.TabIndex = 4;
-            btnProfile.Text = "   Profile";
-            btnProfile.TextAlign = ContentAlignment.MiddleLeft;
-            btnProfile.Click += btnProfile_Click_1;
+            btnOverview.Dock = DockStyle.Top;
+            btnOverview.FlatAppearance.BorderSize = 0;
+            btnOverview.FlatStyle = FlatStyle.Flat;
+            btnOverview.Font = new Font("Segoe UI", 11F);
+            btnOverview.ForeColor = Color.White;
+            btnOverview.Location = new Point(0, 70);
+            btnOverview.Name = "btnOverview";
+            btnOverview.Size = new Size(220, 50);
+            btnOverview.TabIndex = 6;
+            btnOverview.Text = "   Tổng quan";
+            btnOverview.TextAlign = ContentAlignment.MiddleLeft;
+            btnOverview.Click += btnOverview_Click;
             // 
             // pnlLogo
             // 
@@ -147,11 +164,11 @@
             lblLogo.AutoSize = true;
             lblLogo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblLogo.ForeColor = Color.MediumSeaGreen;
-            lblLogo.Location = new Point(40, 20);
+            lblLogo.Location = new Point(12, 18);
             lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(139, 30);
+            lblLogo.Size = new Size(204, 30);
             lblLogo.TabIndex = 0;
-            lblLogo.Text = "Barista Staff";
+            lblLogo.Text = "Nhân viên pha chế";
             // 
             // pnlMainContent
             // 
@@ -168,11 +185,11 @@
             lblWelcome.AutoSize = true;
             lblWelcome.Font = new Font("Segoe UI", 18F);
             lblWelcome.ForeColor = Color.Gray;
-            lblWelcome.Location = new Point(260, 220);
+            lblWelcome.Location = new Point(154, 205);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(280, 32);
+            lblWelcome.Size = new Size(522, 32);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Select a tab from the left";
+            lblWelcome.Text = "Vui lòng chọn một mục từ thanh menu bên trái";
             // 
             // lblTitle
             // 
@@ -181,9 +198,9 @@
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(25, 23);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(130, 25);
+            lblTitle.Size = new Size(178, 25);
             lblTitle.TabIndex = 1;
-            lblTitle.Text = "DASHBOARD";
+            lblTitle.Text = "BẢNG ĐIỀU KHIỂN";
             // 
             // pnlHeader
             // 
@@ -238,6 +255,7 @@
         private System.Windows.Forms.Button btnAttendance;
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnLeaveRequest;
+        private System.Windows.Forms.Button btnOverview; 
         private System.Windows.Forms.Button btnProfile;
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.Label lblLogo;

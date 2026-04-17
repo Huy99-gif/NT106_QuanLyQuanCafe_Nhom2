@@ -1,4 +1,7 @@
-﻿namespace GUI
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace GUI
 {
     partial class ConfirmEmail
     {
@@ -41,7 +44,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(187, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Forgot Password";
+            lblTitle.Text = "Quên mật khẩu";
             // 
             // lblDescription
             // 
@@ -52,7 +55,7 @@
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(253, 19);
             lblDescription.TabIndex = 1;
-            lblDescription.Text = "Enter your email to receive a reset code.";
+            lblDescription.Text = "Nhập email của bạn để nhận mã khôi phục.";
             // 
             // pnlEmailBg
             // 
@@ -73,7 +76,6 @@
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(320, 22);
             txtEmail.TabIndex = 0;
-            txtEmail.TextChanged += txtEmail_TextChanged;
             // 
             // btnSendCode
             // 
@@ -87,9 +89,9 @@
             btnSendCode.Name = "btnSendCode";
             btnSendCode.Size = new Size(120, 40);
             btnSendCode.TabIndex = 3;
-            btnSendCode.Text = "Send Code";
+            btnSendCode.Text = "Gửi mã";
             btnSendCode.UseVisualStyleBackColor = false;
-            btnSendCode.Click += btnSendCode_Click;
+            btnSendCode.Click += BtnSendCode_Click;
             // 
             // lblBackToLogin
             // 
@@ -101,8 +103,8 @@
             lblBackToLogin.Size = new Size(92, 19);
             lblBackToLogin.TabIndex = 4;
             lblBackToLogin.TabStop = true;
-            lblBackToLogin.Text = "Back to Login";
-            lblBackToLogin.LinkClicked += lblBackToLogin_LinkClicked;
+            lblBackToLogin.Text = "Quay lại đăng nhập";
+            lblBackToLogin.LinkClicked += LblBackToLogin_LinkClicked;
             // 
             // ConfirmEmail
             // 
@@ -118,8 +120,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "ConfirmEmail";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Forgot Password";
-            Load += ConfirmEmail_Load;
+            Text = "Quên mật khẩu";
             pnlEmailBg.ResumeLayout(false);
             pnlEmailBg.PerformLayout();
             ResumeLayout(false);
