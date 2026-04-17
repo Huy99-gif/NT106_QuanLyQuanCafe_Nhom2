@@ -26,6 +26,7 @@ namespace GUI
             btnChat = new Button();
             btnTables = new Button();
             btnPOS = new Button();
+            btnOverview = new Button();
             pnlLogo = new Panel();
             lblLogo = new Label();
             pnlMainContent = new Panel();
@@ -47,6 +48,7 @@ namespace GUI
             pnlSidebar.Controls.Add(btnChat);
             pnlSidebar.Controls.Add(btnTables);
             pnlSidebar.Controls.Add(btnPOS);
+            pnlSidebar.Controls.Add(btnOverview);
             pnlSidebar.Controls.Add(pnlLogo);
             pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
@@ -61,11 +63,11 @@ namespace GUI
             btnProfile.FlatStyle = FlatStyle.Flat;
             btnProfile.Font = new Font("Segoe UI", 11F);
             btnProfile.ForeColor = Color.White;
-            btnProfile.Location = new Point(0, 220);
+            btnProfile.Location = new Point(0, 270);
             btnProfile.Name = "btnProfile";
             btnProfile.Size = new Size(220, 50);
             btnProfile.TabIndex = 6;
-            btnProfile.Text = "  Profile ";
+            btnProfile.Text = "  Hồ sơ";
             btnProfile.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnLogout
@@ -79,8 +81,8 @@ namespace GUI
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 0;
-            btnLogout.Text = "Logout";
-            btnLogout.Click += btnLogout_Click_1;
+            btnLogout.Text = "Đăng xuất";
+            btnLogout.Click += BtnLogout_Click_1;
             // 
             // btnChat
             // 
@@ -90,13 +92,13 @@ namespace GUI
             btnChat.Font = new Font("Segoe UI", 11F);
             btnChat.ForeColor = Color.White;
             btnChat.ImageAlign = ContentAlignment.MiddleLeft;
-            btnChat.Location = new Point(0, 170);
+            btnChat.Location = new Point(0, 220);
             btnChat.Name = "btnChat";
             btnChat.Size = new Size(220, 50);
             btnChat.TabIndex = 1;
             btnChat.Text = "  Chat";
             btnChat.TextAlign = ContentAlignment.MiddleLeft;
-            btnChat.Click += btnChat_Click;
+            btnChat.Click += BtnChat_Click;
             // 
             // btnTables
             // 
@@ -105,11 +107,11 @@ namespace GUI
             btnTables.FlatStyle = FlatStyle.Flat;
             btnTables.Font = new Font("Segoe UI", 11F);
             btnTables.ForeColor = Color.White;
-            btnTables.Location = new Point(0, 120);
+            btnTables.Location = new Point(0, 170);
             btnTables.Name = "btnTables";
             btnTables.Size = new Size(220, 50);
             btnTables.TabIndex = 3;
-            btnTables.Text = "  Tables Map";
+            btnTables.Text = "  Sơ đồ bàn";
             btnTables.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnPOS
@@ -119,13 +121,28 @@ namespace GUI
             btnPOS.FlatStyle = FlatStyle.Flat;
             btnPOS.Font = new Font("Segoe UI", 11F);
             btnPOS.ForeColor = Color.White;
-            btnPOS.Location = new Point(0, 70);
+            btnPOS.Location = new Point(0, 120);
             btnPOS.Name = "btnPOS";
             btnPOS.Size = new Size(220, 50);
             btnPOS.TabIndex = 4;
-            btnPOS.Text = "  POS / Order";
+            btnPOS.Text = "  Lên đơn / POS";
             btnPOS.TextAlign = ContentAlignment.MiddleLeft;
-            btnPOS.Click += btnPOS_Click;
+            btnPOS.Click += BtnPOS_Click;
+            // 
+            // btnOverview
+            // 
+            btnOverview.Dock = DockStyle.Top;
+            btnOverview.FlatAppearance.BorderSize = 0;
+            btnOverview.FlatStyle = FlatStyle.Flat;
+            btnOverview.Font = new Font("Segoe UI", 11F);
+            btnOverview.ForeColor = Color.White;
+            btnOverview.Location = new Point(0, 70);
+            btnOverview.Name = "btnOverview";
+            btnOverview.Size = new Size(220, 50);
+            btnOverview.TabIndex = 7;
+            btnOverview.Text = "  Tổng quan";
+            btnOverview.TextAlign = ContentAlignment.MiddleLeft;
+            btnOverview.Click += BtnOverview_Click;
             // 
             // pnlLogo
             // 
@@ -142,11 +159,11 @@ namespace GUI
             lblLogo.AutoSize = true;
             lblLogo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblLogo.ForeColor = Color.MediumSeaGreen;
-            lblLogo.Location = new Point(43, 19);
+            lblLogo.Location = new Point(12, 18);
             lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(128, 30);
+            lblLogo.Size = new Size(184, 30);
             lblLogo.TabIndex = 0;
-            lblLogo.Text = "Order Staff";
+            lblLogo.Text = "Nhân viên Order";
             // 
             // pnlMainContent
             // 
@@ -163,11 +180,11 @@ namespace GUI
             lblWelcome.AutoSize = true;
             lblWelcome.Font = new Font("Segoe UI", 18F);
             lblWelcome.ForeColor = Color.Gray;
-            lblWelcome.Location = new Point(260, 220);
+            lblWelcome.Location = new Point(142, 218);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(280, 32);
+            lblWelcome.Size = new Size(522, 32);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Select a tab from the left";
+            lblWelcome.Text = "Vui lòng chọn một mục từ thanh menu bên trái";
             // 
             // lblTitle
             // 
@@ -176,9 +193,9 @@ namespace GUI
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(25, 23);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(130, 25);
+            lblTitle.Size = new Size(178, 25);
             lblTitle.TabIndex = 1;
-            lblTitle.Text = "DASHBOARD";
+            lblTitle.Text = "BẢNG ĐIỀU KHIỂN";
             // 
             // btnClose
             // 
@@ -192,7 +209,7 @@ namespace GUI
             btnClose.Size = new Size(50, 70);
             btnClose.TabIndex = 0;
             btnClose.Text = "X";
-            btnClose.Click += btnClose_Click;
+            btnClose.Click += BtnClose_Click;
             // 
             // pnlHeader
             // 
@@ -215,8 +232,8 @@ namespace GUI
             Controls.Add(pnlSidebar);
             FormBorderStyle = FormBorderStyle.None;
             Name = "OrderStaffDashboard";
-            this.Text = "Order Staff Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
+            Text = "Giao diện Nhân viên Order";
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();
@@ -234,6 +251,7 @@ namespace GUI
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnTables;
         private System.Windows.Forms.Button btnPOS;
+        private System.Windows.Forms.Button btnOverview; // Khai báo biến
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.Label lblLogo;
         private System.Windows.Forms.Panel pnlMainContent;

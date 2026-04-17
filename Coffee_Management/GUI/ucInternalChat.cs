@@ -12,11 +12,10 @@ namespace GUI
 {
     public partial class ucInternalChat : UserControl
     {
-        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
-        private HubConnection _connection; // Biến giữ kết nối SignalR
+        private readonly HubConnection _connection; // Biến giữ kết nối SignalR
 
         // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
-        private ChatManager _chatManager;
+        private readonly ChatManager _chatManager;
 
         public ucInternalChat()
         {
@@ -32,7 +31,7 @@ namespace GUI
             };
 
             btnSend.Click += BtnSend_Click;
-            btnOpenChatWindow.Click += (s, e) => MessageBox.Show("Opening Messenger window...");
+            btnOpenChatWindow.Click += (s, e) => MsgBox.Show("Đang mở cửa sổ Messenger...", "Thông báo", MsgBox.MessageBoxType.Info);
             txtMessage.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BtnSend_Click(s, e); } };
             // CHỈ 1 DÒNG ĐỂ ĐỔI PHÒNG
             cmbChatTarget.SelectedIndexChanged += async (s, e) => await _chatManager.SwitchChatRoom(GetIdFromCombo());
@@ -42,10 +41,10 @@ namespace GUI
         {
             try
             {
-                List<EmployeeDTO> allEmployees = await _employeeBus.GetAllEmployeesAsync();
+                List<EmployeeDTO> allEmployees = await EmployeeBUS.GetAllEmployeesAsync();
 
                 cmbChatTarget.Items.Clear();
-                cmbChatTarget.Items.Add("--- Send to Everyone (Group Chat) ---");
+                cmbChatTarget.Items.Add("--- Gửi cho tất cả (Chat nhóm) ---");
 
                 if (allEmployees != null)
                 {
@@ -58,11 +57,11 @@ namespace GUI
                 if (cmbChatTarget.Items.Count > 0) cmbChatTarget.SelectedIndex = 0;
 
                 lstChatHistory.Items.Clear();
-                lstChatHistory.Items.Add("[System]: Connected to QLCafe Chat.");
+                lstChatHistory.Items.Add("[Hệ thống]: Đã kết nối vào QLCafe Chat.");
             }
             catch (Exception ex)
             {
-                lstChatHistory.Items.Add($"[Error]: Cannot load staff list. {ex.Message}");
+                lstChatHistory.Items.Add($"[Lỗi]: Không thể tải danh sách nhân viên. {ex.Message}");
             }
         }
 

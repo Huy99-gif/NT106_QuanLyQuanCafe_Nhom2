@@ -67,7 +67,6 @@
             chkRememberMe.TabIndex = 6;
             chkRememberMe.Text = "Lưu đăng nhập";
             chkRememberMe.UseVisualStyleBackColor = true;
-            chkRememberMe.CheckedChanged += chkRememberMe_CheckedChanged;
             // 
             // btnClose
             // 
@@ -81,7 +80,7 @@
             btnClose.Size = new Size(65, 377);
             btnClose.TabIndex = 5;
             btnClose.Text = "X";
-            btnClose.Click += btnClose_Click;
+            btnClose.Click += BtnClose_Click;
             // 
             // lblForgotPass
             // 
@@ -92,8 +91,8 @@
             lblForgotPass.Size = new Size(100, 15);
             lblForgotPass.TabIndex = 4;
             lblForgotPass.TabStop = true;
-            lblForgotPass.Text = "Forgot Password?";
-            lblForgotPass.LinkClicked += linkLabel1_LinkClicked;
+            lblForgotPass.Text = "Quên mật khẩu?";
+            lblForgotPass.LinkClicked += LinkLabel1_LinkClicked;
             // 
             // btnSignIn
             // 
@@ -108,9 +107,9 @@
             btnSignIn.Name = "btnSignIn";
             btnSignIn.Size = new Size(131, 34);
             btnSignIn.TabIndex = 3;
-            btnSignIn.Text = "Sign In";
+            btnSignIn.Text = "Đăng nhập";
             btnSignIn.UseVisualStyleBackColor = false;
-            btnSignIn.Click += btnSignIn_Click;
+            btnSignIn.Click += BtnSignIn_Click;
             // 
             // pnlPassBg
             // 
@@ -138,8 +137,8 @@
             btnShowPass.TabIndex = 5;
             btnShowPass.Text = "👁️";
             btnShowPass.UseVisualStyleBackColor = false;
-            btnShowPass.MouseDown += btnShowPass_MouseDown;
-            btnShowPass.MouseUp += btnShowPass_MouseUp;
+            btnShowPass.MouseDown += BtnShowPass_MouseDown;
+            btnShowPass.MouseUp += BtnShowPass_MouseUp;
             // 
             // txtPassword
             // 
@@ -150,7 +149,7 @@
             txtPassword.Location = new Point(13, 7);
             txtPassword.Margin = new Padding(3, 2, 3, 2);
             txtPassword.Name = "txtPassword";
-            txtPassword.PlaceholderText = "password123";
+            txtPassword.PlaceholderText = "matkhau123";
             txtPassword.Size = new Size(306, 22);
             txtPassword.TabIndex = 0;
             txtPassword.Enter += TxtPassword_Enter;
@@ -174,10 +173,9 @@
             txtEmail.Location = new Point(13, 7);
             txtEmail.Margin = new Padding(3, 2, 3, 2);
             txtEmail.Name = "txtEmail";
-            txtEmail.PlaceholderText = "jubaer@gmail.com";
+            txtEmail.PlaceholderText = "nhanvien@gmail.com";
             txtEmail.Size = new Size(306, 22);
             txtEmail.TabIndex = 0;
-            txtEmail.TextChanged += txtEmail_TextChanged;
             // 
             // lblTitle
             // 
@@ -188,7 +186,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(306, 60);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Welcome Back,\r\nPlease login to your account";
+            lblTitle.Text = "Chào mừng trở lại,\r\nVui lòng đăng nhập tài khoản";
             // 
             // pictureBox1
             // 
@@ -200,7 +198,7 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+            pictureBox1.Click += PictureBox1_Click;
             pictureBox1.Paint += PictureBox1_Paint;
             // 
             // picLeft
@@ -227,7 +225,7 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Login - QLCafe";
+            Text = "Đăng nhập - QLCafe";
             pnlRight.ResumeLayout(false);
             pnlRight.PerformLayout();
             pnlPassBg.ResumeLayout(false);

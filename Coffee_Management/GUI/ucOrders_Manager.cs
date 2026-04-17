@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BUS;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,15 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DTO; 
 
 namespace GUI
 {
     public partial class ucOrders_Manager : UserControl
     {
-        
+        private static readonly string[] TableStatusOptions = { "Tất cả", "Đang phục vụ", "Chờ lên món", "Chờ thanh toán" };
         private List<TableModelDTO>? _originalTableData;
-        private List<WarningWaitModelDTO> _kitchenWarnings = new List<WarningWaitModelDTO>();
+        private List<WarningWaitModelDTO> _kitchenWarnings = new();
 
         public ucOrders_Manager()
         {
@@ -27,10 +28,10 @@ namespace GUI
         {
             // Thêm các trạng thái vào ComboBox
             cboTableStatus.Items.Clear();
-            cboTableStatus.Items.AddRange(new string[] { "Tất cả", "Đang phục vụ", "Chờ lên món", "Chờ thanh toán" });
+            cboTableStatus.Items.AddRange(TableStatusOptions);
             cboTableStatus.SelectedIndex = 0;
             // Tạo dữ liệu mẫu cho DataGridView
-            _originalTableData = new List<TableModelDTO>
+            _originalTableData = new()
             {
                 new TableModelDTO { TableId = 1, TableName = "Bàn 01", Status = "Đang phục vụ", Progress = "Đã lên đủ", TotalAmount = "150,000 đ" },
                 new TableModelDTO { TableId = 2, TableName = "Bàn 02", Status = "Chờ lên món", Progress = "Thiếu 2 món", TotalAmount = "85,000 đ" },
@@ -49,7 +50,7 @@ namespace GUI
             dgvTableStatus.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTableStatus.RowHeadersVisible = false;
 
-            _kitchenWarnings = new List<WarningWaitModelDTO>
+            _kitchenWarnings = new()
             {
                 new WarningWaitModelDTO { TableName = "Bàn 02", DrinkName = "Cà phê sữa đá", WaitTimeMinutes = 18 },
                 new WarningWaitModelDTO { TableName = "Bàn 05", DrinkName = "Trà đào cam sả", WaitTimeMinutes = 15 },

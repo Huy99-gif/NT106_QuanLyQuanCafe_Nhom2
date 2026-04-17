@@ -9,23 +9,11 @@ using System.Windows.Forms;
 namespace GUI
 {
     // Lớp này là "Trái tim" xử lý Chat cho toàn bộ App QLCafe
-    public class ChatManager
+    public class ChatManager(Control uiControl, ListBox lstChatHistory)
     {
-        private HubConnection _connection;
-        private readonly ChatBUS _chatBus = new ChatBUS();
-
+        private HubConnection? _connection;
         // Ai xài lớp này cũng có thể lấy được ID phòng hiện tại
         public string CurrentRoomId { get; private set; } = "room_global";
-
-        private readonly Control _uiControl; // Lưu form gọi nó để Invoke an toàn
-        private readonly ListBox _lstChatHistory; // Lưu cái ListBox để nó tự nhét chữ vào
-
-        // Khởi tạo: Truyền form và cái ListBox vào đây
-        public ChatManager(Control uiControl, ListBox lstChatHistory)
-        {
-            _uiControl = uiControl;
-            _lstChatHistory = lstChatHistory;
-        }
 
         // --- HÀM 1: KẾT NỐI SERVER---
         public async Task ConnectToChatServer()
@@ -33,7 +21,7 @@ namespace GUI
             try
             {
                 // Đọc IP hoặc Link từ file App.config
-                string? savedIP = ConfigurationManager.AppSettings["ChatServerIP"];
+                string? savedIP = ConfigurationManager.AppSettings["ChatServerIP"] ?? "";
                 string? serverUrl = savedIP.StartsWith("http") ? savedIP : $"http://{savedIP}:8080/chathub";
 
                 _connection = new HubConnectionBuilder()
@@ -43,9 +31,9 @@ namespace GUI
 
                 _connection.On<string, string, string>("ReceiveMessageWithRoom", (senderId, message, roomId) =>
                 {
-                    if (_uiControl.IsHandleCreated)
+                    if (uiControl.IsHandleCreated)
                     {
-                        _uiControl.Invoke(new Action(() => {
+                        uiControl.Invoke(new Action(() => {
                             if (roomId == CurrentRoomId)
                             {
                                 string currentTime = DateTime.Now.ToString("dd/MM HH:mm");
@@ -54,26 +42,26 @@ namespace GUI
                                 // Phân biệt Tôi và Người khác khi nhận tin
                                 if (senderId == myId)
                                 {
-                                    _lstChatHistory.Items.Add($"[{currentTime}] ▶ Tôi: {message}");
+                                    lstChatHistory.Items.Add($"[{currentTime}] ▶ Tôi: {message}");
                                 }
                                 else
                                 {
-                                    _lstChatHistory.Items.Add($"[{currentTime}] 👤 {senderId}: {message}");
+                                    lstChatHistory.Items.Add($"[{currentTime}] 👤 {senderId}: {message}");
                                 }
 
-                                _lstChatHistory.Items.Add("");
-                                _lstChatHistory.TopIndex = _lstChatHistory.Items.Count - 1;
+                                lstChatHistory.Items.Add("");
+                                lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
                             }
                         }));
                     }
                 });
 
                 await _connection.StartAsync();
-                _lstChatHistory.Items.Add($"[System]: Successfully connected to Chat Server ({savedIP}).");
+                lstChatHistory.Items.Add($"[Hệ thống]: Đã kết nối thành công tới máy chủ trò chuyện ({savedIP}).");
             }
             catch (Exception ex)
             {
-                _lstChatHistory.Items.Add($"[Error]: Lost connection to the chat server. {ex.Message}");
+                lstChatHistory.Items.Add($"[Lỗi]: Mất kết nối server chat\n{ex.Message}");
             }
         }
 
@@ -82,20 +70,22 @@ namespace GUI
         {
             if (GlobalSession.CurrentUser == null) return;
 
-            string myId = GlobalSession.CurrentUser.EmployeeId;
-            CurrentRoomId = _chatBus.GetRoomId(myId, targetId);
+            string? myId = GlobalSession.CurrentUser.EmployeeId;
+            if (myId == null) 
+                return;
+            CurrentRoomId = ChatBUS.GetRoomId(myId, targetId);
 
             // Gọi BUS để lấy RoomID chuẩn
-            _lstChatHistory.Items.Clear();
-            _lstChatHistory.Items.Add($"[System]: Loading chat history with {targetId}...");
+            lstChatHistory.Items.Clear();
+            lstChatHistory.Items.Add($"[Hệ thống]: Đang tải lịch sử trò chuyện với {targetId}...");
 
             try
             {
-                var history = await _chatBus.GetHistory(CurrentRoomId);
+                var history = await ChatBUS.GetHistory(CurrentRoomId);
 
                 //SỬ DỤNG BeginUpdate/EndUpdate để tránh nhấp nháy khi load nhiều tin nhắn
-                _lstChatHistory.BeginUpdate();
-                _lstChatHistory.Items.Clear();
+                lstChatHistory.BeginUpdate();
+                lstChatHistory.Items.Clear();
 
                 foreach (var msg in history)
                 {
@@ -104,23 +94,23 @@ namespace GUI
                     // Phân biệt Tôi và Người khác khi load lịch sử
                     if (msg.SenderId == myId)
                     {
-                        _lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] ▶ Tôi: {msg.Message}");
+                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] ▶ Tôi: {msg.Message}");
                     }
                     else
                     {
-                        _lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] 👤 {msg.SenderId}: {msg.Message}");
+                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] 👤 {msg.SenderId}: {msg.Message}");
                     }
-                    _lstChatHistory.Items.Add("");
+                    lstChatHistory.Items.Add("");
                 }
 
-                _lstChatHistory.TopIndex = _lstChatHistory.Items.Count - 1;
+                lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
 
                 // Nếu không có tin nhắn nào thì hiển thị thông báo
-                _lstChatHistory.EndUpdate();
+                lstChatHistory.EndUpdate();
             }
             catch (Exception ex)
             {
-                _lstChatHistory.Items.Add("[Error]: Fail to load history. " + ex.Message);
+                lstChatHistory.Items.Add("[Lỗi]: Không thể tải lịch sử. " + ex.Message);
             }
         }
 
@@ -129,7 +119,12 @@ namespace GUI
         {
             if (_connection != null && _connection.State == HubConnectionState.Connected)
             {
-                string? myId = GlobalSession.CurrentUser.EmployeeId;
+                string myId = GlobalSession.CurrentUser?.EmployeeId ?? "";
+                if (Validation.IsAnyEmpty(message))
+                {
+                    MsgBox.Show("Không thể gửi tin nhắn trống!", "Lỗi xác thực", MsgBox.MessageBoxType.Warning);
+                    return;
+                }
 
                 // Gửi tin nhắn lên màn hình qua SignalR
                 await _connection.InvokeAsync("SendMessageWithRoom", myId, message, CurrentRoomId);
@@ -145,17 +140,17 @@ namespace GUI
                             Message = message,
                             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                         };
-                        await _chatBus.SaveMessage(CurrentRoomId, chatDto);
+                        await ChatBUS.SaveMessage(CurrentRoomId, chatDto);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Firebase save error: " + ex.Message);
+                        Console.WriteLine("Lỗi lưu tin nhắn: " + ex.Message);
                     }
                 });
             }
             else
             {
-                MessageBox.Show("Lost connection to server! Please check your network.", "Network error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show("Mất kết nối tới server! Vui lòng kiểm tra mạng của bạn.", "Lỗi mạng", MsgBox.MessageBoxType.Warning);
             }
         }
     }

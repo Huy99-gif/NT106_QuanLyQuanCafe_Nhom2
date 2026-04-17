@@ -41,13 +41,16 @@
             txtMessage = new TextBox();
             lstChatHistory = new ListBox();
             lblChatTitle = new Label();
+            picAvatar = new PictureBox();
             pnlProfile.SuspendLayout();
             pnlChat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picAvatar).BeginInit();
             SuspendLayout();
             // 
             // pnlProfile
             // 
             pnlProfile.BackColor = Color.FromArgb(30, 30, 30);
+            pnlProfile.Controls.Add(picAvatar);
             pnlProfile.Controls.Add(btnUpdateProfile);
             pnlProfile.Controls.Add(btnChangePassword);
             pnlProfile.Controls.Add(lblMyRole);
@@ -64,7 +67,7 @@
             btnUpdateProfile.FlatAppearance.BorderSize = 0;
             btnUpdateProfile.FlatStyle = FlatStyle.Flat;
             btnUpdateProfile.ForeColor = Color.White;
-            btnUpdateProfile.Location = new Point(19, 210);
+            btnUpdateProfile.Location = new Point(26, 396);
             btnUpdateProfile.Name = "btnUpdateProfile";
             btnUpdateProfile.Size = new Size(200, 35);
             btnUpdateProfile.TabIndex = 4;
@@ -77,7 +80,7 @@
             btnChangePassword.FlatAppearance.BorderSize = 0;
             btnChangePassword.FlatStyle = FlatStyle.Flat;
             btnChangePassword.ForeColor = Color.Orange;
-            btnChangePassword.Location = new Point(19, 160);
+            btnChangePassword.Location = new Point(26, 346);
             btnChangePassword.Name = "btnChangePassword";
             btnChangePassword.Size = new Size(200, 35);
             btnChangePassword.TabIndex = 3;
@@ -89,7 +92,7 @@
             lblMyRole.AutoSize = true;
             lblMyRole.Font = new Font("Segoe UI", 10F);
             lblMyRole.ForeColor = Color.Gray;
-            lblMyRole.Location = new Point(15, 100);
+            lblMyRole.Location = new Point(22, 286);
             lblMyRole.Name = "lblMyRole";
             lblMyRole.Size = new Size(183, 38);
             lblMyRole.TabIndex = 2;
@@ -100,7 +103,7 @@
             lblMyName.AutoSize = true;
             lblMyName.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblMyName.ForeColor = Color.MediumSeaGreen;
-            lblMyName.Location = new Point(15, 70);
+            lblMyName.Location = new Point(22, 256);
             lblMyName.Name = "lblMyName";
             lblMyName.Size = new Size(188, 25);
             lblMyName.TabIndex = 1;
@@ -207,6 +210,16 @@
             lblChatTitle.TabIndex = 0;
             lblChatTitle.Text = "Chat Nội Bộ 💬";
             // 
+            // picAvatar
+            // 
+            picAvatar.BackColor = Color.FromArgb(45, 45, 48);
+            picAvatar.Location = new Point(38, 89);
+            picAvatar.Name = "picAvatar";
+            picAvatar.Size = new Size(150, 150);
+            picAvatar.SizeMode = PictureBoxSizeMode.Zoom;
+            picAvatar.TabIndex = 5;
+            picAvatar.TabStop = false;
+            // 
             // ucSettings_Manager
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -220,6 +233,7 @@
             pnlProfile.PerformLayout();
             pnlChat.ResumeLayout(false);
             pnlChat.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picAvatar).EndInit();
             ResumeLayout(false);
         }
 
@@ -238,5 +252,6 @@
         private Button btnSend;
         private ComboBox cmbChatTarget;
         private Button btnOpenChatWindow;
+        private PictureBox picAvatar;
     }
 }

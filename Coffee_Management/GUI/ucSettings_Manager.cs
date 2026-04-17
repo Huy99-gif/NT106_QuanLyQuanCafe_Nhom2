@@ -43,7 +43,7 @@ namespace GUI
         {
             try
             {
-                _allEmployees = await _employeeBus.GetAllEmployeesAsync();
+                _allEmployees = await EmployeeBUS.GetAllEmployeesAsync();
                 if (_allEmployees == null || _allEmployees.Count == 0) return;
 
                 cmbChatTarget.Items.Clear();

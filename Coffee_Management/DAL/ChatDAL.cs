@@ -12,21 +12,18 @@ namespace DAL
 {
     public class ChatDAL
     {
-        private readonly HttpClient _client = new HttpClient();
-        private string _baseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
+        private static readonly HttpClient _client = new();
+        private static readonly string _baseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
 
         // Gắn Token vào Header cho mỗi request
-        private void SetAuthorizationHeader(string token)
-        {
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-
-        public async Task SaveMessageAsync(string roomId, ChatMessageDTO chatData, string token)
+        public static async Task SaveMessageAsync(string roomId, ChatMessageDTO chatData)
         {
             try
             {
-                SetAuthorizationHeader(token);
-
+                if (!string.IsNullOrEmpty(GlobalSession.Token))
+                {
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+                }
                 var json = JsonSerializer.Serialize(new { roomId, chatData });
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -39,20 +36,23 @@ namespace DAL
             }
         }
 
-        public async Task<List<ChatMessageDTO>> GetHistoryAsync(string roomId, string token)
+        public static async Task<List<ChatMessageDTO>> GetHistoryAsync(string roomId)
         {
             try
             {
-                SetAuthorizationHeader(token);
+                if (!string.IsNullOrEmpty(GlobalSession.Token))
+                {
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+                }
 
                 var response = await _client.GetAsync(_baseUrl + $"getChatHistory?roomId={roomId}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<List<ChatMessageDTO>>(json) ?? new List<ChatMessageDTO>();
+                    return JsonSerializer.Deserialize<List<ChatMessageDTO>>(json) ?? [];
                 }
-                return new List<ChatMessageDTO>();
+                return [];
             }
             catch (Exception ex)
             {

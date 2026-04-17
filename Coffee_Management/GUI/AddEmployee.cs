@@ -1,6 +1,7 @@
 ﻿using BUS;
 using DTO;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 
@@ -8,12 +9,11 @@ namespace GUI
 {
     public partial class AddEmployee : Form
     {
-        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
 
         public AddEmployee()
         {
             InitializeComponent();
-            btnCancel.CausesValidation = false; 
+            LoadRoles();
         }
 
         public AddEmployee(EmployeeDTO emp)
@@ -21,9 +21,21 @@ namespace GUI
             InitializeComponent();
             btnCancel.CausesValidation = false;
 
+            // Đã thêm: Nạp lại Dictionary cho ComboBox ở hàm cập nhật để không bị trống
+            Dictionary<string, string> roleData = new()
+            {
+                { "manager", "Quản lý" },
+                { "barista", "Pha chế" },
+                { "order staff", "Nhân viên Order" },
+                { "security", "Bảo vệ" }
+            };
+            cboRole.DataSource = new BindingSource(roleData, null);
+            cboRole.DisplayMember = "Value";
+            cboRole.ValueMember = "Key";
+
             // Đổi tiêu đề giao diện
-            textBox1.Text = "Update Account";
-            btnSave.Text = "Update";
+            textBox1.Text = "Cập nhật Account";
+            btnSave.Text = "Cập nhật";
 
             // Đổ dữ liệu cũ lên giao diện 
             txtEmail.Text = emp.Email;
@@ -31,47 +43,44 @@ namespace GUI
             txtPhone.Text = emp.PhoneNumber;
             txtPassword.Text = emp.Password;
 
+            // Đã sửa: Dùng SelectedValue thay vì SelectedItem
             if (!string.IsNullOrEmpty(emp.Role))
-                cboRole.SelectedItem = emp.Role;
+                cboRole.SelectedValue = emp.Role;
 
             if (DateTime.TryParse(emp.HireDate, out DateTime parsedDate))
                 dtpHireDate.Value = parsedDate;
         }
 
-        private void frmAddEmployee_Load(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private async void btnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                // 1. Khóa nút để tránh spam click
+                //Khóa nút để tránh spam click
                 btnSave.Enabled = false;
-                btnSave.Text = "Saving...";
-                // 2. Thu thập dữ liệu từ Form
-                EmployeeDTO newEmp = new EmployeeDTO
+                btnSave.Text = "Đang lưu...";
+                //Thu thập dữ liệu từ Form
+                EmployeeDTO newEmp = new()
                 {
                     Email = txtEmail.Text.Trim(),
                     FullName = txtFullName.Text.Trim(),
                     HireDate = dtpHireDate.Value.ToString("yyyy-MM-dd"),
                     PhoneNumber = txtPhone.Text.Trim(),
-                    Role = cboRole.SelectedItem?.ToString() ?? "Staff",
+                    // Đã sửa: Dùng SelectedValue để lấy đúng chữ tiếng Anh đem đi lưu
+                    Role = cboRole.SelectedValue?.ToString() ?? "Staff",
                     Password = txtPassword.Text.Trim(),
                     AvatarUrl = ""
                 };
 
-                bool result = await _employeeBus.AddEmployeeAsync(newEmp);
+                bool result = await EmployeeBUS.AddEmployeeAsync(newEmp);
                 if (result)
                 {
-                    MessageBox.Show($"Employee {newEmp.FullName} added successfully!", "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MsgBox.Show($"Nhân viên {newEmp.FullName} đã được thêm thành công.", "Thông báo", MsgBox.MessageBoxType.Info);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
@@ -79,16 +88,26 @@ namespace GUI
             catch (Exception ex)
             {
                 // Bất kỳ lỗi nào (Form rỗng, Email sai, Mật khẩu yếu...) từ Server Cloud Functions trả về sẽ hiển thị tại đây
-                MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show(ex.Message, "Lỗi", MsgBox.MessageBoxType.Error);
             }
             finally
             {
                 btnSave.Enabled = true;
-                btnSave.Text = "Save";
+                btnSave.Text = "Lưu";
             }
         }
-
-        private void cboRole_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void txtFullName_TextChanged(object sender, EventArgs e) { }
+        private void LoadRoles()
+        {
+            Dictionary<string, string> roleData = new()
+            {
+                { "manager", "Quản lý" },
+                { "barista", "Pha chế" },
+                { "order staff", "Nhân viên Order" },
+                { "security", "Bảo vệ" }
+            };
+            cboRole.DataSource = new BindingSource(roleData, null);
+            cboRole.DisplayMember = "Value";
+            cboRole.ValueMember = "Key";
+        }
     }
 }

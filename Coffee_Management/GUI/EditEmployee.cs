@@ -14,11 +14,10 @@ namespace GUI
 {
     public partial class EditEmployee : Form
     {
-        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
 
         // Lưu trữ thông tin cũ để gọi API sau khi người dùng sửa xong 
-        private string? _currentEmpId;
-        private string? _currentAuthUid;
+        private string _currentEmpId = string.Empty;
+        private string _currentAuthUid = string.Empty;
 
         // Constructor nhận dữ liệu từ Form Main truyền sang
         public EditEmployee(EmployeeDTO emp)
@@ -31,22 +30,22 @@ namespace GUI
         private void LoadRolesAndStatus()
         {
             // Binding Chức vụ (Roles)
-            Dictionary<string, string> roles = new Dictionary<string, string>
+            Dictionary<string, string> roles = new()
             {
-                { "manager", "Manager" },
-                { "order staff", "Order Staff" },
-                { "barista", "Barista" },
-                { "security", "Security" }
+                { "manager", "Quản lý" },
+                { "order staff", "Nhân viên Order" },
+                { "barista", "Pha chế" },
+                { "security", "Bảo vệ" }
             };
             cboRole.DataSource = new BindingSource(roles, null);
             cboRole.DisplayMember = "Value";
             cboRole.ValueMember = "Key";
 
             // Binding Trạng thái (Status)
-            Dictionary<string, string> status = new Dictionary<string, string>
+            Dictionary<string, string> status = new()
             {
-                { "active", "Active" },
-                { "inactive", "Inactive / Locked" }
+                { "active", "Hoạt động" },
+                { "inactive", "Ngừng hoạt động / Khóa" }
             };
             cboStatus.DataSource = new BindingSource(status, null);
             cboStatus.DisplayMember = "Value";
@@ -55,25 +54,25 @@ namespace GUI
 
         private void BindData(EmployeeDTO emp)
         {
-            _currentEmpId = emp.EmployeeId; // Lưu ID để lát gọi API
-            _currentAuthUid = emp.AuthUid; // Lưu AuthUid để lát gọi API
+            _currentEmpId = emp.EmployeeId ?? ""; // Lưu ID để lát gọi API
+            _currentAuthUid = emp.AuthUid ?? ""; // Lưu AuthUid để lát gọi API
             txtEmpId.Text = emp.EmployeeId;
             txtFullName.Text = emp.FullName;
             txtPhone.Text = emp.PhoneNumber;
 
-            cboRole.SelectedValue = emp.Role;
+            cboRole.SelectedValue = emp.Role ?? "";
             cboStatus.SelectedValue = emp.Status ?? "active";
         }
 
-        private async void btnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             btnSave.Enabled = false;
-            btnSave.Text = "SAVING...";
+            btnSave.Text = "ĐANG LƯU...";
 
             try
             {
                 // Sử dụng DTO để truyền xuống BUS thay vì tạo object ẩn danh
-                EmployeeDTO empUpdate = new EmployeeDTO
+                EmployeeDTO empUpdate = new()
                 {
                     FullName = txtFullName.Text.Trim(),
                     PhoneNumber = txtPhone.Text.Trim(),
@@ -84,43 +83,38 @@ namespace GUI
                 Task<(bool Success, string Message)> task;
 
                 if (empUpdate.Status == "active")
-                    task = _employeeBus.UpdateEmployeeAsync(_currentEmpId, empUpdate);
+                    task = EmployeeBUS.UpdateEmployeeAsync(_currentEmpId, empUpdate);
                 else
-                    task = _employeeBus.LockEmployeeAsync(_currentEmpId, _currentAuthUid);
+                    task = EmployeeBUS.LockEmployeeAsync(_currentEmpId, _currentAuthUid);
 
                 var result = await task;
 
                 if (result.Success)
                 {
-                    MessageBox.Show("Employee information updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MsgBox.Show("Cập nhật thông tin nhân viên thành công!", "Thành công", MsgBox.MessageBoxType.Success);
                     this.DialogResult = DialogResult.OK; // Báo hiệu cho Form cha biết đã sửa xong
                     this.Close();
                 }
                 else
                 {
                     // Trả ra lỗi từ Validation hoặc từ Server
-                    MessageBox.Show(result.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MsgBox.Show(result.Message, "Lỗi xác thực", MsgBox.MessageBoxType.Warning);
                     btnSave.Enabled = true;
-                    btnSave.Text = "SAVE CHANGES";
+                    btnSave.Text = "LƯU THAY ĐỔI";
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show(ex.Message, "Lỗi hệ thống", MsgBox.MessageBoxType.Error);
                 btnSave.Enabled = true;
-                btnSave.Text = "SAVE CHANGES";
+                btnSave.Text = "LƯU THAY ĐỔI";
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-        }
-
-        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

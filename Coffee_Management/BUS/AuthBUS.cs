@@ -6,9 +6,8 @@ namespace BUS
 {
     public class AuthBUS
     {
-        private AuthDAL authDAL = new AuthDAL();
-
-        public async Task<(bool IsSuccess, string Message, EmployeeDTO? UserData)> LoginBUS(string email, string password)
+        //Hàm xử lý nghiệp vụ đăng nhập, trả về 3 giá trị: Thành công hay không, Thông báo lỗi (nếu có), Dữ liệu người dùng (nếu thành công)
+        public static async Task<(bool IsSuccess, string Message, EmployeeDTO? UserData)> LoginBUS(string email, string password)
         {
             try
             {
@@ -16,50 +15,72 @@ namespace BUS
                 if (!Validation.IsAnyEmpty(email))
                 {
                     if (!Validation.IsValidEmail(email))
-                        return (false, "Invalid email format. Please enter a valid email address.", null);
+                        return (false, "Email không hợp lệ.\nVui lòng nhập lại địa chỉ email!", null);
                 }
                 else
                 {
-                    return (false, "Please enter your email address.", null);
+                    return (false, "Vui lòng nhập địa chỉ email của bạn.", null);
                 }
                 // Kiểm tra độ mạnh của mật khẩu nếu người dùng nhập
                 if (!Validation.IsAnyEmpty(password))
                 {
                     if (!Validation.IsValidPassword(password))
                     {
-                        return (false, "Password must be at least 8 characters long, and include an uppercase letter, a lowercase letter, a number, and a special character.", null);
+                        return (false, "Mật khẩu phải dài ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và một ký tự đặc biệt.", null);
                     }
                 }
                 else
                 {
-                    return (false, "Please enter your password.", null);
+                    return (false, "Vui lòng nhập mật khẩu của bạn.", null);
                 }
-                // 1. Gọi DAL thực hiện đăng nhập
-                var loginResult = await authDAL.LoginDAL(email, password);
-                // 2. Xử lý các nghiệp vụ sau khi có kết quả từ Database
-                if (loginResult.User == null)
+                //Gọi DAL thực hiện đăng nhập
+                var (user, token) = await AuthDAL.LoginDAL(email, password);
+                //Xử lý các nghiệp vụ sau khi có kết quả từ Database
+                if (user == null)
                 {
-                    return (false, "Invalid email or password.", null);
+                    return (false, "Email hoặc mật khẩu không đúng.", null);
                 }
 
-                // 3. KIỂM TRA NGHIỆP VỤ: Trạng thái tài khoản
-                if (loginResult.User.Status != "active")
+                //Kiểm tra nghiệp vụ: Trạng thái tài khoản
+                if (user.Status != "active")
                 {
-                    return (false, "Your account has been locked or disabled. Please contact your Manager.", null);
+                    return (false, "Tài khoản của bạn đã bị khóa hoặc bị vô hiệu hóa.\nVui lòng liên hệ với Quản lý của bạn.", null);
                 }
-                GlobalSession.Token = loginResult.Token;
-                GlobalSession.CurrentUser = loginResult.User;
+                GlobalSession.Token = token;
+                GlobalSession.CurrentUser = user;
                 // Thiết lập phiên làm việc kéo dài 60 phút. Trừ hao 1 phút (còn 59 phút) để app văng ra trước khi token thực sự chết
                 GlobalSession.ExpiryTime = DateTime.Now.AddMinutes(60);
                 //GlobalSession.ExpiryTime = DateTime.Now.AddSeconds(20); // Chờ 10 giây là văng
                 // 5. Nếu vượt qua mọi cửa ải -> Thành công
-                return (true, "Login successful.", loginResult.User);
+                return (true, "Đăng nhập thành công.", user);
             }
             catch (System.Exception ex)
             {
                 // 4. Xử lý lỗi hệ thống
-                return (false, $"An error occurred during login: {ex.Message}", null);
+                return (false, $"Đã xảy ra lỗi trong quá trình đăng nhập: {ex.Message}", null);
             }
+        }
+        // Hàm xử lý nghiệp vụ đặt lại mật khẩu, trả về 2 giá trị: Thành công hay không, Thông báo lỗi (nếu có)
+        public static async Task<(bool IsValid, string Message)> HandlePasswordReset(string email, string newPass, string confirmPass)
+        {
+            if (Validation.IsAnyEmpty(newPass, confirmPass))
+            {
+                return (false, "Vui lòng nhập đầy đủ mật khẩu mới và xác nhận mật khẩu.");
+            }
+            if (!Validation.IsAnyEmpty(newPass, confirmPass))
+            {
+                if (!Validation.IsValidPassword(newPass))
+                {
+                    return (false, "Mật khẩu phải dài ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, chữ số và một ký tự đặc biệt.");
+                }
+            }
+            if (newPass != confirmPass)
+            {
+                return (false, "Mật khẩu không khớp.\nVui lòng thử lại.");
+            }
+            else
+                // Nếu mọi thứ ổn ở GUI, gọi xuống DAL để thực thi đẩy lên Cloud
+                return await AuthDAL.UpdateFirebasePassword(email, newPass);
         }
     }
 }

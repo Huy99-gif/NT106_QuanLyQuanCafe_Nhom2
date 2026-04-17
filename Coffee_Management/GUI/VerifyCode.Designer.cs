@@ -45,7 +45,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(191, 30);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Verification Code";
+            lblTitle.Text = "Mã xác nhận";
             // 
             // lblDescription
             // 
@@ -56,7 +56,7 @@
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(307, 19);
             lblDescription.TabIndex = 1;
-            lblDescription.Text = "Please enter the 8 digits code sent to your email.";
+            lblDescription.Text = "Vui lòng nhập mã 8 số được gửi đến email của bạn.";
             // 
             // pnlCodeBg
             // 
@@ -91,7 +91,7 @@
             btnVerify.Name = "btnVerify";
             btnVerify.Size = new Size(120, 40);
             btnVerify.TabIndex = 3;
-            btnVerify.Text = "Verify";
+            btnVerify.Text = "Xác nhận";
             btnVerify.UseVisualStyleBackColor = false;
             btnVerify.Click += btnVerify_Click;
             // 
@@ -105,7 +105,7 @@
             lblResend.Size = new Size(89, 19);
             lblResend.TabIndex = 4;
             lblResend.TabStop = true;
-            lblResend.Text = "Resend Code";
+            lblResend.Text = "Gửi lại mã";
             lblResend.LinkClicked += lblResend_LinkClicked;
             // 
             // lblBackToLogin
@@ -118,7 +118,7 @@
             lblBackToLogin.Size = new Size(92, 19);
             lblBackToLogin.TabIndex = 5;
             lblBackToLogin.TabStop = true;
-            lblBackToLogin.Text = "Back to Login";
+            lblBackToLogin.Text = "Quay lại đăng nhập";
             lblBackToLogin.LinkClicked += lblBackToLogin_LinkClicked;
             // 
             // resendTimer
@@ -141,7 +141,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "VerifyCode";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Verify Code";
+            Text = "Xác nhận mã";
             pnlCodeBg.ResumeLayout(false);
             pnlCodeBg.PerformLayout();
             ResumeLayout(false);

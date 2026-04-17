@@ -17,24 +17,24 @@ namespace GUI
 {
     public partial class ResetPassword : Form
     {
-        private string userEmail;
+        private readonly string userEmail;
         public ResetPassword(string email)
         {
             InitializeComponent();
             this.userEmail = email;
         }
 
-        private void txtConfirmPass_Enter(object sender, EventArgs e)
+        private void TxtConfirmPass_Enter(object sender, EventArgs e)
         {
             txtConfirmPass.UseSystemPasswordChar = true;
         }
 
-        private void btnShowConfirmPass_MouseDown(object sender, MouseEventArgs e)
+        private void BtnShowConfirmPass_MouseDown(object sender, MouseEventArgs e)
         {
             txtConfirmPass.UseSystemPasswordChar = false;
         }
 
-        private void btnShowConfirmPass_MouseUp(object sender, MouseEventArgs e)
+        private void BtnShowConfirmPass_MouseUp(object sender, MouseEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(txtConfirmPass.Text))
             {
@@ -42,51 +42,58 @@ namespace GUI
             }
         }
 
-        private async void btnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
-            string newPass = txtNewPass.Text;
-            string confirmPass = txtConfirmPass.Text;
+            string newPass = txtNewPass.Text.Trim();
+            string confirmPass = txtConfirmPass.Text.Trim();
 
-            btnSave.Text = "Saving...";
+            btnSave.Text = "Đang lưu...";
             btnSave.Enabled = false;
 
-            // Khởi tạo lớp xử lý logic
-            AuthServiceBUS authBUS = new AuthServiceBUS();
-
             // Gọi hàm xử lý (truyền email, pass mới, và xác nhận pass)
-            var result = await authBUS.HandlePasswordReset(userEmail, txtNewPass.Text, txtConfirmPass.Text);
+            var result = await AuthBUS.HandlePasswordReset(userEmail, newPass, confirmPass);
 
             if (result.IsValid)
             {
-                MessageBox.Show("Password updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MsgBox.Show("Cập nhật mật khẩu thành công!", "Thành công", MsgBox.MessageBoxType.Success);
                 Form? loginForm = Application.OpenForms["Login"];
                 if (loginForm != null)
                 {
                     loginForm.Show();
                 }
+                else
+                {
+                    Login login = new();
+                    login.Show();
+                }
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Error: " + result.Message, "Fail", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show("Lỗi: " + result.Message, "Thất bại", MsgBox.MessageBoxType.Error);
             }
 
-            btnSave.Text = "Save";
+            btnSave.Text = "Lưu";
             btnSave.Enabled = true;
 
         }
 
-        private void lblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LblBackToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Form? VerifyForm = Application.OpenForms["VerifyCode"];
             if (VerifyForm != null)
             {
                 VerifyForm.Show();
             }
+            else
+            {
+                VerifyCode veri = new(string.Empty, string.Empty);
+                veri.Show();
+            }
             this.Close();
         }
 
-        private void txtNewPass_TextChanged(object sender, EventArgs e)
+        private void TxtNewPass_TextChanged(object sender, EventArgs e)
         {
 
         }

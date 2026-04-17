@@ -26,27 +26,27 @@ namespace GUI
             txtPhone.Text = emp.PhoneNumber;
 
             // Chuyển đổi mã Role từ DB sang chữ hiển thị đẹp đẽ
-            switch (emp.Role)
+            txtRole.Text = emp.Role switch
             {
-                case "manager": txtRole.Text = "Manager"; break;
-                case "staff": txtRole.Text = "Order Staff"; break;
-                case "barista": txtRole.Text = "Barista"; break;
-                case "security": txtRole.Text = "Security"; break;
-                default: txtRole.Text = emp.Role; break; // Nếu có role khác thì hiện nguyên gốc
-            }
+                "manager" => "Quản lý",
+                "staff" => "Nhân viên order",
+                "barista" => "Nhân viên pha chế",
+                "security" => "Bảo vệ",
+                _ => emp.Role // Nếu có role khác thì hiện nguyên gốc
+            };
 
             // Chuyển đổi mã Status sang chữ hiển thị đẹp đẽ
             if (emp.Status == "active")
             {
-                txtStatus.Text = "Active";
+                txtStatus.Text = "Đang hoạt động";
             }
             else
             {
-                txtStatus.Text = "Inactive / Locked";
+                txtStatus.Text = "Không hoạt động";
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

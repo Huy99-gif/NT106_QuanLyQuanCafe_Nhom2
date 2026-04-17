@@ -17,7 +17,7 @@ namespace GUI
     {
         private DateTime _expiryTime; // Biến lưu thời điểm mã sẽ hết hạn
         private int timeLeft = 60;
-        private EmailCodeBUS emailBUS = new EmailCodeBUS();
+        private EmailBUS emailBUS = new EmailBUS();
         // 2 Biến toàn cục để hứng dữ liệu từ Form 1 truyền sang
         private string _systemCode;
         private string _userEmail;
@@ -48,21 +48,21 @@ namespace GUI
             {
                 if (!Validation.IsValidVerificationCode(userCode))
                 {
-                    MessageBox.Show("Invalid verification code!\nThe code must be exactly 8 digits, including both letters and numbers.", "Invalid Format", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MsgBox.Show("Mã xác nhận không hợp lệ!\nMã phải có đúng 8 ký tự, bao gồm cả chữ và số.", "Sai định dạng", MsgBox.MessageBoxType.Warning);
                     return;
                 }
             }
-            else 
+            else
             {
-                MessageBox.Show("Please enter the verification code!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show("Vui lòng nhập mã xác nhận!", "Cảnh báo", MsgBox.MessageBoxType.Warning);
                 return;
             }
 
             // KIỂM TRA THỜI GIAN HẾT HẠN
             if (DateTime.Now > _expiryTime)
             {
-                MessageBox.Show("The verification code has expired (60s). Please click 'Resend Code' to get a new one.",
-                                "Code Expired", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MsgBox.Show("Mã xác nhận đã hết hạn (60s).\nVui lòng nhấn 'Gửi lại mã' để nhận mã mới.",
+                                "Mã hết hạn", MsgBox.MessageBoxType.Warning);
 
                 // Có thể xóa mã hệ thống để đảm bảo người dùng không thể dùng lại mã cũ
                 _systemCode = "";
@@ -77,7 +77,7 @@ namespace GUI
             }
             else
             {
-                MessageBox.Show("Invalid verification code. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show("Mã xác nhận không đúng.\nVui lòng thử lại!", "Lỗi", MsgBox.MessageBoxType.Error);
             }
         }
 
@@ -85,21 +85,21 @@ namespace GUI
         {
             // 1. Vô hiệu hóa nút để tránh người dùng bấm nhiều lần
             lblResend.Enabled = false;
-            lblResend.Text = "Sending...";
+            lblResend.Text = "Đang gửi...";
 
             try
             {
                 // 2. Gọi lại hàm gửi mã từ BUS (sử dụng email đã nhận từ Form trước)
                 // result.Code sẽ là mã mới được sinh ra
-                var result = await emailBUS.ProcessPasswordResetAsync(_userEmail);
+                var result = await EmailBUS.ProcessPasswordResetAsync(_userEmail);
 
                 if (result.IsSuccess)
                 {
                     // 3. QUAN TRỌNG: Cập nhật lại mã hệ thống mới vào biến cục bộ
                     _systemCode = result.Code;
 
-                    MessageBox.Show("A new code has been sent to your email.", "Success",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MsgBox.Show("Một mã mới đã được gửi đến email của bạn.", "Thành công",
+                                    MsgBox.MessageBoxType.Success);
 
                     // 4. Bắt đầu đếm ngược (Optional - xem hướng dẫn ở mục 2)
                     lblResend.Enabled = false;
@@ -107,17 +107,17 @@ namespace GUI
                 }
                 else
                 {
-                    MessageBox.Show(result.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MsgBox.Show(result.Message, "Lỗi", MsgBox.MessageBoxType.Error);
                     lblResend.Enabled = true;
-                    lblResend.Text = "Resend Code";
+                    lblResend.Text = "Gửi lại mã";
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show("Đã xảy ra lỗi: " + ex.Message, "Lỗi",
+                                MsgBox.MessageBoxType.Error);
                 lblResend.Enabled = true;
-                lblResend.Text = "Resend Code";
+                lblResend.Text = "Gửi lại mã";
             }
         }
 
@@ -133,14 +133,14 @@ namespace GUI
                 // Mỗi giây trôi qua, trừ đi 1
                 timeLeft--;
                 // Cập nhật chữ trên nút bấm để người dùng thấy
-                lblResend.Text = $"Resend in ({timeLeft}s)";
+                lblResend.Text = $"Gửi lại sau ({timeLeft}s)";
             }
             else
             {
                 // Khi hết thời gian (về 0)
                 resendTimer.Stop(); // Dừng bộ đếm
                 lblResend.Enabled = true; // Cho phép bấm lại
-                lblResend.Text = "Resend Code"; // Trả lại chữ ban đầu
+                lblResend.Text = "Gửi lại mã"; // Trả lại chữ ban đầu
                 timeLeft = 60; // Reset lại biến thời gian cho lần sau
             }
         }
