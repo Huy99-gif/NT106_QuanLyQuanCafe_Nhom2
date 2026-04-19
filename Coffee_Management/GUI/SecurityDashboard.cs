@@ -20,7 +20,7 @@ namespace GUI
             _dashboardManager = new BaseDashboard(this);
         }
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void BtnLogout_Click(object sender, EventArgs e)
         {
             Form? Login = Application.OpenForms["Login"];
             if (Login != null)
@@ -40,13 +40,13 @@ namespace GUI
 
                 // Nếu không phải là form Login thì đóng nó lại
                 // (Dùng f.Name để kiểm tra)
-                if (f.Name != "Login")
+                if (f?.Name != "Login")
                 {
-                    f.Close(); // Đóng form
+                    f?.Close(); // Đóng form
                 }
             }
         }
-        private void btnClose_Click(object sender, EventArgs e)
+        private void BtnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -59,7 +59,7 @@ namespace GUI
             uc.BringToFront();
         }
 
-        private void btnChat_Click(object sender, EventArgs e)
+        private void BtnChat_Click(object sender, EventArgs e)
         {
             // Dùng UC chat chung cho toàn bộ nhân viên
             ucInternalChat uc = new();
@@ -67,28 +67,28 @@ namespace GUI
             lblTitle.Text = "Internal Chat";
         }
 
-        private void btnProfile_Click(object sender, EventArgs e)
+        private void BtnProfile_Click(object sender, EventArgs e)
         {
             ucProfile uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Personal Profile";
         }
 
-        private void btnAttendance_Click(object sender, EventArgs e)
+        private void BtnAttendance_Click(object sender, EventArgs e)
         {
             ucAttendance uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Timekeeping & Attendance";
         }
 
-        private void btnLeaveRequest_Click(object sender, EventArgs e)
+        private void BtnLeaveRequest_Click(object sender, EventArgs e)
         {
             ucLeaveRequest uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Leave Request";
         }
 
-        private void btnOverview_Click(object sender, EventArgs e)
+        private void BtnOverview_Click(object sender, EventArgs e)
         {
             ucOverview_Staff uc = new();
             AddUserControl(uc);

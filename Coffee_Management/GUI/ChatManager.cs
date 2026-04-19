@@ -3,26 +3,26 @@ using DTO;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Configuration;
+using System.Collections.Generic; 
+using System.Runtime.Versioning; 
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GUI
 {
-    // Lớp này là "Trái tim" xử lý Chat cho toàn bộ App QLCafe
+    [SupportedOSPlatform("windows")] 
     public class ChatManager(Control uiControl, ListBox lstChatHistory)
     {
         private HubConnection? _connection;
-        // Ai xài lớp này cũng có thể lấy được ID phòng hiện tại
         public string CurrentRoomId { get; private set; } = "room_global";
 
-        // --- HÀM 1: KẾT NỐI SERVER---
+        // --- HÀM 1: KẾT NỐI SERVER ---
         public async Task ConnectToChatServer()
         {
             try
             {
-                // Đọc IP hoặc Link từ file App.config
-                string? savedIP = ConfigurationManager.AppSettings["ChatServerIP"] ?? "";
-                string? serverUrl = savedIP.StartsWith("http") ? savedIP : $"http://{savedIP}:8080/chathub";
+                string savedIP = ConfigurationManager.AppSettings["ChatServerIP"] ?? "localhost";
+                string serverUrl = savedIP.StartsWith("http") ? savedIP : $"http://{savedIP}:8080/chathub";
 
                 _connection = new HubConnectionBuilder()
                     .WithUrl(serverUrl)
@@ -31,7 +31,8 @@ namespace GUI
 
                 _connection.On<string, string, string>("ReceiveMessageWithRoom", (senderId, message, roomId) =>
                 {
-                    if (uiControl.IsHandleCreated)
+                    // Kiểm tra uiControl còn sống không trước khi Invoke
+                    if (!uiControl.IsDisposed && uiControl.IsHandleCreated)
                     {
                         uiControl.Invoke(new Action(() => {
                             if (roomId == CurrentRoomId)
@@ -39,15 +40,10 @@ namespace GUI
                                 string currentTime = DateTime.Now.ToString("dd/MM HH:mm");
                                 string myId = GlobalSession.CurrentUser?.EmployeeId ?? "Unknown";
 
-                                // Phân biệt Tôi và Người khác khi nhận tin
                                 if (senderId == myId)
-                                {
                                     lstChatHistory.Items.Add($"[{currentTime}] ▶ Tôi: {message}");
-                                }
                                 else
-                                {
                                     lstChatHistory.Items.Add($"[{currentTime}] 👤 {senderId}: {message}");
-                                }
 
                                 lstChatHistory.Items.Add("");
                                 lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
@@ -57,55 +53,56 @@ namespace GUI
                 });
 
                 await _connection.StartAsync();
-                lstChatHistory.Items.Add($"[Hệ thống]: Đã kết nối thành công tới máy chủ trò chuyện ({savedIP}).");
+
+                if (!uiControl.IsDisposed)
+                {
+                    uiControl.Invoke(() => lstChatHistory.Items.Add($"[Hệ thống]: Đã kết nối tới máy chủ ({savedIP})."));
+                }
             }
             catch (Exception ex)
             {
-                lstChatHistory.Items.Add($"[Lỗi]: Mất kết nối server chat\n{ex.Message}");
+                if (!uiControl.IsDisposed)
+                {
+                    uiControl.Invoke(() => lstChatHistory.Items.Add($"[Lỗi]: Mất kết nối server chat - {ex.Message}"));
+                }
             }
         }
 
-        // --- HÀM 2: CHUYỂN PHÒNG & TẢI LỊCH SỬ---
+        // --- HÀM 2: CHUYỂN PHÒNG & TẢI LỊCH SỬ ---
         public async Task SwitchChatRoom(string targetId)
         {
             if (GlobalSession.CurrentUser == null) return;
 
-            string? myId = GlobalSession.CurrentUser.EmployeeId;
-            if (myId == null) 
-                return;
+            string myId = GlobalSession.CurrentUser.EmployeeId ?? "Unknown";
             CurrentRoomId = ChatBUS.GetRoomId(myId, targetId);
 
-            // Gọi BUS để lấy RoomID chuẩn
             lstChatHistory.Items.Clear();
-            lstChatHistory.Items.Add($"[Hệ thống]: Đang tải lịch sử trò chuyện với {targetId}...");
+            lstChatHistory.Items.Add($"[Hệ thống]: Đang tải lịch sử với {targetId}...");
 
             try
             {
                 var history = await ChatBUS.GetHistory(CurrentRoomId);
 
-                //SỬ DỤNG BeginUpdate/EndUpdate để tránh nhấp nháy khi load nhiều tin nhắn
                 lstChatHistory.BeginUpdate();
                 lstChatHistory.Items.Clear();
 
                 foreach (var msg in history)
                 {
+                    // Xử lý Nullable cho msg.Message
+                    string content = msg.Message ?? "";
                     DateTime msgTime = DateTimeOffset.FromUnixTimeMilliseconds(msg.Timestamp).LocalDateTime;
 
-                    // Phân biệt Tôi và Người khác khi load lịch sử
                     if (msg.SenderId == myId)
-                    {
-                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] ▶ Tôi: {msg.Message}");
-                    }
+                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] ▶ Tôi: {content}");
                     else
-                    {
-                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] 👤 {msg.SenderId}: {msg.Message}");
-                    }
+                        lstChatHistory.Items.Add($"[{msgTime:dd/MM HH:mm}] 👤 {msg.SenderId}: {content}");
+
                     lstChatHistory.Items.Add("");
                 }
 
-                lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
+                if (lstChatHistory.Items.Count > 0)
+                    lstChatHistory.TopIndex = lstChatHistory.Items.Count - 1;
 
-                // Nếu không có tin nhắn nào thì hiển thị thông báo
                 lstChatHistory.EndUpdate();
             }
             catch (Exception ex)
@@ -114,43 +111,47 @@ namespace GUI
             }
         }
 
-        // --- HÀM 3: GỬI TIN NHẮN---
+        // --- HÀM 3: GỬI TIN NHẮN ---
         public async Task SendMessageAsync(string message)
         {
+            if (string.IsNullOrWhiteSpace(message)) return;
+
             if (_connection != null && _connection.State == HubConnectionState.Connected)
             {
                 string myId = GlobalSession.CurrentUser?.EmployeeId ?? "";
-                if (Validation.IsAnyEmpty(message))
-                {
-                    MsgBox.Show("Không thể gửi tin nhắn trống!", "Lỗi xác thực", MsgBox.MessageBoxType.Warning);
-                    return;
-                }
 
-                // Gửi tin nhắn lên màn hình qua SignalR
-                await _connection.InvokeAsync("SendMessageWithRoom", myId, message, CurrentRoomId);
-
-                // Giao việc lưu Firebase cho luồng chạy ngầm
-                _ = Task.Run(async () =>
+                try
                 {
-                    try
+                    // Gửi tin nhắn qua SignalR
+                    await _connection.InvokeAsync("SendMessageWithRoom", myId, message, CurrentRoomId);
+
+                    // Chạy ngầm việc lưu Firebase (Fire & Forget)
+                    _ = Task.Run(async () =>
                     {
-                        var chatDto = new ChatMessageDTO
+                        try
                         {
-                            SenderId = myId,
-                            Message = message,
-                            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
-                        };
-                        await ChatBUS.SaveMessage(CurrentRoomId, chatDto);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Lỗi lưu tin nhắn: " + ex.Message);
-                    }
-                });
+                            var chatDto = new ChatMessageDTO
+                            {
+                                SenderId = myId,
+                                Message = message,
+                                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                            };
+                            await ChatBUS.SaveMessage(CurrentRoomId, chatDto);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Lỗi lưu tin nhắn: " + ex.Message);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Không thể gửi tin nhắn: " + ex.Message, "Lỗi kết nối", MsgBox.MessageBoxType.Error);
+                }
             }
             else
             {
-                MsgBox.Show("Mất kết nối tới server! Vui lòng kiểm tra mạng của bạn.", "Lỗi mạng", MsgBox.MessageBoxType.Warning);
+                MsgBox.Show("Mất kết nối server! Vui lòng thử lại sau.", "Lỗi mạng", MsgBox.MessageBoxType.Warning);
             }
         }
     }

@@ -93,9 +93,9 @@ namespace GUI
 
                 // Nếu không phải là form Login thì đóng nó lại
                 // (Dùng f.Name để kiểm tra)
-                if (f.Name != "Login")
+                if (f?.Name != "Login")
                 {
-                    f.Close(); // Đóng form
+                    f?.Close(); // Đóng form
                 }
             }
         }

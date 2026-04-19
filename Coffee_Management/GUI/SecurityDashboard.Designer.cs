@@ -80,7 +80,7 @@ namespace GUI
             btnProfile.TabIndex = 4;
             btnProfile.Text = "   Profile";
             btnProfile.TextAlign = ContentAlignment.MiddleLeft;
-            btnProfile.Click += btnProfile_Click;
+            btnProfile.Click += BtnProfile_Click;
             // 
             // btnChat
             // 
@@ -95,7 +95,7 @@ namespace GUI
             btnChat.TabIndex = 2;
             btnChat.Text = "   Chat";
             btnChat.TextAlign = ContentAlignment.MiddleLeft;
-            btnChat.Click += btnChat_Click;
+            btnChat.Click += BtnChat_Click;
             // 
             // btnAttendance
             // 
@@ -110,7 +110,7 @@ namespace GUI
             btnAttendance.TabIndex = 1;
             btnAttendance.Text = "   Chấm công";
             btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
-            btnAttendance.Click += btnAttendance_Click;
+            btnAttendance.Click += BtnAttendance_Click;
             // 
             // btnLeaveRequest
             // 
@@ -125,7 +125,7 @@ namespace GUI
             btnLeaveRequest.TabIndex = 3;
             btnLeaveRequest.Text = "   Xin nghỉ";
             btnLeaveRequest.TextAlign = ContentAlignment.MiddleLeft;
-            btnLeaveRequest.Click += btnLeaveRequest_Click;
+            btnLeaveRequest.Click += BtnLeaveRequest_Click;
             // 
             // btnOverview
             // 
@@ -140,7 +140,7 @@ namespace GUI
             btnOverview.TabIndex = 6;
             btnOverview.Text = "  Tổng quan";
             btnOverview.TextAlign = ContentAlignment.MiddleLeft;
-            btnOverview.Click += btnOverview_Click;
+            btnOverview.Click += BtnOverview_Click;
             // 
             // pnlLogo
             // 
@@ -175,7 +175,7 @@ namespace GUI
             btnLogout.Size = new Size(220, 50);
             btnLogout.TabIndex = 0;
             btnLogout.Text = "Đăng xuất";
-            btnLogout.Click += btnLogout_Click;
+            btnLogout.Click += BtnLogout_Click;
             // 
             // pnlMainContent
             // 
@@ -221,7 +221,7 @@ namespace GUI
             btnClose.Size = new Size(50, 70);
             btnClose.TabIndex = 0;
             btnClose.Text = "X";
-            btnClose.Click += btnClose_Click;
+            btnClose.Click += BtnClose_Click;
             // 
             // pnlHeader
             // 

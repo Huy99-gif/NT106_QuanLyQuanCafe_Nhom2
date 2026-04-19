@@ -37,7 +37,7 @@ namespace GUI
                 var List = fullList.Where(emp => emp.Role != "admin").ToList();
 
                 // 3. Tạo cấu trúc bảng
-                DataTable dt = new DataTable();
+                DataTable dt = new();
                 dt.Columns.Add("Mã NV");
                 dt.Columns.Add("Họ và Tên");
                 dt.Columns.Add("Vị Trí");
@@ -116,7 +116,7 @@ namespace GUI
 
         private async void btnAddStaff_Click(object sender, EventArgs e)
         {
-            AddEmployee frmAdd = new AddEmployee();
+            AddEmployee frmAdd = new ();
             // Mở form lên dưới dạng hộp thoại (người dùng phải đóng form này mới thao tác tiếp được với nền bên dưới)
             if (frmAdd.ShowDialog() == DialogResult.OK)
             {
@@ -150,7 +150,7 @@ namespace GUI
             DataGridViewRow row = dgvStaff.CurrentRow;
 
             // 3. Tạo đối tượng DTO chứa dữ liệu
-            EmployeeDTO empToEdit = new EmployeeDTO
+            EmployeeDTO empToEdit = new()
             {
                 EmployeeId = row.Cells["Mã NV"].Value?.ToString(),
                 FullName = row.Cells["Họ và Tên"].Value?.ToString(),
@@ -161,7 +161,7 @@ namespace GUI
             };
 
             // 4. Mở Form Edit
-            EditEmployee frmEdit = new EditEmployee(empToEdit);
+            EditEmployee frmEdit = new (empToEdit);
             if (frmEdit.ShowDialog() == DialogResult.OK)
             {
                 // Load lại danh sách nếu lưu thành công
@@ -178,7 +178,7 @@ namespace GUI
             DataGridViewRow row = dgvStaff.Rows[e.RowIndex];
 
             // Gói dữ liệu
-            EmployeeDTO empDetails = new EmployeeDTO
+            EmployeeDTO empDetails = new()
             {
                 EmployeeId = row.Cells["Mã NV"].Value?.ToString(),
                 FullName = row.Cells["Họ và Tên"].Value?.ToString(),
@@ -190,7 +190,7 @@ namespace GUI
 
             // Mở Form CHỈ XEM CHI TIẾT (Read-only)
             // Giả sử bạn sẽ tạo một form tên là EmployeeDetail
-            InformationStaff frmDetail = new InformationStaff(empDetails);
+            InformationStaff frmDetail = new (empDetails);
             frmDetail.ShowDialog();
         }
     }

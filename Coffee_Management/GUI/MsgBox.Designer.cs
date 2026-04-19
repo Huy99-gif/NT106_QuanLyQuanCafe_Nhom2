@@ -28,91 +28,91 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.pnlBody = new System.Windows.Forms.Panel();
-            this.lblMessage = new System.Windows.Forms.Label();
-            this.btnOk = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
-            this.pnlBody.SuspendLayout();
-            this.SuspendLayout();
+            pnlHeader = new Panel();
+            lblTitle = new Label();
+            pnlBody = new Panel();
+            lblMessage = new Label();
+            btnOk = new Button();
+            pnlHeader.SuspendLayout();
+            pnlBody.SuspendLayout();
+            SuspendLayout();
             // 
-            // pnlHeader (Thanh tiêu đề trên cùng)
+            // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(400, 35);
-            this.pnlHeader.TabIndex = 0;
-            this.pnlHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlHeader_MouseDown);
+            pnlHeader.BackColor = Color.FromArgb(0, 123, 255);
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(400, 35);
+            pnlHeader.TabIndex = 0;
+            pnlHeader.MouseDown += PnlHeader_MouseDown;
             // 
-            // lblTitle (Chữ tiêu đề)
+            // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(12, 8);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(94, 19);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Notification";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(12, 8);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(88, 19);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Thông báo";
             // 
-            // pnlBody (Phần chứa tin nhắn)
+            // pnlBody
             // 
-            this.pnlBody.Controls.Add(this.lblMessage);
-            this.pnlBody.Controls.Add(this.btnOk);
-            this.pnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBody.Location = new System.Drawing.Point(0, 35);
-            this.pnlBody.Name = "pnlBody";
-            this.pnlBody.Size = new System.Drawing.Size(400, 165);
-            this.pnlBody.TabIndex = 1;
+            pnlBody.Controls.Add(lblMessage);
+            pnlBody.Controls.Add(btnOk);
+            pnlBody.Dock = DockStyle.Fill;
+            pnlBody.Location = new Point(0, 35);
+            pnlBody.Name = "pnlBody";
+            pnlBody.Size = new Size(400, 165);
+            pnlBody.TabIndex = 1;
             // 
-            // lblMessage (Nội dung tin nhắn)
+            // lblMessage
             // 
-            this.lblMessage.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblMessage.ForeColor = System.Drawing.Color.White;
-            this.lblMessage.Location = new System.Drawing.Point(20, 20);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(360, 80);
-            this.lblMessage.TabIndex = 1;
-            this.lblMessage.Text = "Message goes here...";
-            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblMessage.Font = new Font("Segoe UI", 11F);
+            lblMessage.ForeColor = Color.White;
+            lblMessage.Location = new Point(20, 20);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(360, 80);
+            lblMessage.TabIndex = 1;
+            lblMessage.Text = "Tin nhắn sẽ xuất hiện ở đây..";
+            lblMessage.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // btnOk (Nút xác nhận)
+            // btnOk
             // 
-            this.btnOk.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.btnOk.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOk.FlatAppearance.BorderSize = 0;
-            this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOk.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnOk.ForeColor = System.Drawing.Color.White;
-            this.btnOk.Location = new System.Drawing.Point(140, 110);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(120, 40);
-            this.btnOk.TabIndex = 0;
-            this.btnOk.Text = "OK";
-            this.btnOk.UseVisualStyleBackColor = false;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            btnOk.BackColor = Color.FromArgb(0, 123, 255);
+            btnOk.Cursor = Cursors.Hand;
+            btnOk.FlatAppearance.BorderSize = 0;
+            btnOk.FlatStyle = FlatStyle.Flat;
+            btnOk.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnOk.ForeColor = Color.White;
+            btnOk.Location = new Point(140, 110);
+            btnOk.Name = "btnOk";
+            btnOk.Size = new Size(120, 40);
+            btnOk.TabIndex = 0;
+            btnOk.Text = "OK";
+            btnOk.UseVisualStyleBackColor = false;
+            btnOk.Click += BtnOk_Click;
             // 
-            // frmMessageBox
+            // MsgBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
-            this.ClientSize = new System.Drawing.Size(400, 200);
-            this.Controls.Add(this.pnlBody);
-            this.Controls.Add(this.pnlHeader);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "ShowMessageBox";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Message Box";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            this.pnlBody.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(35, 35, 38);
+            ClientSize = new Size(400, 200);
+            Controls.Add(pnlBody);
+            Controls.Add(pnlHeader);
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "MsgBox";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Message Box";
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlBody.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 

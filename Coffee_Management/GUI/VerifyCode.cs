@@ -15,12 +15,11 @@ namespace GUI
 {
     public partial class VerifyCode : Form
     {
-        private DateTime _expiryTime; // Biến lưu thời điểm mã sẽ hết hạn
+        private readonly DateTime _expiryTime; // Biến lưu thời điểm mã sẽ hết hạn
         private int timeLeft = 60;
-        private EmailBUS emailBUS = new EmailBUS();
         // 2 Biến toàn cục để hứng dữ liệu từ Form 1 truyền sang
         private string _systemCode;
-        private string _userEmail;
+        private readonly string _userEmail;
 
         // Sửa lại hàm khởi tạo để nhận dữ liệu
         public VerifyCode(string systemCode, string userEmail)
@@ -71,7 +70,7 @@ namespace GUI
 
             if (userCode == _systemCode)
             {
-                ResetPassword reset = new ResetPassword(_userEmail);
+                ResetPassword reset = new(_userEmail);
                 reset.Show();
                 this.Close();
             }
@@ -96,7 +95,7 @@ namespace GUI
                 if (result.IsSuccess)
                 {
                     // 3. QUAN TRỌNG: Cập nhật lại mã hệ thống mới vào biến cục bộ
-                    _systemCode = result.Code;
+                    _systemCode = result.Code ?? string.Empty;
 
                     MsgBox.Show("Một mã mới đã được gửi đến email của bạn.", "Thành công",
                                     MsgBox.MessageBoxType.Success);

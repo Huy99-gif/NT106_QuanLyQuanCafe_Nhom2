@@ -12,7 +12,6 @@ namespace GUI
 {
     public partial class ucInternalChat : UserControl
     {
-        private readonly HubConnection _connection; // Biến giữ kết nối SignalR
 
         // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
         private readonly ChatManager _chatManager;
@@ -80,8 +79,16 @@ namespace GUI
 
         private string GetIdFromCombo()
         {
-            if (cmbChatTarget.SelectedIndex <= 0) return "Everyone";
-            return cmbChatTarget.SelectedItem.ToString().Split(']')[0].Trim('[');
+            if (cmbChatTarget == null || cmbChatTarget.SelectedIndex <= 0)
+                return "room_global";
+
+            // Lấy nội dung item an toàn
+            string? selectedItem = cmbChatTarget.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedItem) || !selectedItem.Contains(']'))
+                return "room_global";
+
+            // Bóc tách [ID]
+            return selectedItem.Split(']')[0].Trim('[');
         }
 
         private void lblChatTitle_Click(object sender, EventArgs e)

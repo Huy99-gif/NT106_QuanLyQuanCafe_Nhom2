@@ -12,14 +12,12 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    
-    [SupportedOSPlatform("windows")]
-    public partial class MsgBox : Form
+    internal partial class MsgBox : Form
     {
+
         // --- CÁC HÀM DLL ĐỂ LÀM GIAO DIỆN XỊN ---
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
-
         [DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
         [DllImport("user32.dll")]
@@ -69,14 +67,14 @@ namespace GUI
         public enum MessageBoxType { Info, Success, Error, Warning }
 
         // Sự kiện di chuyển Form khi nhấn giữ Header
-        private void pnlHeader_MouseDown(object sender, MouseEventArgs e)
+        private void PnlHeader_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
             _ = SendMessage(this.Handle, 0xA1, 0x2, 0);
         }
 
         // Sự kiện nút OK
-        private void btnOk_Click(object sender, EventArgs e)
+        private void BtnOk_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
             this.Close();

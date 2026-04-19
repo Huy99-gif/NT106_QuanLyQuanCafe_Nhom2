@@ -11,11 +11,9 @@ namespace GUI
 {
     public partial class ucSettings_Manager : UserControl
     {
-        private readonly EmployeeBUS _employeeBus = new EmployeeBUS();
-        private List<EmployeeDTO> _allEmployees = new List<EmployeeDTO>();
+        private List<EmployeeDTO> _allEmployees = [];
 
-        // 1. GỌI ÔNG QUẢN LÝ CHAT LÊN
-        private ChatManager _chatManager;
+        private readonly ChatManager _chatManager;
 
         public ucSettings_Manager()
         {
@@ -95,8 +93,16 @@ namespace GUI
 
         private string GetIdFromCombo()
         {
-            if (cmbChatTarget.SelectedIndex <= 0) return "Everyone";
-            return cmbChatTarget.SelectedItem.ToString().Split(']')[0].Trim('[');
+            if (cmbChatTarget == null || cmbChatTarget.SelectedIndex <= 0)
+                return "";
+
+            // Lấy nội dung item an toàn
+            string? selectedItem = cmbChatTarget.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedItem) || !selectedItem.Contains(']'))
+                return "";
+
+            // Bóc tách [ID]
+            return selectedItem.Split(']')[0].Trim('[');
         }
     }
 }
