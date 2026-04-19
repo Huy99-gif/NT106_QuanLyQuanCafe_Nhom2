@@ -80,12 +80,12 @@ namespace GUI
         private string GetIdFromCombo()
         {
             if (cmbChatTarget == null || cmbChatTarget.SelectedIndex <= 0)
-                return "room_global";
+                return "";
 
             // Lấy nội dung item an toàn
             string? selectedItem = cmbChatTarget.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(selectedItem) || !selectedItem.Contains(']'))
-                return "room_global";
+                return "";
 
             // Bóc tách [ID]
             return selectedItem.Split(']')[0].Trim('[');

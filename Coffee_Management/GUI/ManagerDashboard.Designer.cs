@@ -2,7 +2,15 @@
 {
     partial class ManagerDashboard
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 
         protected override void Dispose(bool disposing)
         {
@@ -20,6 +28,8 @@
             pnlSidebar = new Panel();
             btnLogout = new Button();
             btnSettings = new Button();
+            btnWorkTracking = new Button();
+            btnLeave = new Button();
             btnStaff = new Button();
             btnOrders = new Button();
             btnProducts = new Button();
@@ -42,6 +52,8 @@
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnLogout);
             pnlSidebar.Controls.Add(btnSettings);
+            pnlSidebar.Controls.Add(btnWorkTracking);
+            pnlSidebar.Controls.Add(btnLeave);
             pnlSidebar.Controls.Add(btnStaff);
             pnlSidebar.Controls.Add(btnOrders);
             pnlSidebar.Controls.Add(btnProducts);
@@ -77,7 +89,7 @@
             btnSettings.FlatStyle = FlatStyle.Flat;
             btnSettings.Font = new Font("Segoe UI", 11F);
             btnSettings.ForeColor = Color.White;
-            btnSettings.Location = new Point(0, 270);
+            btnSettings.Location = new Point(0, 370);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(220, 50);
             btnSettings.TabIndex = 5;
@@ -85,6 +97,40 @@
             btnSettings.TextAlign = ContentAlignment.MiddleLeft;
             btnSettings.UseVisualStyleBackColor = true;
             btnSettings.Click += BtnSettings_Click;
+            // 
+            // btnWorkTracking
+            // 
+            btnWorkTracking.Cursor = Cursors.Hand;
+            btnWorkTracking.Dock = DockStyle.Top;
+            btnWorkTracking.FlatAppearance.BorderSize = 0;
+            btnWorkTracking.FlatStyle = FlatStyle.Flat;
+            btnWorkTracking.Font = new Font("Segoe UI", 11F);
+            btnWorkTracking.ForeColor = Color.White;
+            btnWorkTracking.Location = new Point(0, 320);
+            btnWorkTracking.Name = "btnWorkTracking";
+            btnWorkTracking.Size = new Size(220, 50);
+            btnWorkTracking.TabIndex = 8;
+            btnWorkTracking.Text = "  Theo dõi ngày làm việc";
+            btnWorkTracking.TextAlign = ContentAlignment.MiddleLeft;
+            btnWorkTracking.UseVisualStyleBackColor = true;
+            btnWorkTracking.Click += BtnWorkTracking_Click;
+            // 
+            // btnLeave
+            // 
+            btnLeave.Cursor = Cursors.Hand;
+            btnLeave.Dock = DockStyle.Top;
+            btnLeave.FlatAppearance.BorderSize = 0;
+            btnLeave.FlatStyle = FlatStyle.Flat;
+            btnLeave.Font = new Font("Segoe UI", 11F);
+            btnLeave.ForeColor = Color.White;
+            btnLeave.Location = new Point(0, 270);
+            btnLeave.Name = "btnLeave";
+            btnLeave.Size = new Size(220, 50);
+            btnLeave.TabIndex = 7;
+            btnLeave.Text = "  Xin nghỉ";
+            btnLeave.TextAlign = ContentAlignment.MiddleLeft;
+            btnLeave.UseVisualStyleBackColor = true;
+            btnLeave.Click += BtnLeave_Click;
             // 
             // btnStaff
             // 
@@ -210,7 +256,6 @@
             btnClose.Size = new Size(50, 70);
             btnClose.TabIndex = 0;
             btnClose.Text = "X";
-            btnClose.Click += BtnClose_Click_1;
             // 
             // lblTitle
             // 
@@ -222,7 +267,6 @@
             lblTitle.Size = new Size(178, 25);
             lblTitle.TabIndex = 1;
             lblTitle.Text = "BẢNG ĐIỀU KHIỂN";
-            lblTitle.Click += LblTitle_Click_1;
             // 
             // lblWelcome
             // 
@@ -264,6 +308,7 @@
         private System.Windows.Forms.Label lblLogo;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnWorkTracking;
         private System.Windows.Forms.Button btnStaff;
         private System.Windows.Forms.Button btnOrders;
         private System.Windows.Forms.Button btnProducts;
@@ -273,5 +318,6 @@
         private Panel pnlHeader;
         private Button btnClose;
         private Label lblTitle;
+        private Button btnLeave;
     }
 }

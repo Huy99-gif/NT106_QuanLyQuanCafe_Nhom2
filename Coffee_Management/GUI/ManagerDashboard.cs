@@ -37,7 +37,7 @@ namespace GUI
         {
             ucOverview_Manager uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Overview";
+            lblTitle.Text = "Tổng quan";
         }
 
         private void BtnClose_Click(object sender, EventArgs e)
@@ -49,29 +49,37 @@ namespace GUI
         {
             ucProducts_Manager uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Product and Menu";
+            lblTitle.Text = "Sản phẩm và Thực đơn";
         }
 
         private void BtnOrders_Click(object sender, EventArgs e)
         {
             ucOrders_Manager uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Orders and Bills";
+            lblTitle.Text = "Đơn hàng và Hóa đơn";
         }
 
         private void BtnStaff_Click(object sender, EventArgs e)
         {
             ucStaff_Manager uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Manage Staff";
+            lblTitle.Text = "Quản lý Nhân viên";
         }
 
         private void BtnSettings_Click(object sender, EventArgs e)
         {
             ucSettings_Manager uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Settings";
+            lblTitle.Text = "Cài đặt và Chat";
         }
+
+        private void BtnLeave_Click(object sender, EventArgs e)
+        {
+            ucLeaveRequest uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Xin nghỉ";
+        }
+
 
         private void BtnLogout_Click(object? sender, EventArgs e)
         {
@@ -100,19 +108,11 @@ namespace GUI
             }
         }
 
-        private void LblTitle_Click(object sender, EventArgs e)
+        private void BtnWorkTracking_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void LblTitle_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnClose_Click_1(object sender, EventArgs e)
-        {
-            Application.Exit();
+            ucWorkTracking uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Theo dõi công việc";
         }
     }
 }

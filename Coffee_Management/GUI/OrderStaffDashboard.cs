@@ -40,7 +40,7 @@ namespace GUI
         {
             ucPOS_OrStaff uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "POS / Order";
+            lblTitle.Text = "Lên đơn / POS";
         }
 
         private void BtnChat_Click(object sender, EventArgs e)
@@ -48,7 +48,7 @@ namespace GUI
             // Load UserControl Chat đã tích hợp SignalR và Firebase
             ucInternalChat uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Internal Chat";
+            lblTitle.Text = "Chat nội bộ";
         }
 
         private void BtnLogout_Click(object? sender, EventArgs e)
@@ -63,7 +63,7 @@ namespace GUI
                 Login login = new();
                 login.Show();
             }
-                GlobalSession.Logout();
+            GlobalSession.Logout();
             //DUYỆT NGƯỢC TỪ CUỐI LÊN ĐỂ TẮT TẤT CẢ CÁC FORM KHÁC
             for (int i = Application.OpenForms.Count - 1; i >= 0; i--)
             {
@@ -108,7 +108,21 @@ namespace GUI
         {
             ucOverview_Staff uc = new();
             AddUserControl(uc);
-            lblTitle.Text = "Overview";
+            lblTitle.Text = "Tổng quan";
+        }
+
+        private void BtnLeave_Click(object sender, EventArgs e)
+        {
+            ucLeaveRequest uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Xin nghỉ";
+        }
+
+        private void BtnWorkTracking_Click(object sender, EventArgs e)
+        {
+            ucWorkTracking uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Theo dõi công việc";
         }
     }
 }

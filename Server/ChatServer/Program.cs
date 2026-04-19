@@ -18,10 +18,12 @@ namespace QLCafe.ChatServer
             // Cấu hình CORS để cho phép kết nối từ mọi nguồn, phương thức và header
             builder.Services.AddCors(options =>
             {
-                // Cho phép tất cả các nguồn, phương thức và header
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowed(_ => true).AllowCredentials();
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .SetIsOriginAllowed(_ => true) // Rất quan trọng cho SignalR
+                          .AllowCredentials();
                 });
             });
 

@@ -69,13 +69,6 @@ namespace GUI
             lblTitle.Text = "Chat";
         }
 
-        private void BtnAttendance_Click(object sender, EventArgs e)
-        {
-            ucAttendance uc = new();
-            AddUserControl(uc);
-            lblTitle.Text = "Chấm công";
-        }
-
         private void BtnLeaveRequest_Click(object sender, EventArgs e)
         {
             ucLeaveRequest uc = new();
@@ -95,11 +88,18 @@ namespace GUI
             Application.Exit();
         }
 
-        private void btnOverview_Click(object sender, EventArgs e)
+        private void BtnOverview_Click(object sender, EventArgs e)
         {
             ucOverview_Staff uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Tổng quan";
+        }
+
+        private void BtnWorkTracking_Click(object sender, EventArgs e)
+        {
+            ucWorkTracking uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Theo dõi công việc";
         }
     }
 }

@@ -5,7 +5,15 @@ namespace GUI
 {
     partial class OrderStaffDashboard
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 
         protected override void Dispose(bool disposing)
         {
@@ -22,6 +30,8 @@ namespace GUI
         {
             pnlSidebar = new Panel();
             btnProfile = new Button();
+            btnWorkTracking = new Button();
+            btnLeave = new Button();
             btnLogout = new Button();
             btnChat = new Button();
             btnTables = new Button();
@@ -44,6 +54,8 @@ namespace GUI
             // 
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnProfile);
+            pnlSidebar.Controls.Add(btnWorkTracking);
+            pnlSidebar.Controls.Add(btnLeave);
             pnlSidebar.Controls.Add(btnLogout);
             pnlSidebar.Controls.Add(btnChat);
             pnlSidebar.Controls.Add(btnTables);
@@ -63,12 +75,41 @@ namespace GUI
             btnProfile.FlatStyle = FlatStyle.Flat;
             btnProfile.Font = new Font("Segoe UI", 11F);
             btnProfile.ForeColor = Color.White;
-            btnProfile.Location = new Point(0, 270);
+            btnProfile.Location = new Point(0, 370);
             btnProfile.Name = "btnProfile";
             btnProfile.Size = new Size(220, 50);
             btnProfile.TabIndex = 6;
             btnProfile.Text = "  Hồ sơ";
             btnProfile.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnWorkTracking
+            // 
+            btnWorkTracking.Dock = DockStyle.Top;
+            btnWorkTracking.FlatAppearance.BorderSize = 0;
+            btnWorkTracking.FlatStyle = FlatStyle.Flat;
+            btnWorkTracking.Font = new Font("Segoe UI", 11F);
+            btnWorkTracking.ForeColor = Color.White;
+            btnWorkTracking.Location = new Point(0, 320);
+            btnWorkTracking.Name = "btnWorkTracking";
+            btnWorkTracking.Size = new Size(220, 50);
+            btnWorkTracking.TabIndex = 9;
+            btnWorkTracking.Text = "  Theo dõi ngày làm việc";
+            btnWorkTracking.TextAlign = ContentAlignment.MiddleLeft;
+            btnWorkTracking.Click += BtnWorkTracking_Click;
+            // 
+            // btnLeave
+            // 
+            btnLeave.Dock = DockStyle.Top;
+            btnLeave.FlatAppearance.BorderSize = 0;
+            btnLeave.FlatStyle = FlatStyle.Flat;
+            btnLeave.Font = new Font("Segoe UI", 11F);
+            btnLeave.ForeColor = Color.White;
+            btnLeave.Location = new Point(0, 270);
+            btnLeave.Name = "btnLeave";
+            btnLeave.Size = new Size(220, 50);
+            btnLeave.TabIndex = 8;
+            btnLeave.Text = "  Xin nghỉ";
+            btnLeave.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // btnLogout
             // 
@@ -251,7 +292,7 @@ namespace GUI
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnTables;
         private System.Windows.Forms.Button btnPOS;
-        private System.Windows.Forms.Button btnOverview; // Khai báo biến
+        private System.Windows.Forms.Button btnOverview;
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.Label lblLogo;
         private System.Windows.Forms.Panel pnlMainContent;
@@ -260,5 +301,7 @@ namespace GUI
         private Button btnClose;
         private Panel pnlHeader;
         private Button btnProfile;
+        private Button btnLeave;
+        private Button btnWorkTracking;
     }
 }

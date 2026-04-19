@@ -34,7 +34,7 @@ namespace GUI
             pnlSidebar = new Panel();
             btnProfile = new Button();
             btnChat = new Button();
-            btnAttendance = new Button();
+            btnWorkTracking = new Button();
             btnLeaveRequest = new Button();
             btnOverview = new Button();
             pnlLogo = new Panel();
@@ -56,7 +56,7 @@ namespace GUI
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnProfile);
             pnlSidebar.Controls.Add(btnChat);
-            pnlSidebar.Controls.Add(btnAttendance);
+            pnlSidebar.Controls.Add(btnWorkTracking);
             pnlSidebar.Controls.Add(btnLeaveRequest);
             pnlSidebar.Controls.Add(btnOverview);
             pnlSidebar.Controls.Add(pnlLogo);
@@ -97,20 +97,20 @@ namespace GUI
             btnChat.TextAlign = ContentAlignment.MiddleLeft;
             btnChat.Click += BtnChat_Click;
             // 
-            // btnAttendance
+            // btnWorkTracking
             // 
-            btnAttendance.Dock = DockStyle.Top;
-            btnAttendance.FlatAppearance.BorderSize = 0;
-            btnAttendance.FlatStyle = FlatStyle.Flat;
-            btnAttendance.Font = new Font("Segoe UI", 11F);
-            btnAttendance.ForeColor = Color.White;
-            btnAttendance.Location = new Point(0, 170);
-            btnAttendance.Name = "btnAttendance";
-            btnAttendance.Size = new Size(220, 50);
-            btnAttendance.TabIndex = 1;
-            btnAttendance.Text = "   Chấm công";
-            btnAttendance.TextAlign = ContentAlignment.MiddleLeft;
-            btnAttendance.Click += BtnAttendance_Click;
+            btnWorkTracking.Dock = DockStyle.Top;
+            btnWorkTracking.FlatAppearance.BorderSize = 0;
+            btnWorkTracking.FlatStyle = FlatStyle.Flat;
+            btnWorkTracking.Font = new Font("Segoe UI", 11F);
+            btnWorkTracking.ForeColor = Color.White;
+            btnWorkTracking.Location = new Point(0, 170);
+            btnWorkTracking.Name = "btnWorkTracking";
+            btnWorkTracking.Size = new Size(220, 50);
+            btnWorkTracking.TabIndex = 1;
+            btnWorkTracking.Text = "   Theo dõi ngày làm việc";
+            btnWorkTracking.TextAlign = ContentAlignment.MiddleLeft;
+            btnWorkTracking.Click += BtnWorkTracking_Click;
             // 
             // btnLeaveRequest
             // 
@@ -138,7 +138,7 @@ namespace GUI
             btnOverview.Name = "btnOverview";
             btnOverview.Size = new Size(220, 50);
             btnOverview.TabIndex = 6;
-            btnOverview.Text = "  Tổng quan";
+            btnOverview.Text = "   Tổng quan";
             btnOverview.TextAlign = ContentAlignment.MiddleLeft;
             btnOverview.Click += BtnOverview_Click;
             // 
@@ -245,7 +245,7 @@ namespace GUI
             FormBorderStyle = FormBorderStyle.None;
             Name = "SecurityDashboard";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Security Dashboard";
+            Text = "Giao diện Bảo vệ";
             pnlSidebar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();
@@ -260,7 +260,6 @@ namespace GUI
 
         private System.Windows.Forms.Panel pnlSidebar;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Button btnAttendance;
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnLeaveRequest;
         private System.Windows.Forms.Button btnProfile;
@@ -272,5 +271,6 @@ namespace GUI
         private Label lblTitle;
         private Button btnClose;
         private Panel pnlHeader;
+        private Button btnWorkTracking;
     }
 }

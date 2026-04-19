@@ -148,8 +148,26 @@ exports.generateAndSendOTP = onRequest(async (req, res) => {
         const mailOptions = {
             from: `"Hệ thống QLCafe" <${emailUserParam.value()}>`,
             to: toEmail,
-            subject: 'QLCafe - Password Reset Verification Code',
-            text: `Hello, \n\nYour password reset verification code is: ${generatedCode} \n\nNote: This code is valid for 60 seconds only. After this time, it will expire and you will need to request a new one. \n\nPlease do not share this code with anyone. If you did not request this, please ignore this email. \n\nBest regards, \nQLCafe System`
+            subject: 'QLCafe - Mã xác nhận khôi phục mật khẩu',
+            html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="color: #2c3e50;">Xin chào,</h2>
+                    <p>Chúng tôi đã nhận được yêu cầu khôi phục mật khẩu cho tài khoản QLCafe của bạn.</p>
+                    <p>Dưới đây là mã xác nhận của bạn:</p>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <span style="display: inline-block; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #e74c3c; border: 2px dashed #e74c3c; padding: 10px 25px; background-color: #fdf2f2;">
+                            ${generatedCode}
+                        </span>
+                    </div>
+
+                    <p><strong>Lưu ý:</strong> Mã này chỉ có hiệu lực trong vòng <b>60 giây</b>. Sau thời gian này, mã sẽ hết hạn và bạn cần thực hiện yêu cầu mới.</p>
+                    <p>Vui lòng không chia sẻ mã này với bất kỳ ai. Nếu bạn không thực hiện yêu cầu này, hãy bỏ qua email này.</p>
+                    <br>
+                    <p>Trân trọng,<br>
+                    <strong>Hệ thống QLCafe</strong></p>
+                </div>
+            `
         };
 
         //Gửi thư

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class ucAttendance : UserControl
+    public partial class ucWorkTracking : UserControl
     {
-        public ucAttendance()
+        public ucWorkTracking()
         {
             InitializeComponent();
         }

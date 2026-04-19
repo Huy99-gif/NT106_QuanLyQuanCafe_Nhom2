@@ -45,7 +45,7 @@ namespace GUI
                 if (_allEmployees == null || _allEmployees.Count == 0) return;
 
                 cmbChatTarget.Items.Clear();
-                cmbChatTarget.Items.Add("--- Everyone (Group Chat) ---");
+                cmbChatTarget.Items.Add("--- Gửi cho tất cả (Chat nhóm) ---");
 
                 foreach (var emp in _allEmployees.Where(x => x.Status == "active"))
                 {
@@ -55,12 +55,12 @@ namespace GUI
                 if (cmbChatTarget.Items.Count > 0) cmbChatTarget.SelectedIndex = 0;
 
                 lstChatHistory.Items.Clear();
-                lstChatHistory.Items.Add("[System]: Internal communication channel connected.");
+                lstChatHistory.Items.Add("[Hệ thống]: Đã kết nối thành công kênh truyền tin nội bộ.");
                 lstChatHistory.Items.Add("");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could not load employee list: {ex.Message}", "System Error");
+                MsgBox.Show($"Không thể tải danh sách nhân viên: {ex.Message}", "Lỗi hệ thống", MsgBox.MessageBoxType.Error);
             }
         }
 

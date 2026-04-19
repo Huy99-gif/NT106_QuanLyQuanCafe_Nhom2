@@ -74,13 +74,6 @@ namespace GUI
             lblTitle.Text = "Personal Profile";
         }
 
-        private void BtnAttendance_Click(object sender, EventArgs e)
-        {
-            ucAttendance uc = new();
-            AddUserControl(uc);
-            lblTitle.Text = "Timekeeping & Attendance";
-        }
-
         private void BtnLeaveRequest_Click(object sender, EventArgs e)
         {
             ucLeaveRequest uc = new();
@@ -93,6 +86,13 @@ namespace GUI
             ucOverview_Staff uc = new();
             AddUserControl(uc);
             lblTitle.Text = "Overview";
+        }
+
+        private void BtnWorkTracking_Click(object sender, EventArgs e)
+        {
+            ucWorkTracking uc = new();
+            AddUserControl(uc);
+            lblTitle.Text = "Theo dõi ngày làm việc";
         }
     }
 }
