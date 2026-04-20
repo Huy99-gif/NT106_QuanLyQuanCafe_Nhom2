@@ -24,242 +24,255 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.pnlSummary = new System.Windows.Forms.Panel();
-            this.btnShowChart = new System.Windows.Forms.Button();
-            this.lblExpenseValue = new System.Windows.Forms.Label();
-            this.lblExpenseTitle = new System.Windows.Forms.Label();
-            this.lblIncomeValue = new System.Windows.Forms.Label();
-            this.lblIncomeTitle = new System.Windows.Forms.Label();
-            this.pnlMenu = new System.Windows.Forms.Panel();
-            this.btnDeleteMenu = new System.Windows.Forms.Button();
-            this.btnAddMenu = new System.Windows.Forms.Button();
-            this.dgvMenu = new System.Windows.Forms.DataGridView();
-            this.lblMenuTitle = new System.Windows.Forms.Label();
-            this.pnlInventory = new System.Windows.Forms.Panel();
-            this.btnImportMaterial = new System.Windows.Forms.Button();
-            this.dgvInventory = new System.Windows.Forms.DataGridView();
-            this.lblInventoryTitle = new System.Windows.Forms.Label();
-            this.pnlSummary.SuspendLayout();
-            this.pnlMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMenu)).BeginInit();
-            this.pnlInventory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
-            this.SuspendLayout();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            pnlSummary = new Panel();
+            btnShowChart = new Button();
+            lblExpenseValue = new Label();
+            lblExpenseTitle = new Label();
+            lblIncomeValue = new Label();
+            lblIncomeTitle = new Label();
+            pnlMenu = new Panel();
+            btnDeleteMenu = new Button();
+            btnAddMenu = new Button();
+            dgvMenu = new DataGridView();
+            lblMenuTitle = new Label();
+            pnlInventory = new Panel();
+            btnImportMaterial = new Button();
+            dgvInventory = new DataGridView();
+            lblInventoryTitle = new Label();
+            pnlSummary.SuspendLayout();
+            pnlMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvMenu).BeginInit();
+            pnlInventory.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
+            SuspendLayout();
             // 
-            // pnlSummary (Khu vực thống kê tiền)
+            // pnlSummary
             // 
-            this.pnlSummary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlSummary.Controls.Add(this.btnShowChart);
-            this.pnlSummary.Controls.Add(this.lblExpenseValue);
-            this.pnlSummary.Controls.Add(this.lblExpenseTitle);
-            this.pnlSummary.Controls.Add(this.lblIncomeValue);
-            this.pnlSummary.Controls.Add(this.lblIncomeTitle);
-            this.pnlSummary.Location = new System.Drawing.Point(20, 20);
-            this.pnlSummary.Name = "pnlSummary";
-            this.pnlSummary.Size = new System.Drawing.Size(764, 80);
-            this.pnlSummary.TabIndex = 0;
+            pnlSummary.BackColor = Color.FromArgb(30, 30, 30);
+            pnlSummary.Controls.Add(btnShowChart);
+            pnlSummary.Controls.Add(lblExpenseValue);
+            pnlSummary.Controls.Add(lblExpenseTitle);
+            pnlSummary.Controls.Add(lblIncomeValue);
+            pnlSummary.Controls.Add(lblIncomeTitle);
+            pnlSummary.Location = new Point(23, 27);
+            pnlSummary.Margin = new Padding(3, 4, 3, 4);
+            pnlSummary.Name = "pnlSummary";
+            pnlSummary.Size = new Size(873, 107);
+            pnlSummary.TabIndex = 0;
             // 
-            // btnShowChart (Nút xem biểu đồ)
+            // btnShowChart
             // 
-            this.btnShowChart.BackColor = System.Drawing.Color.White;
-            this.btnShowChart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnShowChart.FlatAppearance.BorderSize = 0;
-            this.btnShowChart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShowChart.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnShowChart.ForeColor = System.Drawing.Color.Black;
-            this.btnShowChart.Location = new System.Drawing.Point(600, 22);
-            this.btnShowChart.Name = "btnShowChart";
-            this.btnShowChart.Size = new System.Drawing.Size(140, 35);
-            this.btnShowChart.TabIndex = 4;
-            this.btnShowChart.Text = "Xem Biểu Đồ 📊";
-            this.btnShowChart.UseVisualStyleBackColor = false;
+            btnShowChart.BackColor = Color.White;
+            btnShowChart.Cursor = Cursors.Hand;
+            btnShowChart.FlatAppearance.BorderSize = 0;
+            btnShowChart.FlatStyle = FlatStyle.Flat;
+            btnShowChart.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btnShowChart.ForeColor = Color.Black;
+            btnShowChart.Location = new Point(686, 29);
+            btnShowChart.Margin = new Padding(3, 4, 3, 4);
+            btnShowChart.Name = "btnShowChart";
+            btnShowChart.Size = new Size(160, 47);
+            btnShowChart.TabIndex = 4;
+            btnShowChart.Text = "Xem Biểu Đồ 📊";
+            btnShowChart.UseVisualStyleBackColor = false;
             // 
             // lblExpenseValue
             // 
-            this.lblExpenseValue.AutoSize = true;
-            this.lblExpenseValue.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblExpenseValue.ForeColor = System.Drawing.Color.IndianRed;
-            this.lblExpenseValue.Location = new System.Drawing.Point(220, 35);
-            this.lblExpenseValue.Name = "lblExpenseValue";
-            this.lblExpenseValue.Size = new System.Drawing.Size(132, 30);
-            this.lblExpenseValue.TabIndex = 3;
-            this.lblExpenseValue.Text = "- 850,000 đ";
+            lblExpenseValue.AutoSize = true;
+            lblExpenseValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            lblExpenseValue.ForeColor = Color.IndianRed;
+            lblExpenseValue.Location = new Point(251, 47);
+            lblExpenseValue.Name = "lblExpenseValue";
+            lblExpenseValue.Size = new Size(162, 37);
+            lblExpenseValue.TabIndex = 3;
+            lblExpenseValue.Text = "- 850,000 đ";
             // 
             // lblExpenseTitle
             // 
-            this.lblExpenseTitle.AutoSize = true;
-            this.lblExpenseTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblExpenseTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblExpenseTitle.Location = new System.Drawing.Point(220, 15);
-            this.lblExpenseTitle.Name = "lblExpenseTitle";
-            this.lblExpenseTitle.Size = new System.Drawing.Size(155, 17);
-            this.lblExpenseTitle.TabIndex = 2;
-            this.lblExpenseTitle.Text = "Tiền nhập NL (Đầu ra) 🔻";
+            lblExpenseTitle.AutoSize = true;
+            lblExpenseTitle.Font = new Font("Segoe UI", 9.75F);
+            lblExpenseTitle.ForeColor = Color.Gray;
+            lblExpenseTitle.Location = new Point(251, 20);
+            lblExpenseTitle.Name = "lblExpenseTitle";
+            lblExpenseTitle.Size = new Size(206, 23);
+            lblExpenseTitle.TabIndex = 2;
+            lblExpenseTitle.Text = "Tiền nhập NL (Đầu ra) 🔻";
             // 
             // lblIncomeValue
             // 
-            this.lblIncomeValue.AutoSize = true;
-            this.lblIncomeValue.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblIncomeValue.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.lblIncomeValue.Location = new System.Drawing.Point(20, 35);
-            this.lblIncomeValue.Name = "lblIncomeValue";
-            this.lblIncomeValue.Size = new System.Drawing.Size(144, 30);
-            this.lblIncomeValue.TabIndex = 1;
-            this.lblIncomeValue.Text = "+ 5,200,000 đ";
+            lblIncomeValue.AutoSize = true;
+            lblIncomeValue.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
+            lblIncomeValue.ForeColor = Color.MediumSeaGreen;
+            lblIncomeValue.Location = new Point(23, 47);
+            lblIncomeValue.Name = "lblIncomeValue";
+            lblIncomeValue.Size = new Size(193, 37);
+            lblIncomeValue.TabIndex = 1;
+            lblIncomeValue.Text = "+ 5,200,000 đ";
             // 
             // lblIncomeTitle
             // 
-            this.lblIncomeTitle.AutoSize = true;
-            this.lblIncomeTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblIncomeTitle.ForeColor = System.Drawing.Color.Gray;
-            this.lblIncomeTitle.Location = new System.Drawing.Point(20, 15);
-            this.lblIncomeTitle.Name = "lblIncomeTitle";
-            this.lblIncomeTitle.Size = new System.Drawing.Size(152, 17);
-            this.lblIncomeTitle.TabIndex = 0;
-            this.lblIncomeTitle.Text = "Tiền bán hàng (Đầu vào) 🔺";
+            lblIncomeTitle.AutoSize = true;
+            lblIncomeTitle.Font = new Font("Segoe UI", 9.75F);
+            lblIncomeTitle.ForeColor = Color.Gray;
+            lblIncomeTitle.Location = new Point(23, 20);
+            lblIncomeTitle.Name = "lblIncomeTitle";
+            lblIncomeTitle.Size = new Size(226, 23);
+            lblIncomeTitle.TabIndex = 0;
+            lblIncomeTitle.Text = "Tiền bán hàng (Đầu vào) 🔺";
             // 
-            // pnlMenu (Khu vực Quản lý Menu)
+            // pnlMenu
             // 
-            this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlMenu.Controls.Add(this.btnDeleteMenu);
-            this.pnlMenu.Controls.Add(this.btnAddMenu);
-            this.pnlMenu.Controls.Add(this.dgvMenu);
-            this.pnlMenu.Controls.Add(this.lblMenuTitle);
-            this.pnlMenu.Location = new System.Drawing.Point(20, 120);
-            this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(370, 390);
-            this.pnlMenu.TabIndex = 1;
+            pnlMenu.BackColor = Color.FromArgb(30, 30, 30);
+            pnlMenu.Controls.Add(btnDeleteMenu);
+            pnlMenu.Controls.Add(btnAddMenu);
+            pnlMenu.Controls.Add(dgvMenu);
+            pnlMenu.Controls.Add(lblMenuTitle);
+            pnlMenu.Location = new Point(23, 160);
+            pnlMenu.Margin = new Padding(3, 4, 3, 4);
+            pnlMenu.Name = "pnlMenu";
+            pnlMenu.Size = new Size(423, 520);
+            pnlMenu.TabIndex = 1;
             // 
             // btnDeleteMenu
             // 
-            this.btnDeleteMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.btnDeleteMenu.FlatAppearance.BorderSize = 0;
-            this.btnDeleteMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteMenu.ForeColor = System.Drawing.Color.IndianRed;
-            this.btnDeleteMenu.Location = new System.Drawing.Point(280, 15);
-            this.btnDeleteMenu.Name = "btnDeleteMenu";
-            this.btnDeleteMenu.Size = new System.Drawing.Size(70, 25);
-            this.btnDeleteMenu.TabIndex = 3;
-            this.btnDeleteMenu.Text = "Xóa món";
-            this.btnDeleteMenu.UseVisualStyleBackColor = false;
+            btnDeleteMenu.BackColor = Color.FromArgb(45, 45, 48);
+            btnDeleteMenu.FlatAppearance.BorderSize = 0;
+            btnDeleteMenu.FlatStyle = FlatStyle.Flat;
+            btnDeleteMenu.ForeColor = Color.IndianRed;
+            btnDeleteMenu.Location = new Point(320, 20);
+            btnDeleteMenu.Margin = new Padding(3, 4, 3, 4);
+            btnDeleteMenu.Name = "btnDeleteMenu";
+            btnDeleteMenu.Size = new Size(80, 33);
+            btnDeleteMenu.TabIndex = 3;
+            btnDeleteMenu.Text = "Xóa món";
+            btnDeleteMenu.UseVisualStyleBackColor = false;
             // 
             // btnAddMenu
             // 
-            this.btnAddMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.btnAddMenu.FlatAppearance.BorderSize = 0;
-            this.btnAddMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddMenu.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.btnAddMenu.Location = new System.Drawing.Point(200, 15);
-            this.btnAddMenu.Name = "btnAddMenu";
-            this.btnAddMenu.Size = new System.Drawing.Size(70, 25);
-            this.btnAddMenu.TabIndex = 2;
-            this.btnAddMenu.Text = "+ Thêm";
-            this.btnAddMenu.UseVisualStyleBackColor = false;
+            btnAddMenu.BackColor = Color.FromArgb(45, 45, 48);
+            btnAddMenu.FlatAppearance.BorderSize = 0;
+            btnAddMenu.FlatStyle = FlatStyle.Flat;
+            btnAddMenu.ForeColor = Color.MediumSeaGreen;
+            btnAddMenu.Location = new Point(229, 20);
+            btnAddMenu.Margin = new Padding(3, 4, 3, 4);
+            btnAddMenu.Name = "btnAddMenu";
+            btnAddMenu.Size = new Size(80, 33);
+            btnAddMenu.TabIndex = 2;
+            btnAddMenu.Text = "+ Thêm";
+            btnAddMenu.UseVisualStyleBackColor = false;
+            btnAddMenu.Click += btnAddMenu_Click;
             // 
             // dgvMenu
             // 
-            this.dgvMenu.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.dgvMenu.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvMenu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMenu.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvMenu.Location = new System.Drawing.Point(20, 50);
-            this.dgvMenu.Name = "dgvMenu";
-            this.dgvMenu.Size = new System.Drawing.Size(330, 320);
-            this.dgvMenu.TabIndex = 1;
+            dgvMenu.BackgroundColor = Color.FromArgb(45, 45, 48);
+            dgvMenu.BorderStyle = BorderStyle.None;
+            dgvMenu.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(45, 45, 48);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.Gray;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvMenu.DefaultCellStyle = dataGridViewCellStyle1;
+            dgvMenu.Location = new Point(23, 67);
+            dgvMenu.Margin = new Padding(3, 4, 3, 4);
+            dgvMenu.Name = "dgvMenu";
+            dgvMenu.RowHeadersWidth = 51;
+            dgvMenu.Size = new Size(377, 427);
+            dgvMenu.TabIndex = 1;
             // 
             // lblMenuTitle
             // 
-            this.lblMenuTitle.AutoSize = true;
-            this.lblMenuTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblMenuTitle.ForeColor = System.Drawing.Color.White;
-            this.lblMenuTitle.Location = new System.Drawing.Point(15, 15);
-            this.lblMenuTitle.Name = "lblMenuTitle";
-            this.lblMenuTitle.Size = new System.Drawing.Size(123, 21);
-            this.lblMenuTitle.TabIndex = 0;
-            this.lblMenuTitle.Text = "Quản lý Menu";
+            lblMenuTitle.AutoSize = true;
+            lblMenuTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblMenuTitle.ForeColor = Color.White;
+            lblMenuTitle.Location = new Point(17, 20);
+            lblMenuTitle.Name = "lblMenuTitle";
+            lblMenuTitle.Size = new Size(145, 28);
+            lblMenuTitle.TabIndex = 0;
+            lblMenuTitle.Text = "Quản lý Menu";
             // 
-            // pnlInventory (Khu vực quản lý Nguyên Liệu)
+            // pnlInventory
             // 
-            this.pnlInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.pnlInventory.Controls.Add(this.btnImportMaterial);
-            this.pnlInventory.Controls.Add(this.dgvInventory);
-            this.pnlInventory.Controls.Add(this.lblInventoryTitle);
-            this.pnlInventory.Location = new System.Drawing.Point(414, 120);
-            this.pnlInventory.Name = "pnlInventory";
-            this.pnlInventory.Size = new System.Drawing.Size(370, 390);
-            this.pnlInventory.TabIndex = 2;
+            pnlInventory.BackColor = Color.FromArgb(30, 30, 30);
+            pnlInventory.Controls.Add(btnImportMaterial);
+            pnlInventory.Controls.Add(dgvInventory);
+            pnlInventory.Controls.Add(lblInventoryTitle);
+            pnlInventory.Location = new Point(473, 160);
+            pnlInventory.Margin = new Padding(3, 4, 3, 4);
+            pnlInventory.Name = "pnlInventory";
+            pnlInventory.Size = new Size(423, 520);
+            pnlInventory.TabIndex = 2;
             // 
             // btnImportMaterial
             // 
-            this.btnImportMaterial.BackColor = System.Drawing.Color.MediumSeaGreen;
-            this.btnImportMaterial.FlatAppearance.BorderSize = 0;
-            this.btnImportMaterial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImportMaterial.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnImportMaterial.ForeColor = System.Drawing.Color.White;
-            this.btnImportMaterial.Location = new System.Drawing.Point(235, 15);
-            this.btnImportMaterial.Name = "btnImportMaterial";
-            this.btnImportMaterial.Size = new System.Drawing.Size(115, 25);
-            this.btnImportMaterial.TabIndex = 4;
-            this.btnImportMaterial.Text = "+ Nhập Hàng";
-            this.btnImportMaterial.UseVisualStyleBackColor = false;
+            btnImportMaterial.BackColor = Color.MediumSeaGreen;
+            btnImportMaterial.FlatAppearance.BorderSize = 0;
+            btnImportMaterial.FlatStyle = FlatStyle.Flat;
+            btnImportMaterial.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnImportMaterial.ForeColor = Color.White;
+            btnImportMaterial.Location = new Point(269, 20);
+            btnImportMaterial.Margin = new Padding(3, 4, 3, 4);
+            btnImportMaterial.Name = "btnImportMaterial";
+            btnImportMaterial.Size = new Size(131, 33);
+            btnImportMaterial.TabIndex = 4;
+            btnImportMaterial.Text = "+ Nhập Hàng";
+            btnImportMaterial.UseVisualStyleBackColor = false;
             // 
             // dgvInventory
             // 
-            this.dgvInventory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.dgvInventory.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvInventory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gray;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvInventory.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvInventory.Location = new System.Drawing.Point(20, 50);
-            this.dgvInventory.Name = "dgvInventory";
-            this.dgvInventory.Size = new System.Drawing.Size(330, 320);
-            this.dgvInventory.TabIndex = 2;
+            dgvInventory.BackgroundColor = Color.FromArgb(45, 45, 48);
+            dgvInventory.BorderStyle = BorderStyle.None;
+            dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(45, 45, 48);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.Gray;
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvInventory.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvInventory.Location = new Point(23, 67);
+            dgvInventory.Margin = new Padding(3, 4, 3, 4);
+            dgvInventory.Name = "dgvInventory";
+            dgvInventory.RowHeadersWidth = 51;
+            dgvInventory.Size = new Size(377, 427);
+            dgvInventory.TabIndex = 2;
             // 
             // lblInventoryTitle
             // 
-            this.lblInventoryTitle.AutoSize = true;
-            this.lblInventoryTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblInventoryTitle.ForeColor = System.Drawing.Color.White;
-            this.lblInventoryTitle.Location = new System.Drawing.Point(15, 15);
-            this.lblInventoryTitle.Name = "lblInventoryTitle";
-            this.lblInventoryTitle.Size = new System.Drawing.Size(161, 21);
-            this.lblInventoryTitle.TabIndex = 1;
-            this.lblInventoryTitle.Text = "Nguyên Liệu / Kho";
+            lblInventoryTitle.AutoSize = true;
+            lblInventoryTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblInventoryTitle.ForeColor = Color.White;
+            lblInventoryTitle.Location = new Point(17, 20);
+            lblInventoryTitle.Name = "lblInventoryTitle";
+            lblInventoryTitle.Size = new Size(189, 28);
+            lblInventoryTitle.TabIndex = 1;
+            lblInventoryTitle.Text = "Nguyên Liệu / Kho";
             // 
-            // ucProducts
+            // ucProducts_Manager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.Controls.Add(this.pnlInventory);
-            this.Controls.Add(this.pnlMenu);
-            this.Controls.Add(this.pnlSummary);
-            this.Name = "ucProducts_Manager";
-            this.Size = new System.Drawing.Size(804, 530);
-            this.pnlSummary.ResumeLayout(false);
-            this.pnlSummary.PerformLayout();
-            this.pnlMenu.ResumeLayout(false);
-            this.pnlMenu.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMenu)).EndInit();
-            this.pnlInventory.ResumeLayout(false);
-            this.pnlInventory.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(45, 45, 48);
+            Controls.Add(pnlInventory);
+            Controls.Add(pnlMenu);
+            Controls.Add(pnlSummary);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "ucProducts_Manager";
+            Size = new Size(919, 707);
+            pnlSummary.ResumeLayout(false);
+            pnlSummary.PerformLayout();
+            pnlMenu.ResumeLayout(false);
+            pnlMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvMenu).EndInit();
+            pnlInventory.ResumeLayout(false);
+            pnlInventory.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
+            ResumeLayout(false);
 
         }
 

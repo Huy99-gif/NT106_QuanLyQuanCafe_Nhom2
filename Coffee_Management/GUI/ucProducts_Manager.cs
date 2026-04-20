@@ -15,7 +15,7 @@ namespace GUI
         public ucProducts_Manager()
         {
             InitializeComponent();
-            LoadDummyData(); 
+            LoadDummyData();
         }
         private void LoadDummyData()
         {
@@ -29,7 +29,7 @@ namespace GUI
             dtMenu.Rows.Add("Bạc Xỉu", "25,000 đ", "55 ly");
             dgvMenu.DataSource = dtMenu;
             dgvMenu.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMenu.RowHeadersVisible = false; 
+            dgvMenu.RowHeadersVisible = false;
             DataTable dtKho = new DataTable();
             dtKho.Columns.Add("Nguyên Liệu");
             dtKho.Columns.Add("Tồn Kho");
@@ -43,5 +43,10 @@ namespace GUI
             dgvInventory.RowHeadersVisible = false;
         }
 
+        private void btnAddMenu_Click(object sender, EventArgs e)
+        {
+            AddMonUong aFood = new();
+            aFood.Show();
+        }
     }
 }
