@@ -48,5 +48,22 @@ namespace DAL
             }
             catch { return false; }
         }
+        public async Task<bool> DeleteFoodAsync(string id)
+        {
+            try
+            {
+                await _client
+                    .Child("mon_uong")
+                    .Child(id)
+                    .DeleteAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi xóa Firebase: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

@@ -148,6 +148,7 @@
             btnDeleteMenu.TabIndex = 3;
             btnDeleteMenu.Text = "Xóa món";
             btnDeleteMenu.UseVisualStyleBackColor = false;
+            btnDeleteMenu.Click += btnDeleteMenu_Click;
             // 
             // btnAddMenu
             // 

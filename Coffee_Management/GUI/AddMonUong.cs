@@ -26,10 +26,11 @@ namespace GUI
 
         }
 
+        public event Action FoodAdded;
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             btnAdd.Enabled = false;
-
+         
             var food = new FoodDTO
             {
                 TenMon = txtTenMon.Text,
@@ -47,9 +48,14 @@ namespace GUI
 
             if (result.Success)
             {
-                // Clear form sau khi thêm thành công
+               
+                FoodAdded?.Invoke();
+
+                // Clear form
                 txtTenMon.Clear();
                 txtGia.Clear();
+                txtMoTa.Clear();
+                cmLoai.SelectedIndex = -1; // Reset combobox
             }
 
             btnAdd.Enabled = true;

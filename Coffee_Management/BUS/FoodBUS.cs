@@ -10,7 +10,13 @@ namespace BUS
     public class FoodBUS
     {
         private readonly FoodDAL _foodDAL = new FoodDAL();
+        public async Task<List<FoodDTO>> GetListFoods()
+        {
+            var list = await _foodDAL.GetAllFoodsAsync();
 
+            // Bạn có thể sắp xếp món mới lên đầu hoặc theo tên
+            return list;
+        }
         private async Task<string> CreateAutoId()
         {
             var list = await _foodDAL.GetAllFoodsAsync();
@@ -40,6 +46,26 @@ namespace BUS
 
             if (result) return (true, $"Thêm thành công món {food.Id}!");
             return (false, "Đã xảy ra lỗi khi lưu vào Database.");
+        }
+
+        public async Task<(bool Success, string Message)> DeleteFood(string id)
+        {
+            // 1. Kiểm tra ID
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return (false, "Lỗi: Không tìm thấy mã món ăn cần xóa!");
+            }
+
+            // 2. Gọi DAL để xóa
+            bool isDeleted = await _foodDAL.DeleteFoodAsync(id);
+
+            // 3. Trả về kết quả
+            if (isDeleted)
+            {
+                return (true, $"Đã xóa thành công món: {id}");
+            }
+
+            return (false, "Đã xảy ra lỗi khi xóa món trên Database.");
         }
     }
 }
