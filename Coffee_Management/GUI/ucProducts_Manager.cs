@@ -135,5 +135,11 @@ namespace GUI
                 btnDeleteMenu.Enabled = true;
             }
         }
+
+        private void btnImportMaterial_Click(object sender, EventArgs e)
+        {
+            AddIngredient aIngredient = new AddIngredient();
+            aIngredient.ShowDialog();
+        }
     }
 }

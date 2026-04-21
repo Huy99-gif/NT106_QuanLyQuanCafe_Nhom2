@@ -222,6 +222,7 @@
             btnImportMaterial.TabIndex = 4;
             btnImportMaterial.Text = "+ Nhập Hàng";
             btnImportMaterial.UseVisualStyleBackColor = false;
+            btnImportMaterial.Click += btnImportMaterial_Click;
             // 
             // dgvInventory
             // 
