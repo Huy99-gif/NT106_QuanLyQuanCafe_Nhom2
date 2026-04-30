@@ -1,35 +1,35 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json; // Thay đổi từ System.Text.Json sang Newtonsoft.Json
 
 namespace DTO
 {
     public class NhapKhoDTO
     {
-        [JsonPropertyName("ghi_chu")]
+        [JsonProperty("ghi_chu")] // Sử dụng [JsonProperty] thay vì [JsonPropertyName]
         public string GhiChu { get; set; }
 
-        [JsonPropertyName("ngay_nhap")]
+        [JsonProperty("ngay_nhap")]
         public int NgayNhap { get; set; }
 
-        [JsonPropertyName("nhanvien_id")]
+        [JsonProperty("nhanvien_id")]
         public string NhanVienId { get; set; }
 
-        [JsonPropertyName("thanh_tien")]
+        [JsonProperty("thanh_tien")]
         public long TongTien { get; set; }
 
-        [JsonPropertyName("ds_nl")]
+        [JsonProperty("ds_nl")]
         public Dictionary<string, ChiTietNhapDTO> DanhSachNL { get; set; }
     }
 
     public class ChiTietNhapDTO
     {
-        [JsonPropertyName("gia_nhap")]
+        [JsonProperty("gia_nhap")]
         public long GiaNhap { get; set; }
 
-        [JsonPropertyName("so_luong")]
+        [JsonProperty("so_luong")]
         public int SoLuong { get; set; }
 
-        [JsonPropertyName("thanh_tien")]
+        [JsonProperty("thanh_tien")]
         public long ThanhTien { get; set; }
     }
 }

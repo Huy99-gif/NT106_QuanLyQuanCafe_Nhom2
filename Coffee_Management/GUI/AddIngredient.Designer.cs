@@ -37,12 +37,15 @@
             colGiaNhap = new DataGridViewTextBoxColumn();
             lblTongTien = new Label();
             btnLuu = new Button();
+            bttnTinhTien = new Button();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvChiTietNhap).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // txtGhiChu
             // 
-            txtGhiChu.Location = new Point(224, 72);
+            txtGhiChu.Location = new Point(135, 71);
             txtGhiChu.Name = "txtGhiChu";
             txtGhiChu.PlaceholderText = "Ghi chú";
             txtGhiChu.Size = new Size(256, 27);
@@ -50,7 +53,7 @@
             // 
             // dtpNgayNhap
             // 
-            dtpNgayNhap.Location = new Point(224, 120);
+            dtpNgayNhap.Location = new Point(135, 119);
             dtpNgayNhap.Name = "dtpNgayNhap";
             dtpNgayNhap.Size = new Size(250, 27);
             dtpNgayNhap.TabIndex = 1;
@@ -58,7 +61,7 @@
             // cboNhanVien
             // 
             cboNhanVien.FormattingEnabled = true;
-            cboNhanVien.Location = new Point(224, 168);
+            cboNhanVien.Location = new Point(135, 167);
             cboNhanVien.Name = "cboNhanVien";
             cboNhanVien.Size = new Size(151, 28);
             cboNhanVien.TabIndex = 2;
@@ -68,10 +71,10 @@
             // 
             dgvChiTietNhap.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvChiTietNhap.Columns.AddRange(new DataGridViewColumn[] { colMaNL, colSoLuong, colGiaNhap });
-            dgvChiTietNhap.Location = new Point(192, 224);
+            dgvChiTietNhap.Location = new Point(135, 216);
             dgvChiTietNhap.Name = "dgvChiTietNhap";
             dgvChiTietNhap.RowHeadersWidth = 51;
-            dgvChiTietNhap.Size = new Size(448, 188);
+            dgvChiTietNhap.Size = new Size(444, 188);
             dgvChiTietNhap.TabIndex = 3;
             // 
             // colMaNL
@@ -98,8 +101,9 @@
             // lblTongTien
             // 
             lblTongTien.AutoSize = true;
+            lblTongTien.BackColor = Color.FromArgb(231, 76, 60);
             lblTongTien.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            lblTongTien.Location = new Point(224, 432);
+            lblTongTien.Location = new Point(95, 397);
             lblTongTien.Name = "lblTongTien";
             lblTongTien.Size = new Size(103, 28);
             lblTongTien.TabIndex = 4;
@@ -107,28 +111,56 @@
             // 
             // btnLuu
             // 
+            btnLuu.BackColor = Color.FromArgb(46, 204, 113);
             btnLuu.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnLuu.Location = new Point(232, 472);
+            btnLuu.Location = new Point(266, 503);
             btnLuu.Name = "btnLuu";
-            btnLuu.Size = new Size(112, 40);
+            btnLuu.Size = new Size(147, 41);
             btnLuu.TabIndex = 5;
             btnLuu.Text = "Tạo nhập kho";
-            btnLuu.UseVisualStyleBackColor = true;
+            btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.Click += btnLuu_Click;
+            // 
+            // bttnTinhTien
+            // 
+            bttnTinhTien.BackColor = Color.FromArgb(52, 152, 219);
+            bttnTinhTien.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            bttnTinhTien.Location = new Point(424, 432);
+            bttnTinhTien.Name = "bttnTinhTien";
+            bttnTinhTien.Size = new Size(102, 36);
+            bttnTinhTien.TabIndex = 6;
+            bttnTinhTien.Text = "Tính tiền";
+            bttnTinhTien.UseVisualStyleBackColor = false;
+            bttnTinhTien.Click += bttnTinhTien_Click;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.White;
+            panel1.Controls.Add(lblTongTien);
+            panel1.Location = new Point(88, 35);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(541, 553);
+            panel1.TabIndex = 7;
             // 
             // AddIngredient
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 616);
+            BackColor = Color.FromArgb(236, 240, 241);
+            ClientSize = new Size(717, 631);
+            Controls.Add(bttnTinhTien);
             Controls.Add(btnLuu);
-            Controls.Add(lblTongTien);
             Controls.Add(dgvChiTietNhap);
             Controls.Add(cboNhanVien);
             Controls.Add(dtpNgayNhap);
             Controls.Add(txtGhiChu);
+            Controls.Add(panel1);
             Name = "AddIngredient";
             Text = "AddIngredient";
+            Load += AddIngredient_Load_1;
             ((System.ComponentModel.ISupportInitialize)dgvChiTietNhap).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -144,5 +176,7 @@
         private DataGridViewComboBoxColumn colMaNL;
         private DataGridViewTextBoxColumn colSoLuong;
         private DataGridViewTextBoxColumn colGiaNhap;
+        private Button bttnTinhTien;
+        private Panel panel1;
     }
 }
