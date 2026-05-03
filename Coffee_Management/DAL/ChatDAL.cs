@@ -15,15 +15,13 @@ namespace DAL
         private static readonly HttpClient _client = new();
         private static readonly string _baseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
 
-        // Gắn Token vào Header cho mỗi request
+        // Hàm lưu tin nhắn vào Firebase Realtime thông qua Cloud Function
         public static async Task SaveMessageAsync(string roomId, ChatMessageDTO chatData)
         {
             try
             {
-                if (!string.IsNullOrEmpty(GlobalSession.Token))
-                {
-                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
-                }
+                // Gắn Token vào Header cho mỗi request
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token ?? "");
                 var json = JsonSerializer.Serialize(new { roomId, chatData });
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -36,17 +34,13 @@ namespace DAL
             }
         }
 
+        // Hàm lấy lịch sử chat từ Firebase Realtime thông qua Cloud Function
         public static async Task<List<ChatMessageDTO>> GetHistoryAsync(string roomId)
         {
             try
             {
-                if (!string.IsNullOrEmpty(GlobalSession.Token))
-                {
-                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
-                }
-
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token ?? "");
                 var response = await _client.GetAsync(_baseUrl + $"getChatHistory?roomId={roomId}");
-
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();

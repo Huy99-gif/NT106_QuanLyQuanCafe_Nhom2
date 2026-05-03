@@ -11,16 +11,15 @@ namespace DAL
     public class EmailDAL
     {
         private static readonly HttpClient client = new();
-        private static readonly string _checkEmailUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/checkEmailExists";
-        private static readonly string _sendOtpUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/generateAndSendOTP";
+        private static readonly string BaseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
         // Gọi API kiểm tra
         public static async Task<(bool Exists, string Message)> CheckEmailAPI(string email)
         {
-            var data = new { email };
-            var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
             try
             {
-                var response = await client.PostAsync(_checkEmailUrl, content);
+                var data = new { email };
+                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(BaseUrl + "checkEmailExists", content);
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var json = JObject.Parse(responseBody);
                 string message = json["message"]?.ToString() ?? "Không có phản hồi từ hệ thống.";
@@ -36,11 +35,11 @@ namespace DAL
         // Gọi API phát mail
         public static async Task<(bool Success, string Code, string Message)> SendOtpAPI(string email)
         {
-            var data = new { toEmail = email };
-            using var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
             try
             {
-                var response = await client.PostAsync(_sendOtpUrl, content);
+                var data = new { toEmail = email };
+                using var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(BaseUrl + "generateAndSendOTP", content);
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var json = JObject.Parse(responseBody);
                 string message = json["message"]?.ToString() ?? "Gửi mã thất bại.";

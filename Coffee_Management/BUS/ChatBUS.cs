@@ -10,7 +10,6 @@ namespace BUS
 {
     public class ChatBUS
     {
-
         public static async Task SaveMessage(string roomId, ChatMessageDTO msg)
         {
             await ChatDAL.SaveMessageAsync(roomId, msg);

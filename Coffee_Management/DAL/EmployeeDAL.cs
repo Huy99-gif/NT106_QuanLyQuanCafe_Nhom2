@@ -15,40 +15,35 @@ namespace DAL
     {
         private static readonly HttpClient client = new();
         // Khai báo các Endpoints
-        private static readonly string _addEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/addEmployee";
-        private static readonly string _getAllEmployeesUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/getAllEmployees";
-        private static readonly string _updateEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/updateEmployee";
-        private static readonly string _lockEmployeeUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/lockEmployee";
+        private static readonly string BaseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
+        //Thêm thông tin nhân viên
         public static async Task<(bool Success, string Message)> AddEmployeeCFAsync(EmployeeDTO emp)
         {
             try
             {
                 // Gắn Token vào Header 
-                if (!string.IsNullOrEmpty(GlobalSession.Token))
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
-                }
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token ?? "");
                 // Chuyển đối tượng EmployeeDTO thành JSON
                 var content = new StringContent(JsonConvert.SerializeObject(emp), Encoding.UTF8, "application/json");
                 // Gửi yêu cầu POST đến Cloud Function
-                var response = await client.PostAsync(_addEmployeeUrl, content);
+                var response = await client.PostAsync(BaseUrl + "addEmployee", content);
                 string resultStr = await response.Content.ReadAsStringAsync();
 
                 // Phòng thủ: Kiểm tra nếu Server sập hoặc trả về HTML
                 if (resultStr.TrimStart().StartsWith('<'))
                 {
-                    return (false, $"Server Error ({response.StatusCode}): Access Denied or Invalid URL.");
+                    return (false, $"Lỗi Server ({response.StatusCode}): Bị từ chối hoặc URL không hợp lệ.");
                 }
                 // Cố gắng phân tích JSON trả về
                 dynamic? result = JsonConvert.DeserializeObject(resultStr);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return (true, "Success");
+                    return (true, "Thành công");
                 }
                 else
                 {
-                    string errorMessage = "Internal Server Error";
+                    string errorMessage = "Lỗi Server";
                     if (result != null)
                     {
                         if (result.message != null)
@@ -63,19 +58,16 @@ namespace DAL
             catch (Exception ex)
             {
                 // Bắt lỗi ngoại lệ và trả về thông báo lỗi
-                return (false, $"Exception: {ex.Message}");
+                return (false, $"Lỗi ngoại lệ: {ex.Message}");
             }
         }
-
+        // Lấy tất cả nhân viên
         public static async Task<Dictionary<string, EmployeeDTO>> GetAllEmployeesCFAsync()
         {
             // Gắn Token vào Header
-            if (!string.IsNullOrEmpty(GlobalSession.Token))
-            {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
-            }
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token ?? "");
             // Gửi yêu cầu GET đến Cloud Function
-            var response = await client.GetAsync(_getAllEmployeesUrl);
+            var response = await client.GetAsync(BaseUrl + "getAllEmployees");
 
             if (response.IsSuccessStatusCode)
             {
@@ -90,7 +82,7 @@ namespace DAL
 
             return [];
         }
-
+        // Cập nhật thông tin nhân viên
         public static async Task<(bool Success, string Message)> UpdateEmployeeCFAsync(string empId, EmployeeDTO updateData)
         {
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
@@ -98,14 +90,14 @@ namespace DAL
             var payload = new { employeeId = empId, updateData };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(_updateEmployeeUrl, content);
+            var response = await client.PostAsync(BaseUrl + "updateEmployee", content);
             var resultStr = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
-                return (true, "Updated successfull!");
-            return (false, "Server Error: " + resultStr);
+                return (true, "Cập nhật thành công!");
+            return (false, "Lỗi Server: " + resultStr);
         }
-
+        // Khóa tài khoản nhân viên
         public static async Task<(bool Success, string Message)> LockEmployeeCFAsync(string empId, string authUid)
         {
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
@@ -113,11 +105,27 @@ namespace DAL
             var payload = new { empId, authUid };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(_lockEmployeeUrl, content);
+            var response = await client.PostAsync(BaseUrl + "lockEmployee", content);
             var resultStr = await response.Content.ReadAsStringAsync();
 
-            if (response.IsSuccessStatusCode) return (true, "Account Locked!");
-            return (false, "Server Error: " + resultStr);
+            if (response.IsSuccessStatusCode) return (true, "Tài khoản đã bị khóa!");
+            return (false, "Lỗi Server: " + resultStr);
+        }
+        // Xóa tài khoản nhân viên
+        public static async Task<(bool Success, string Message)> DeleteEmployeeCFAsync(string empId, string authUid)
+        {
+            // Gắn Token xác thực quyền quản lý
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+
+            var payload = new { empId, authUid };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(BaseUrl + "deleteEmployee", content);
+            var resultStr = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+                return (true, "Đã xóa nhân viên thành công!");
+            return (false, "Lỗi Server: " + resultStr);
         }
     }
 }

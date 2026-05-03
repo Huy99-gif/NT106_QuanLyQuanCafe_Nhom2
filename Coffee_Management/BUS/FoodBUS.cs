@@ -9,63 +9,57 @@ namespace BUS
 {
     public class FoodBUS
     {
-        private readonly FoodDAL _foodDAL = new FoodDAL();
-        public async Task<List<FoodDTO>> GetListFoods()
+        // Lấy danh sách món ăn để hiển thị lên DataGridView
+        public static async Task<List<FoodDTO>> GetListFoods()
         {
-            var list = await _foodDAL.GetAllFoodsAsync();
-
-            // Bạn có thể sắp xếp món mới lên đầu hoặc theo tên
-            return list;
+            var dict = await FoodDAL.GetAllFoodsCFAsync();
+            return [.. dict.Select(x => {
+            x.Value.Id = x.Key;
+            return x.Value;
+            })];
         }
-        private async Task<string> CreateAutoId()
+        // Xóa món ăn dựa trên ID
+        public static async Task<(bool Success, string Message)> DeleteFood(string id)
         {
-            var list = await _foodDAL.GetAllFoodsAsync();
-            if (list == null || list.Count == 0) return "mon_001";
-
-            // Lấy danh sách các số từ ID (mon_001 -> 1)
-            var ids = list.Select(f => {
-                int.TryParse(f.Id.Replace("mon_", ""), out int num);
-                return num;
-            });
-
-            int nextNumber = ids.Max() + 1;
-            return $"mon_{nextNumber:D3}"; // D3 giúp định dạng 1 thành 001
+            if (Validation.IsAnyEmpty(id)) 
+                return (false, "Không tìm thấy mã món ăn!");
+            return await FoodDAL.DeleteFoodCFAsync(id);
         }
-
-        public async Task<(bool Success, string Message)> AddNewFood(FoodDTO food)
+        public static async Task<(bool Success, string Message)> UpdateFood(FoodDTO food)
         {
-            // 1. Validate dữ liệu
-            if (string.IsNullOrWhiteSpace(food.TenMon))
+            if (Validation.IsAnyEmpty(food.Id))
+            {
+                return (false, "Không tìm thấy mã món ăn cần cập nhật!");
+            }
+
+            if (Validation.IsAnyEmpty(food.TenMon))
+            {
                 return (false, "Tên món không được để trống!");
+            }
 
-            // 2. Tạo ID tự động
-            food.Id = await CreateAutoId();
+            if (food.Gia < 0)
+            {
+                return (false, "Giá món ăn không hợp lệ!");
+            }
 
-            // 3. Gọi DAL lưu vào Firebase
-            bool result = await _foodDAL.InsertFoodAsync(food);
-
-            if (result) return (true, $"Thêm thành công món {food.Id}!");
-            return (false, "Đã xảy ra lỗi khi lưu vào Database.");
+            return await FoodDAL.UpdateFoodCFAsync(food.Id ?? "", food);
         }
-
-        public async Task<(bool Success, string Message)> DeleteFood(string id)
+        // Thêm món ăn mới
+        public static async Task<(bool Success, string Message)> AddFood(FoodDTO food)
         {
-            // 1. Kiểm tra ID
-            if (string.IsNullOrWhiteSpace(id))
+            // Kiểm tra nghiệp vụ: Tên món không được trống
+            if (Validation.IsAnyEmpty(food.TenMon))
             {
-                return (false, "Lỗi: Không tìm thấy mã món ăn cần xóa!");
+                return (false, "Tên món không được để trống!");
             }
 
-            // 2. Gọi DAL để xóa
-            bool isDeleted = await _foodDAL.DeleteFoodAsync(id);
-
-            // 3. Trả về kết quả
-            if (isDeleted)
+            // Kiểm tra giá: Không được âm
+            if (food.Gia < 0)
             {
-                return (true, $"Đã xóa thành công món: {id}");
+                return (false, "Giá món ăn không hợp lệ!");
             }
 
-            return (false, "Đã xảy ra lỗi khi xóa món trên Database.");
+            return await FoodDAL.AddFoodCFAsync(food);
         }
     }
 }

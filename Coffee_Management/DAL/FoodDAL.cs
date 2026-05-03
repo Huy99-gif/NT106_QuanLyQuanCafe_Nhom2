@@ -1,69 +1,88 @@
 ﻿using DTO;
 using Firebase.Database;
 using Firebase.Database.Query;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL
 {
     public class FoodDAL
     {
-        private readonly string FireBaseUrl = "https://qlcafe-b621b-default-rtdb.asia-southeast1.firebasedatabase.app/";
-        private readonly FirebaseClient _client;
-
-        public FoodDAL()
-        {
-            _client = new FirebaseClient(FireBaseUrl);
-        }
-
+        private static readonly string BaseUrl = "https://us-central1-qlcafe-b621b.cloudfunctions.net/";
+        private static readonly HttpClient client = new();
         // Lấy tất cả món để phục vụ việc đếm STT
-        public async Task<List<FoodDTO>> GetAllFoodsAsync()
+        public static async Task<Dictionary<string, FoodDTO>> GetAllFoodsCFAsync()
         {
-            try
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+            var response = await client.GetAsync(BaseUrl + "getAllFoods");
+            if (response.IsSuccessStatusCode)
             {
-                var foods = await _client.Child("mon_uong").OnceAsync<FoodDTO>();
-                return foods.Select(item => new FoodDTO
-                {
-                    Id = item.Key,
-                    TenMon = item.Object.TenMon,
-                    Gia = item.Object.Gia,
-                    MoTa = item.Object.MoTa,
-                    Loai = item.Object.Loai,
-                    HinhAnhUrl = item.Object.HinhAnhUrl,
-                    HienThi = item.Object.HienThi,
-                    ConHang = item.Object.ConHang
-                }).ToList();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Dictionary<string, FoodDTO>>(json) ?? [];
             }
-            catch { return new List<FoodDTO>(); }
+            return [];
         }
-
-        // Lưu món ăn với Key tùy chỉnh (mon_xxx)
-        public async Task<bool> InsertFoodAsync(FoodDTO food)
+        // Thêm món mới
+        public static async Task<(bool Success, string Message)> AddFoodCFAsync(object foodData)
         {
             try
             {
-                await _client.Child("mon_uong").Child(food.Id).PutAsync(food);
-                return true;
-            }
-            catch { return false; }
-        }
-        public async Task<bool> DeleteFoodAsync(string id)
-        {
-            try
-            {
-                await _client
-                    .Child("mon_uong")
-                    .Child(id)
-                    .DeleteAsync();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
 
-                return true;
+                var json = JsonConvert.SerializeObject(foodData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Gọi đúng endpoint addFood mà anh em mình đã viết bên Node.js
+                var response = await client.PostAsync(BaseUrl + "addFood", content);
+                var resultStr = await response.Content.ReadAsStringAsync();
+
+                return (response.IsSuccessStatusCode, resultStr);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi khi xóa Firebase: {ex.Message}");
-                return false;
+                return (false, $"Lỗi kết nối khi thêm món: {ex.Message}");
             }
         }
+        // 
+        public static async Task<(bool Success, string Message)> DeleteFoodCFAsync(string foodId)
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+            var payload = new { foodId };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync(BaseUrl + "deleteFood", content);
+            var resultStr = await response.Content.ReadAsStringAsync();
+            return (response.IsSuccessStatusCode, resultStr);
+        }
+        // Cập nhật món ăn
+        public static async Task<(bool Success, string Message)> UpdateFoodCFAsync(string foodId, object updateData)
+        {
+            try
+            {
+                // Gán Token xác thực vào Header
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalSession.Token);
+
+                // Tạo payload khớp với yêu cầu của Node.js (foodId và updateData)
+                var payload = new{foodId,updateData};
+
+                var json = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                //Gọi API updateFood
+                var response = await client.PostAsync(BaseUrl + "updateFood", content);
+                var resultStr = await response.Content.ReadAsStringAsync();
+
+                return (response.IsSuccessStatusCode, resultStr);
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Lỗi kết nối Server: {ex.Message}");
+            }
+        }
+
     }
 }

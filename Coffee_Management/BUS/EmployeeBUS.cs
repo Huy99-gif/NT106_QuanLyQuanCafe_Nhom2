@@ -85,5 +85,14 @@ namespace BUS
                 return (false, "Không tìm thấy mã nhân viên hoặc mã xác thực.");
             return await EmployeeDAL.LockEmployeeCFAsync(empId, authUid);
         }
+        public static async Task<(bool Success, string Message)> DeleteEmployeeAsync(string empId, string authUid)
+        {
+            // Kiểm tra rỗng
+            if (Validation.IsAnyEmpty(empId, authUid))
+                return (false, "Lỗi: Không tìm thấy mã nhân viên hoặc mã xác thực (AuthUid) để xóa.");
+
+            // Đẩy xuống DAL
+            return await EmployeeDAL.DeleteEmployeeCFAsync(empId, authUid);
+        }
     }
 }

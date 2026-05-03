@@ -335,7 +335,7 @@ exports.getAllEmployees = onRequest(async (req, res) => {
         const allEmployees = snapshot.val() || {};
 
         // Xử lý phân quyền trả về dữ liệu
-        const uoserRle = (requestUser.vai_tro || "").toLowerCase();
+        const userRole = (requestUser.vai_tro || "").toLowerCase();
 
         if (userRole === 'manager' || userRole === 'admin') {
             // Manager/Admin: Trả về toàn bộ danh sách
@@ -481,6 +481,34 @@ exports.updateEmployee = onRequest(async (req, res) => {
     }
 });
 
+// Tạo một API endpoint có tên là "deleteEmployee" để xóa tài khoản nhân viên khỏi Firebase Authentication và Realtime Database 
+exports.deleteEmployee = onRequest(async (req, res) => {
+    if (req.method !== "POST") 
+        return res.status(405).send({ message: "Method Not Allowed" });
+
+    try {
+        // BẢO MẬT: Chỉ có Token của Manager/Admin mới qua được ải này
+        await verifyManagerRole(req);
+
+        const { employeeId, authUid } = req.body;
+
+        if (!employeeId || !authUid) {
+            return res.status(400).send({ error: "Missing employeeId or authUid" });
+        }
+
+        //Xóa tài khoản khỏi bảng Firebase Authentication (Cấm đăng nhập vĩnh viễn)
+        await admin.auth().deleteUser(authUid);
+
+        // 2Xóa hồ sơ khỏi Realtime Database
+        await admin.database().ref(`nhan_vien/${employeeId}`).remove();
+
+        return res.status(200).send({ success: true, message: "Đã xóa nhân viên thành công!" });
+    } catch (error) {
+        console.error("Delete Error:", error.message);
+        return res.status(403).send({ error: "Access Denied / Delete Failed: " + error.message });
+    }
+});
+
 // Tạo một API endpoint có tên là "lockEmployee" để khóa tài khoản nhân viên trong Realtime Database
 exports.lockEmployee = onRequest(async (req, res) => {
     if (req.method !== "POST") return res.status(405).send({ message: "Method Not Allowed" });
@@ -535,6 +563,9 @@ exports.saveChatMessage = onRequest(async (req, res) => {
 });
 // Function Lấy lịch sử chat từ Realtime Database dựa trên roomId
 exports.getChatHistory = onRequest(async (req, res) => {
+    if (req.method !== "GET") {
+        return res.status(405).send({ message: "Method Not Allowed" });
+    }
     const { roomId } = req.query;
     try {
         const requestUser = await verifyAndGetUser(req);
@@ -551,3 +582,115 @@ exports.getChatHistory = onRequest(async (req, res) => {
         return res.status(500).send({ error: error.message });
     }
 });
+// Tạo một API endpoint có tên là "getAllFoods" để trả về danh sách tất cả món ăn (dữ liệu từ Realtime Database)
+exports.getAllFoods = onRequest(async (req, res) => {
+    if (req.method !== "GET") {
+        return res.status(405).send({ message: "Method Not Allowed" });
+    }
+    try {
+        await verifyAndGetUser(req);
+        const snapshot = await admin.database().ref('mon_uong').once('value');
+        return res.status(200).send(snapshot.val() || {});
+    } 
+    catch (error) {
+        console.error("Get All Foods Error:", error.message);
+        return res.status(403).send({ error: error.message });
+    }
+});
+// Tạo một API endpoint có tên là "addFood" để thêm món ăn mới vào Realtime Database
+exports.addFood = onRequest(async (req, res) => {
+    if (req.method !== "POST") 
+        return res.status(405).send("Method Not Allowed");
+    try {
+        await verifyManagerRole(req);
+        const foodData = req.body;
+        
+        const snapshot = await admin.database().ref('mon_uong').once('value');
+        const count = snapshot.numChildren();
+        const nextId = `mon_${(count + 1).toString().padStart(3, '0')}`;
+
+        await admin.database().ref(`mon_uong/${nextId}`).set(foodData);
+        return res.status(200).send({ success: true, message: "Thêm món thành công!" });
+    } catch (error) {
+        console.error("Add Food Error:", error.message);
+        return res.status(500).send({ error: error.message });
+    }
+});
+// Tạo một API endpoint có tên là "deleteFood" để xóa món ăn khỏi Realtime Database và dồn hàng lại để tránh lỗ hổng ID
+exports.deleteFood = onRequest(async (req, res) => {
+    if (req.method !== "POST") 
+        return res.status(405).send("Method Not Allowed");
+    try {
+        await verifyManagerRole(req);
+        const { foodId } = req.body;
+
+        if (!foodId) return res.status(400).send({ error: "Thiếu ID món ăn" });
+
+        // Xóa món hiện tại
+        await admin.database().ref(`mon_uong/${foodId}`).remove();
+
+        // GỌI HÀM DỒN HÀNG CHUNG (Hàm reorderSequence tui đã viết cho sếp)
+        await reorderSequence('mon_uong', 'mon_');
+
+        return res.status(200).send({ success: true, message: "Đã xóa và dồn hàng món ăn!" });
+    } catch (error) {
+        return res.status(500).send({ error: error.message });
+    }
+});
+// Tạo một API endpoint có tên là "updateFood" để cập nhật thông tin món ăn trong Realtime Database
+exports.updateFood = onRequest(async (req, res) => {
+    // Chỉ chấp nhận phương thức POST để bảo mật dữ liệu
+    if (req.method !== "POST") return res.status(405).send({ message: "Method Not Allowed" });
+
+    try {
+        // BẢO MẬT: Chỉ Manager/Admin có token hợp lệ mới được quyền chỉnh sửa thực đơn
+        await verifyManagerRole(req);
+
+        const { foodId, updateData } = req.body;
+
+        // Kiểm tra dữ liệu đầu vào
+        if (!foodId || !updateData) {
+            return res.status(400).send({ error: "Missing foodId or updateData" });
+        }
+
+        // Ngăn chặn việc thay đổi ID nội bộ qua hàm update để tránh lệch pha với Key của Firebase
+        if (updateData.Id) delete updateData.Id;
+
+        // Tiến hành cập nhật các trường dữ liệu (ví dụ: tên món, giá, mô tả...) vào node 'mon_uong'
+        await admin.database().ref(`mon_uong/${foodId}`).update(updateData);
+
+        return res.status(200).send({ success: true, message: "Cập nhật thông tin món ăn thành công!" });
+    } catch (error) {
+        // Bắt lỗi và phản hồi về cho C# (lỗi token, lỗi quyền truy cập hoặc lỗi server)
+        console.error("Update Food Error:", error.message);
+        return res.status(403).send({ error: "Access Denied / Update Failed: " + error.message });
+    }
+});
+
+
+// Hàm phụ để dồn hàng lại sau khi xóa  Món ăn / ... (để tránh lỗ hổng ID)
+async function reorderSequence(nodePath, prefix) {
+    const db = admin.database();
+    const ref = db.ref(nodePath);
+    
+    // 1. Lấy toàn bộ dữ liệu hiện tại về
+    const snapshot = await ref.once('value');
+    if (!snapshot.exists()) return;
+
+    const data = snapshot.val();
+    
+    // 2. Chuyển thành mảng và SẮP XẾP theo mã ID cũ để không bị đảo lộn thứ tự
+    const items = Object.keys(data).sort().map(key => data[key]);
+
+    // 3. Tạo một object mới với mã ID đã được đánh số lại từ 001
+    const newData = {};
+    items.forEach((item, index) => {
+        const newId = `${prefix}${(index + 1).toString().padStart(3, '0')}`;
+        newData[newId] = item;
+    });
+
+    // 4. Ghi đè toàn bộ Node bằng dữ liệu đã đánh số lại
+    // Dùng .set() để xóa sạch cái cũ và thay bằng cái mới đã dồn hàng
+    await ref.set(newData);
+    console.log(`--- Đã dồn hàng xong cho node: ${nodePath} ---`);
+}

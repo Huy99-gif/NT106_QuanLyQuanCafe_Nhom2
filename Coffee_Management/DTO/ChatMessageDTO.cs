@@ -22,3 +22,4 @@ namespace DTO
         public string? MessageType { get; set; } = "text";
     }
 }
+    
