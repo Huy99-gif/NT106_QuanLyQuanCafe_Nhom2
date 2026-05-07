@@ -10,8 +10,7 @@ namespace DAL
 {
     public static class AuthDAL
     {
-        private static readonly string? _secretKey =
-            ConfigurationManager.AppSettings["FirebaseSecretKey"];
+        private static readonly string? _secretKey = ConfigurationManager.AppSettings["FirebaseSecretKey"];
 
         public static async Task<(EmployeeDTO? User, string? Token)> LoginAsync(string email, string password)
         {
@@ -20,7 +19,8 @@ namespace DAL
                 var response = await DalHelper.Client.SendAsync(
                     DalHelper.Build(HttpMethod.Post, "auth/login", new { email, password }));
 
-                if (!response.IsSuccessStatusCode) return (null, null);
+                if (!response.IsSuccessStatusCode) 
+                    return (null, null);
 
                 var json = JObject.Parse(await response.Content.ReadAsStringAsync());
                 return (json["user"]?.ToObject<EmployeeDTO>(), json["token"]?.ToString());

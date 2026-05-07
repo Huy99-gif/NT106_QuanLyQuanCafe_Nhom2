@@ -47,7 +47,7 @@
 | Menu                | UserControl              | Chức năng                                                      |
 | ------------------- | ------------------------ | -------------------------------------------------------------- |
 | Tổng quan           | `ucOverview_Manager`     | Tổng quan ca làm: doanh thu, đơn hàng, NV trực.                |
-| Sản phẩm & Thực đơn | `ucProducts_Manager`     | Quản lý món + nhập kho (mở `FoodForm` / `AddInventoryImport`). |
+| Sản phẩm & Thực đơn | `ucProducts_Manager`     | Quản lý món; **Quản lý kho** mở `WarehouseManagerForm` (phiếu nhập tay / điền từ Excel·CSV → `AddInventoryImport`). UC trong `Warehouse/` có thể gắn thêm vào luồng Manager nếu cần. |
 | Đơn hàng & Hóa đơn  | `ucOrders_Manager`       | Lịch sử order + chi tiết hóa đơn.                              |
 | Quản lý Nhân viên   | `ucStaff_Manager`        | Danh sách NV thuộc ca quản lý.                                 |
 | Thất thoát          | `ucLoss_Manager`         | Theo dõi nguyên liệu hao hụt, biểu đồ xu hướng.                |
@@ -96,20 +96,17 @@
 
 ---
 
-## 6. Vai trò **Stockkeeper** (NV kho)
+## 6. Module **Kho** (`GUI/Warehouse/`)
 
+> Không còn menu đăng nhập riêng cho “thủ kho”. Các UserControl trong thư mục **`Warehouse/`** phục vụ màn **Sản phẩm & Thực đơn** của **Manager** (hoặc gắn thêm khi phát triển).
 
-| Menu              | UserControl                       | Chức năng                                          |
-| ----------------- | --------------------------------- | -------------------------------------------------- |
-| Tổng quan         | `ucOverview_Staff`                | Tổng quan ca.                                      |
-| Kiểm soát Kho     | `ucStockControl_Warehouse`        | Tồn kho realtime, nhập điều chỉnh.                 |
-| Đề xuất Nhập kho  | `ucSmartRestock_Warehouse`        | AI gợi ý NL cần đặt thêm dựa trên tốc độ tiêu thụ. |
-| Dự kiến Sản xuất  | `ucEstimatedProduction_Warehouse` | Tính toán số ly có thể pha với tồn kho hiện tại.   |
-| Lịch sử chấm công | `ucAttendanceHistory`             | Xem lịch sử.                                       |
-| Xin nghỉ          | `ucLeaveRequest`                  | Đăng ký nghỉ.                                      |
-| Chat nội bộ       | `ucInternalChat`                  | Chat.                                              |
-| Profile           | `ucProfile`                       | Thông tin cá nhân.                                 |
+| UC                                | Ý nghĩa nghiệp vụ                                                       |
+| --------------------------------- | ----------------------------------------------------------------------- |
+| `ucStockControl_Warehouse`        | Tồn kho realtime, thao tác nhập chỉnh (nếu được gọi trong luồng Manager). |
+| `ucSmartRestock_Warehouse`        | Gợi ý NL cần đặt thêm (buffer / tiêu thụ — theo shell UI).               |
+| `ucEstimatedProduction_Warehouse` | Dự báo số ly pha được từ tồn + công thức.                                |
 
+Chúng có thể được host trong form/tab khác của Manager — không có entry riêng trên sidebar cho role riêng.
 
 ---
 
@@ -141,7 +138,8 @@
 | `FoodEditForm.cs`       | `ucProducts_Manager` | Sửa món.                                              |
 | `FoodDetail.cs`         | `ucProducts_Manager` | Chi tiết món (hiển thị thành phần, giá).              |
 | `EmployeeDetail.cs`     | `ucStaff_Manager`    | Chi tiết nhân viên.                                   |
-| `AddInventoryImport.cs` | `ucProducts_Manager` | **Tạo phiếu nhập kho** mới (NL + số lượng + đơn giá). |
+| `WarehouseManagerForm.cs` | `ucProducts_Manager` (nút «Quản lý kho») | Hub: phiếu nhập tay hoặc mở `AddInventoryImport` sau khi đọc Excel/CSV. |
+| `AddInventoryImport.cs` | `WarehouseManagerForm` | **Tạo phiếu nhập kho** (nhân viên, ngày, chi tiết NL + SL + đơn giá). |
 | `BroadcastMessage.cs`   | `ucBroadcastCenter`  | Soạn 1 thông báo broadcast.                           |
 | `ReportDialog.cs`       | Sidebar / SOS        | Báo cáo sự cố cho Manager.                            |
 
@@ -153,5 +151,5 @@
 - **Theme**: Dark (`#252526` background, `#2D2D30` panel, `#1E1E1E` header).
 - **Accent**: SteelBlue cho action chính, MediumSeaGreen cho thành công, IndianRed cho cảnh báo/nguy hiểm.
 - **Font**: Segoe UI - title 13-16pt bold, body 9.5-10pt.
-- **MsgBox**: dùng `MsgBox.Show(...)` chứ không dùng `MessageBox.Show` để giữ theme đồng nhất.
+- **MsgBox**: dùng `MsgBox.Show(...)` (không dùng `MessageBox.Show`) để giữ theme; nội dung dài có **thanh cuộn dọc**; form chi tiết dài có thể **cuộn toàn form** khi vượt chiều cao màn hình.
 - **Tooltip**: mỗi nút sidebar có tooltip giải thích chức năng (ví dụ "Đơn hàng và Hóa đơn" → "Đơn hàng và Hóa đơn").

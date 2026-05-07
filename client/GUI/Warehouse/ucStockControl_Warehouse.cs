@@ -63,21 +63,7 @@ namespace GUI
 
         private void btnNewImport_Click(object sender, EventArgs e)
         {
-            StockTransaction frm = new(StockTransaction.TransactionType.Import);
-            if (frm.ShowDialog() == DialogResult.OK)
-                _ = LoadDataAsync();
-        }
-
-        private void btnNewExport_Click(object sender, EventArgs e)
-        {
-            StockTransaction frm = new(StockTransaction.TransactionType.Export);
-            if (frm.ShowDialog() == DialogResult.OK)
-                _ = LoadDataAsync();
-        }
-
-        private void btnNewWaste_Click(object sender, EventArgs e)
-        {
-            StockTransaction frm = new(StockTransaction.TransactionType.Waste);
+            using AddInventoryImport frm = new();
             if (frm.ShowDialog() == DialogResult.OK)
                 _ = LoadDataAsync();
         }

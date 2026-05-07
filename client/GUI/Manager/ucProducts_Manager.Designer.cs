@@ -316,7 +316,7 @@
             btnImportMaterial.Name = "btnImportMaterial";
             btnImportMaterial.Size = new Size(115, 25);
             btnImportMaterial.TabIndex = 4;
-            btnImportMaterial.Text = "+ Nhập Hàng";
+            btnImportMaterial.Text = "Quản lý kho";
             btnImportMaterial.UseVisualStyleBackColor = false;
             btnImportMaterial.Click += BtnImportMaterial_Click;
             // 

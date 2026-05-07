@@ -1,4 +1,4 @@
-﻿namespace GUI
+namespace GUI
 {
     partial class ucStaff_Manager
     {
@@ -24,7 +24,7 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             pnlSummary = new Panel();
             lblPayrollValue = new Label();
             lblPayrollTitle = new Label();
@@ -247,6 +247,7 @@
             btnEditStaff.TabIndex = 0;
             btnEditStaff.Text = "Sửa";
             btnEditStaff.UseVisualStyleBackColor = false;
+            btnEditStaff.Click += btnEditStaff_Click;
             // 
             // btnAddStaff
             // 
@@ -261,20 +262,21 @@
             btnAddStaff.TabIndex = 1;
             btnAddStaff.Text = "+ Thêm NV Mới";
             btnAddStaff.UseVisualStyleBackColor = false;
+            btnAddStaff.Click += btnAddStaff_Click;
             // 
             // dgvStaff
             // 
             dgvStaff.BackgroundColor = Color.FromArgb(45, 45, 48);
             dgvStaff.BorderStyle = BorderStyle.None;
             dgvStaff.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(45, 45, 48);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = Color.Gray;
-            dataGridViewCellStyle2.SelectionForeColor = Color.White;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvStaff.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(45, 45, 48);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.Gray;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvStaff.DefaultCellStyle = dataGridViewCellStyle1;
             dgvStaff.Location = new Point(20, 85);
             dgvStaff.Name = "dgvStaff";
             dgvStaff.RowHeadersWidth = 51;

@@ -72,17 +72,6 @@ namespace GUI
                 new("  Chat nội bộ",           "Chat nội bộ",              () => new ucInternalChat()),
                 new("  Profile",              "Thông tin cá nhân",        () => new ucProfile()),
             },
-            ["stockkeeper"] = new()
-            {
-                new("  Tổng quan",            "Tổng quan cá nhân",        () => new ucOverview_Staff()),
-                new("  Kiểm soát Kho",         "Tồn kho realtime",         () => new ucStockControl_Warehouse()),
-                new("  Đề xuất Nhập kho",      "Nhập kho thông minh",      () => new ucSmartRestock_Warehouse()),
-                new("  Dự kiến Sản xuất",      "Số ly có thể pha",        () => new ucEstimatedProduction_Warehouse()),
-                new("  Lịch sử chấm công",   "Xem lịch sử + báo cáo",    () => new ucAttendanceHistory()),
-                new("  Xin nghỉ",             "Đơn xin nghỉ phép",        () => new ucLeaveRequest()),
-                new("  Chat nội bộ",           "Chat nội bộ",              () => new ucInternalChat()),
-                new("  Profile",              "Thông tin cá nhân",        () => new ucProfile()),
-            },
             ["security"] = new()
             {
                 new("  Tổng quan",            "Tổng quan cá nhân",        () => new ucOverview_Staff()),
@@ -101,7 +90,6 @@ namespace GUI
             ["manager"]     = ("Quản lý",           Color.Firebrick),
             ["order staff"] = ("Nhân viên Order",   Color.MediumSeaGreen),
             ["barista"]     = ("Pha chế",           Color.SteelBlue),
-            ["stockkeeper"] = ("Thủ kho",           Color.Peru),
             ["security"]    = ("Bảo vệ",           Color.SlateGray),
         };
 
@@ -110,7 +98,10 @@ namespace GUI
             InitializeComponent();
             _dashboardManager = new BaseDashboard(this);
 
-            string role = GlobalSession.CurrentUser?.Role?.ToLower() ?? "security";
+            // Vai trò stockkeeper không còn; tài khoản cũ dùng menu Quản lý (màn Kho trong Sản phẩm).
+            string role = GlobalSession.CurrentUser?.Role?.ToLowerInvariant() ?? "security";
+            if (role == "stockkeeper") role = "manager";
+
             BuildSidebar(role);
 
             this.Load += (s, e) =>
@@ -140,37 +131,42 @@ namespace GUI
 
             if (!RoleMenus.TryGetValue(role, out var menuItems)) return;
 
-            // Tooltip dùng OwnerDraw để giữ theme dark
-            _menuTooltip.Draw += (s, e) =>
-            {
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(30, 30, 30)), e.Bounds);
-                e.Graphics.DrawRectangle(Pens.Gray, 0, 0, e.Bounds.Width - 1, e.Bounds.Height - 1);
-                using var f = new Font("Segoe UI", 9F);
-                e.Graphics.DrawString(e.ToolTipText, f, Brushes.White, 6, 4);
-            };
-            _menuTooltip.Popup += (s, e) => e.ToolTipSize = new Size(e.ToolTipSize.Width + 10, e.ToolTipSize.Height + 4);
+            bool tipDrawn = false;
 
-            for (int i = menuItems.Count - 1; i >= 0; i--)
+            foreach (var item in menuItems)
             {
-                var item = menuItems[i];
+                // Tooltip dùng OwnerDraw để giữ theme dark (một lần)
+                if (!tipDrawn)
+                {
+                    _menuTooltip.Draw += (s, e) =>
+                    {
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(30, 30, 30)), e.Bounds);
+                        e.Graphics.DrawRectangle(Pens.Gray, 0, 0, e.Bounds.Width - 1, e.Bounds.Height - 1);
+                        using var f = new Font("Segoe UI", 9F);
+                        e.Graphics.DrawString(e.ToolTipText, f, Brushes.White, 6, 4);
+                    };
+                    _menuTooltip.Popup += (s, e) => e.ToolTipSize = new Size(e.ToolTipSize.Width + 10, e.ToolTipSize.Height + 4);
+                    tipDrawn = true;
+                }
+
                 Button btn = new()
                 {
                     Text = item.ButtonText,
-                    Dock = DockStyle.Top,
                     Height = 50,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
+                    BackColor = Color.FromArgb(30, 30, 30),
                     Font = new Font("Segoe UI", 11F),
                     Cursor = Cursors.Hand,
                     TextAlign = ContentAlignment.MiddleLeft,
-                    UseVisualStyleBackColor = true,
+                    UseVisualStyleBackColor = false,
                 };
                 btn.FlatAppearance.BorderSize = 0;
+                btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(40, 40, 40);
 
-                // Tooltip giải thích chức năng (đọc từ TitleText config)
                 _menuTooltip.SetToolTip(btn, item.TitleText);
 
-                var config = item;
+                MenuItemConfig config = item;
                 btn.Click += (s, e) =>
                 {
                     UserControl uc = config.CreateUC();
@@ -179,10 +175,32 @@ namespace GUI
                     HighlightActiveButton((Button)s!);
                 };
 
-                pnlSidebar.Controls.Add(btn);
-                btn.BringToFront();
-                _menuButtons.Insert(0, btn);
+                pnlMenuScroll.Controls.Add(btn);
+                _menuButtons.Add(btn);
             }
+
+            pnlMenuScroll.Resize += (_, _) => LayoutMenuSidebarButtons();
+            LayoutMenuSidebarButtons();
+        }
+
+        private void LayoutMenuSidebarButtons()
+        {
+            if (_menuButtons.Count == 0 || pnlMenuScroll.IsDisposed) return;
+
+            int y = 0;
+            int w = Math.Max(pnlMenuScroll.ClientSize.Width, 1);
+
+            foreach (var btn in _menuButtons)
+            {
+                btn.SuspendLayout();
+                btn.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                btn.Location = new Point(0, y);
+                btn.Size = new Size(w, 50);
+                btn.ResumeLayout(false);
+                y += 50;
+            }
+
+            pnlMenuScroll.AutoScrollMinSize = new Size(0, y);
         }
 
         private void AddUserControl(UserControl uc)

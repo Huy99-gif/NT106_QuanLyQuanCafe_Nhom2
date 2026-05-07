@@ -1,4 +1,4 @@
-# start-backend.ps1
+﻿# start-backend.ps1
 # Khởi động Backend Express với kiểm tra tiên quyết
 
 # Bật UTF-8 cho tiếng Việt trên Windows PowerShell 5.1

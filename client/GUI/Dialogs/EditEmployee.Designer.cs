@@ -1,4 +1,7 @@
-﻿namespace GUI
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace GUI
 {
     partial class EditEmployee
     {
@@ -31,6 +34,8 @@
             lblTitle = new Label();
             lblEmpId = new Label();
             txtEmpId = new TextBox();
+            lblEmail = new Label();
+            txtEmail = new TextBox();
             lblFullName = new Label();
             txtFullName = new TextBox();
             lblPhone = new Label();
@@ -76,6 +81,31 @@
             txtEmpId.ReadOnly = true;
             txtEmpId.Size = new Size(350, 27);
             txtEmpId.TabIndex = 2;
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI", 10F);
+            lblEmail.ForeColor = Color.LightGray;
+            lblEmail.Location = new Point(30, 136);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(44, 19);
+            lblEmail.TabIndex = 13;
+            lblEmail.Text = "Email:";
+            // 
+            // txtEmail
+            // 
+            txtEmail.BackColor = Color.FromArgb(45, 45, 48);
+            txtEmail.BorderStyle = BorderStyle.FixedSingle;
+            txtEmail.Font = new Font("Segoe UI", 11F);
+            txtEmail.ForeColor = Color.Gainsboro;
+            txtEmail.Location = new Point(34, 156);
+            txtEmail.Multiline = true;
+            txtEmail.Name = "txtEmail";
+            txtEmail.ReadOnly = true;
+            txtEmail.Size = new Size(350, 30);
+            txtEmail.TabIndex = 14;
+            txtEmail.WordWrap = true;
             // 
             // lblFullName
             // 
@@ -215,6 +245,8 @@
             Controls.Add(lblPhone);
             Controls.Add(txtFullName);
             Controls.Add(lblFullName);
+            Controls.Add(txtEmail);
+            Controls.Add(lblEmail);
             Controls.Add(txtEmpId);
             Controls.Add(lblEmpId);
             Controls.Add(lblTitle);
@@ -234,6 +266,8 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblEmpId;
         private System.Windows.Forms.TextBox txtEmpId;
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Label lblFullName;
         private System.Windows.Forms.TextBox txtFullName;
         private System.Windows.Forms.Label lblPhone;

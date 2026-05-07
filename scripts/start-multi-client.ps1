@@ -1,4 +1,4 @@
-# start-multi-client.ps1
+﻿# start-multi-client.ps1
 # Khởi chạy nhiều instance GUI.exe để test đa user (chat, đồng thời...)
 #
 # Usage:

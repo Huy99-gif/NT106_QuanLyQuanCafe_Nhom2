@@ -6,7 +6,7 @@
 ┌─────────────────────────────────────────────────────────┐
 │                      CLIENT (WinForms)                   │
 │                                                          │
-│  Admin | Manager | Barista | OrderStaff | Warehouse      │
+│  Admin | Manager | Barista | OrderStaff | Security       │
 └────────────────────────┬────────────────────────────────┘
                          │
             ┌────────────┴────────────┐
@@ -72,10 +72,9 @@ Client                    Backend                   Firebase Auth
 | Vai trò    | Quyền truy cập                            |
 | ---------- | ----------------------------------------- |
 | Admin      | Toàn quyền                                |
-| Manager    | Quản lý nhân viên, menu, kho, xem báo cáo |
+| Manager    | Quản lý nhân viên, thực đơn **và kho / phiếu nhập**, xem báo cáo (module kho trong `GUI/Warehouse/`, không role đăng nhập riêng) |
 | Barista    | Xem đơn hàng (KDS), recipe                |
 | OrderStaff | Tạo đơn, thanh toán, CRM                  |
-| Warehouse  | Quản lý kho, nhập hàng                    |
 | Security   | Bãi giữ xe, SOS                           |
 
 

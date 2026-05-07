@@ -22,6 +22,7 @@ namespace GUI
         {
             pnlSidebar = new Panel();
             btnLogout = new Button();
+            pnlMenuScroll = new Panel();
             pnlLogo = new Panel();
             lblLogo = new Label();
             pnlMainContent = new Panel();
@@ -30,6 +31,7 @@ namespace GUI
             lblTitle = new Label();
             lblWelcome = new Label();
             pnlSidebar.SuspendLayout();
+            pnlMenuScroll.SuspendLayout();
             pnlLogo.SuspendLayout();
             pnlMainContent.SuspendLayout();
             pnlHeader.SuspendLayout();
@@ -39,6 +41,7 @@ namespace GUI
             //
             pnlSidebar.BackColor = Color.FromArgb(30, 30, 30);
             pnlSidebar.Controls.Add(btnLogout);
+            pnlSidebar.Controls.Add(pnlMenuScroll);
             pnlSidebar.Controls.Add(pnlLogo);
             pnlSidebar.Dock = DockStyle.Left;
             pnlSidebar.Location = new Point(0, 0);
@@ -61,6 +64,16 @@ namespace GUI
             btnLogout.Text = "Đăng xuất";
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += BtnLogout_Click;
+            //
+            // pnlMenuScroll
+            //
+            pnlMenuScroll.AutoScroll = true;
+            pnlMenuScroll.BackColor = Color.FromArgb(30, 30, 30);
+            pnlMenuScroll.Dock = DockStyle.Fill;
+            pnlMenuScroll.Location = new Point(0, 70);
+            pnlMenuScroll.Name = "pnlMenuScroll";
+            pnlMenuScroll.Size = new Size(220, 480);
+            pnlMenuScroll.TabIndex = 7;
             //
             // pnlLogo
             //
@@ -153,6 +166,7 @@ namespace GUI
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Coffee Management Dashboard";
             pnlSidebar.ResumeLayout(false);
+            pnlMenuScroll.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
             pnlLogo.PerformLayout();
             pnlMainContent.ResumeLayout(false);
@@ -165,6 +179,7 @@ namespace GUI
         #endregion
 
         private Panel pnlSidebar;
+        private Panel pnlMenuScroll;
         private Panel pnlLogo;
         private Label lblLogo;
         private Button btnLogout;

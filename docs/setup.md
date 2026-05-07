@@ -24,7 +24,10 @@ cd NT106_QuanLyQuanCafe_Nhom2
 
 ## Bước 2: Cài dependencies
 
+Các file `scripts/*.ps1` được lưu **UTF-8 có BOM** để tương thích **Windows PowerShell 5.1** (tránh lỗi parse khi có chữ Unicode). Nên chạy:
+
 ```powershell
+cd <thư-mục-gốc-repo>
 .\scripts\setup.ps1
 ```
 
@@ -170,7 +173,11 @@ URL sau deploy: `https://asia-southeast1-<project>.cloudfunctions.net/api`
 
 ---
 
-## Troubleshooting
+**Lỗi PowerShell: `Missing closing '}'` hoặc parser lỗi khi chạy `.\scripts\*.ps1`**  
+→ Các script trong `scripts/` được lưu **UTF-8 có BOM** để **Windows PowerShell 5.1** đọc đúng tiếng Việt. Mở và lưu file bằng editor hỗ trợ BOM, hoặc dùng **PowerShell 7+** (`pwsh`), hoặc chạy script từ thư mục gốc repo: `powershell -ExecutionPolicy Bypass -File .\scripts\start-all.ps1`.
+
+**Lỗi: xung đột tham số `start-all.ps1` (không khởi động service nào)**  
+→ Không dùng đồng thời `-NoBackend` và `-BackendOnly` (script sẽ báo lỗi).
 
 **Lỗi: `Cannot find module 'serviceAccountKey.json'`**  
 → Chưa tạo file `backend/serviceAccountKey.json`. Xem Bước 3.3.

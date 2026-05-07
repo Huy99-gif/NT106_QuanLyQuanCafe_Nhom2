@@ -1,6 +1,18 @@
 const { db } = require('../config/firebase');
-const { reorderSequence } = require('../utils/reorder_helper');
 const { info } = require('../utils/logger');
+
+/** ID tiếp theo = max(số trong mon_XXX) + 1 — không cần reorder cả node sau mỗi lần xóa */
+function computeNextFoodId(existingVal) {
+    if (!existingVal || typeof existingVal !== 'object') return 'mon_001';
+    const prefix = 'mon_';
+    let max = 0;
+    for (const key of Object.keys(existingVal)) {
+        if (!key.startsWith(prefix)) continue;
+        const n = parseInt(key.slice(prefix.length), 10);
+        if (!Number.isNaN(n) && n > max) max = n;
+    }
+    return `${prefix}${(max + 1).toString().padStart(3, '0')}`;
+}
 
 exports.getAll = async (req, res, next) => {
     try {
@@ -15,8 +27,7 @@ exports.add = async (req, res, next) => {
     try {
         const foodData = req.body;
         const snapshot = await db.ref('mon_uong').once('value');
-        const count = snapshot.numChildren();
-        const nextId = `mon_${(count + 1).toString().padStart(3, '0')}`;
+        const nextId = computeNextFoodId(snapshot.val());
 
         await db.ref(`mon_uong/${nextId}`).set(foodData);
         info('Food added', { foodId: nextId });
@@ -44,7 +55,6 @@ exports.remove = async (req, res, next) => {
     try {
         const { id } = req.params;
         await db.ref(`mon_uong/${id}`).remove();
-        await reorderSequence('mon_uong', 'mon_');
         info('Food deleted', { foodId: id });
         res.status(200).json({ success: true });
     } catch (err) {

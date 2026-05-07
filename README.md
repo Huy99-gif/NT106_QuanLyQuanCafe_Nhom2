@@ -50,12 +50,13 @@ client/ (WinForms C#)
 ### Thực đơn & Kho
 
 - Quản lý món (thêm, sửa, xóa theo danh mục)
-- Nhập/xuất kho nguyên liệu, cảnh báo tồn kho thấp
-- Tự động gợi ý nhập hàng (Smart Restock)
+- Nhập kho & phiếu nhập (Manager: màn **Sản phẩm & Thực đơn** → **Quản lý kho**, phiếu nhập tay hoặc nhập chi tiết từ Excel/CSV)
+- Nguyên liệu / tồn kho / cảnh báo thấp — module UI trong `GUI/Warehouse/` vẫn dùng được khi gắn vào màn quản lý
+- Tự động gợi ý nhập hàng (Smart Restock) — theo thiết kế module kho
 
 ### Nhân sự
 
-- Phân quyền RBAC: Admin / Manager / Barista / OrderStaff / Warehouse / Security
+- Phân quyền RBAC: **Admin / Manager / Barista / OrderStaff / Security** — **không** còn tài khoản đăng nhập riêng “thủ kho”; tài khoản cũ `stockkeeper` được app xử lý như **Manager** để không mất menu (nên cập nhật `role` trong Firebase cho đồng bộ).
 - Chấm công, xin nghỉ, tính lương
 - Chat nội bộ giữa nhân viên
 
@@ -131,6 +132,8 @@ EMAIL_PASS=<gmail-app-password>
 .\scripts\start-server.ps1             # Chỉ ChatServer SignalR
 .\scripts\start-client.ps1             # Chỉ Client WinForms (build + run)
 ```
+
+> Các script `*.ps1` dùng **UTF-8 có BOM** để **Windows PowerShell 5.1** đọc đúng chữ Việt trong comment. Nếu sửa script, lưu UTF-8 BOM hoặc chạy bằng **PowerShell 7** (`pwsh`).
 
 Client cũng có thể mở trong Visual Studio: `client/Coffee_Management.sln` → F5
 

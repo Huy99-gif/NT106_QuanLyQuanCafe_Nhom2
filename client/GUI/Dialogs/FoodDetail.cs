@@ -29,13 +29,19 @@ namespace GUI
             txtFoodId.Text = food.Id;
             txtFoodName.Text = food.TenMon;
 
-            // Định dạng tiền tệ cho đẹp (ví dụ: 25,000 VNĐ)
             txtPrice.Text = food.Gia.ToString("N0") + " VNĐ";
 
-            // Hiển thị loại món
-            txtCategory.Text = food.Loai;
+            txtCategory.Text = food.Loai switch
+            {
+                "cafe" => "Cà phê",
+                "tea" => "Trà / Trà sữa",
+                "topping" => "Topping",
+                "juice" => "Nước ép / Sinh tố",
+                "food" => "Đồ ăn vặt",
+                "other" => "Khác",
+                _ => food.Loai ?? "—"
+            };
 
-            // Hiển thị trạng thái kinh doanh
             if (food.ConHang)
             {
                 txtStatus.Text = "Đang kinh doanh";
@@ -46,13 +52,71 @@ namespace GUI
                 txtStatus.Text = "Ngừng kinh doanh";
                 txtStatus.ForeColor = Color.IndianRed;
             }
+
+            txtMoTa.Text = string.IsNullOrWhiteSpace(food.MoTa) ? "—" : food.MoTa;
+            RecalcFoodDetailLayout();
+        }
+
+        private void RecalcFoodDetailLayout()
+        {
+            const int lx = 30;
+            const int fx = 34;
+            const int fw = 350;
+            const int g = 8;
+
+            int y = lblTitle.Bottom + 14;
+
+            lblFoodId.Location = new Point(lx, y);
+            y += lblFoodId.Height + 2;
+            txtFoodId.Location = new Point(fx, y);
+            txtFoodId.Width = fw;
+            y = txtFoodId.Bottom + g;
+
+            lblFoodName.Location = new Point(lx, y);
+            y += lblFoodName.Height + 2;
+            txtFoodName.Location = new Point(fx, y);
+            txtFoodName.Width = fw;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtFoodName, 32, 120);
+            y = txtFoodName.Bottom + g;
+
+            lblPrice.Location = new Point(lx, y);
+            y += lblPrice.Height + 2;
+            txtPrice.Location = new Point(fx, y);
+            txtPrice.Width = fw;
+            y = txtPrice.Bottom + g;
+
+            int rowCatY = y;
+            lblCategory.Location = new Point(lx, rowCatY);
+            lblStatus.Location = new Point(220, rowCatY);
+            rowCatY += Math.Max(lblCategory.Height, lblStatus.Height) + 2;
+
+            txtCategory.Location = new Point(fx, rowCatY);
+            txtStatus.Location = new Point(224, rowCatY);
+            y = Math.Max(txtCategory.Bottom, txtStatus.Bottom) + g;
+
+            lblMoTa.Location = new Point(lx, y);
+            y += lblMoTa.Height + 2;
+            txtMoTa.Location = new Point(fx, y);
+            txtMoTa.Width = fw;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtMoTa, 56, 280);
+            y = txtMoTa.Bottom + g + 8;
+
+            BtnRemove.Location = new Point(fx, y);
+            btnClose.Location = new Point(Math.Min(fx + 200, fx + fw - btnClose.Width), y);
+
+            int bottom = y + BtnRemove.Height + 32;
+            int preferredW = Math.Max(ClientSize.Width, 420);
+            int maxH = DialogAutosizeHelper.MaxDialogClientHeight(this);
+            DialogAutosizeHelper.CapFormHeightWithAutoScroll(this, bottom, preferredW, maxH);
+
+            lblTitle.Location = new Point(Math.Max(16, (ClientSize.Width - lblTitle.Width) / 2), 22);
         }
 
         private async void BtnRemove_Click(object sender, EventArgs e)
         {
             // Hiển thị hộp thoại xác nhận "xịn" của sếp
             DialogResult confirm = MsgBox.Show(
-                $"Sếp có chắc chắn muốn XÓA VĨNH VIỄN món [{_currentFood.TenMon}] không?\nHệ thống sẽ tự động dồn lại mã món ăn!",
+                $"Sếp có chắc chắn muốn XÓA VĨNH VIỄN món [{_currentFood.TenMon}] không?",
                 "Cảnh báo xóa món",
                 MsgBox.MessageBoxType.Warning);
 
@@ -66,7 +130,7 @@ namespace GUI
                 if (Success)
                 {
                     // Thông báo thành công màu Xanh
-                    MsgBox.Show("Đã xóa món ăn và dồn hàng ID thành công!", "Thông báo", MsgBox.MessageBoxType.Success);
+                    MsgBox.Show("Đã xóa món ăn thành công!", "Thông báo", MsgBox.MessageBoxType.Success);
 
                     // Gán kết quả để ucProducts_Manager biết mà load lại Grid
                     this.DialogResult = DialogResult.Yes;

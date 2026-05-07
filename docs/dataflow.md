@@ -248,7 +248,7 @@ Quy tắc tạo `roomId` (trong `ChatBUS.GetRoomId`):
 ## 7. Quản lý nguyên liệu (kho)
 
 ```
-GUI (ucStockControl_Warehouse.cs)
+GUI (`ucStockControl_Warehouse.cs` trong `GUI/Warehouse/` — được dùng trong luồng kho của **Manager**, không còn menu riêng role “thủ kho”)
     │  Load → IngredientBUS.GetAll()
     ▼
 DAL (IngredientDAL.GetAllAsync)

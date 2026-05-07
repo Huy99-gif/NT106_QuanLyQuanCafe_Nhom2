@@ -25,20 +25,20 @@ namespace GUI
         private void BindData(EmployeeDTO emp)
         {
             txtEmpId.Text = emp.EmployeeId;
+            txtEmail.Text = emp.Email ?? "—";
             txtFullName.Text = emp.FullName;
-            txtPhone.Text = emp.PhoneNumber;
+            txtPhone.Text = emp.PhoneNumber ?? "—";
 
-            // Chuyển đổi mã Role từ DB sang chữ hiển thị đẹp đẽ
             txtRole.Text = emp.Role switch
             {
                 "manager" => "Quản lý",
                 "staff" => "Nhân viên order",
+                "order staff" => "Nhân viên Order",
                 "barista" => "Nhân viên pha chế",
                 "security" => "Bảo vệ",
-                _ => emp.Role // Nếu có role khác thì hiện nguyên gốc
+                _ => emp.Role ?? "—"
             };
 
-            // Chuyển đổi mã Status sang chữ hiển thị đẹp đẽ
             if (emp.Status == "active")
             {
                 txtStatus.Text = "Đang hoạt động";
@@ -47,6 +47,68 @@ namespace GUI
             {
                 txtStatus.Text = "Không hoạt động";
             }
+
+            RecalcEmployeeDetailLayout();
+        }
+
+        private void RecalcEmployeeDetailLayout()
+        {
+            const int lx = 30;
+            const int fx = 34;
+            const int fw = 350;
+            const int g = 8;
+
+            int y = lblTitle.Bottom + 14;
+
+            lblEmpId.Location = new Point(lx, y);
+            y += lblEmpId.Height + 2;
+            txtEmpId.Location = new Point(fx, y);
+            txtEmpId.Width = fw;
+            y = txtEmpId.Bottom + g;
+
+            lblEmail.Location = new Point(lx, y);
+            y += lblEmail.Height + 2;
+            txtEmail.Location = new Point(fx, y);
+            txtEmail.Width = fw;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtEmail, 32, 100);
+            y = txtEmail.Bottom + g;
+
+            lblFullName.Location = new Point(lx, y);
+            y += lblFullName.Height + 2;
+            txtFullName.Location = new Point(fx, y);
+            txtFullName.Width = fw;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtFullName, 36, 120);
+            y = txtFullName.Bottom + g;
+
+            lblPhone.Location = new Point(lx, y);
+            y += lblPhone.Height + 2;
+            txtPhone.Location = new Point(fx, y);
+            txtPhone.Width = fw;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtPhone, 28, 72);
+            y = txtPhone.Bottom + g;
+
+            lblRole.Location = new Point(lx, y);
+            lblStatus.Location = new Point(220, y);
+            y += Math.Max(lblRole.Height, lblStatus.Height) + 2;
+
+            txtRole.Location = new Point(fx, y);
+            txtRole.Width = 160;
+            txtStatus.Location = new Point(224, y);
+            txtStatus.Width = 160;
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtRole, 28, 80);
+            if (txtStatus.Height < txtRole.Height)
+                txtStatus.Height = txtRole.Height;
+            y = Math.Max(txtRole.Bottom, txtStatus.Bottom) + g + 8;
+
+            BtnRemove.Location = new Point(fx, y);
+            btnClose.Location = new Point(234, y);
+
+            int bottom = y + BtnRemove.Height + 32;
+            int preferredW = Math.Max(ClientSize.Width, 420);
+            int maxH = DialogAutosizeHelper.MaxDialogClientHeight(this);
+            DialogAutosizeHelper.CapFormHeightWithAutoScroll(this, bottom, preferredW, maxH);
+
+            lblTitle.Location = new Point(Math.Max(24, (ClientSize.Width - lblTitle.Width) / 2), 22);
         }
 
         private async void BtnRemove_Click(object sender, EventArgs e)

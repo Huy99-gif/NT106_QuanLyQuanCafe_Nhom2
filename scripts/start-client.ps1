@@ -1,4 +1,4 @@
-# start-client.ps1
+﻿# start-client.ps1
 # Build và chạy WinForms Client (GUI.exe)
 
 chcp 65001 > $null

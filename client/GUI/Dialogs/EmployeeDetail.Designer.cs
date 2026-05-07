@@ -34,6 +34,8 @@ namespace GUI
             lblTitle = new Label();
             lblEmpId = new Label();
             txtEmpId = new TextBox();
+            lblEmail = new Label();
+            txtEmail = new TextBox();
             lblFullName = new Label();
             txtFullName = new TextBox();
             lblPhone = new Label();
@@ -80,6 +82,31 @@ namespace GUI
             txtEmpId.Size = new Size(350, 27);
             txtEmpId.TabIndex = 2;
             // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI", 10F);
+            lblEmail.ForeColor = Color.LightGray;
+            lblEmail.Location = new Point(30, 136);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(44, 19);
+            lblEmail.TabIndex = 13;
+            lblEmail.Text = "Email:";
+            // 
+            // txtEmail
+            // 
+            txtEmail.BackColor = Color.FromArgb(45, 45, 48);
+            txtEmail.BorderStyle = BorderStyle.FixedSingle;
+            txtEmail.Font = new Font("Segoe UI", 11F);
+            txtEmail.ForeColor = Color.White;
+            txtEmail.Location = new Point(34, 158);
+            txtEmail.Multiline = true;
+            txtEmail.Name = "txtEmail";
+            txtEmail.ReadOnly = true;
+            txtEmail.Size = new Size(350, 32);
+            txtEmail.TabIndex = 14;
+            txtEmail.WordWrap = true;
+            // 
             // lblFullName
             // 
             lblFullName.AutoSize = true;
@@ -98,10 +125,13 @@ namespace GUI
             txtFullName.Font = new Font("Segoe UI", 11F);
             txtFullName.ForeColor = Color.White;
             txtFullName.Location = new Point(34, 162);
+            txtFullName.Multiline = true;
             txtFullName.Name = "txtFullName";
             txtFullName.ReadOnly = true;
-            txtFullName.Size = new Size(350, 27);
+            txtFullName.ScrollBars = ScrollBars.None;
+            txtFullName.Size = new Size(350, 36);
             txtFullName.TabIndex = 4;
+            txtFullName.WordWrap = true;
             // 
             // lblPhone
             // 
@@ -144,10 +174,12 @@ namespace GUI
             txtRole.Font = new Font("Segoe UI", 11F);
             txtRole.ForeColor = Color.White;
             txtRole.Location = new Point(34, 282);
+            txtRole.Multiline = true;
             txtRole.Name = "txtRole";
             txtRole.ReadOnly = true;
-            txtRole.Size = new Size(160, 27);
+            txtRole.Size = new Size(160, 30);
             txtRole.TabIndex = 8;
+            txtRole.WordWrap = true;
             // 
             // lblStatus
             // 
@@ -189,7 +221,7 @@ namespace GUI
             // 
             // BtnRemove
             // 
-            BtnRemove.BackColor = Color.FromArgb(60, 60, 60);
+            BtnRemove.BackColor = Color.FromArgb(220, 53, 69);
             BtnRemove.FlatAppearance.BorderSize = 0;
             BtnRemove.FlatStyle = FlatStyle.Flat;
             BtnRemove.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
@@ -218,6 +250,8 @@ namespace GUI
             Controls.Add(lblPhone);
             Controls.Add(txtFullName);
             Controls.Add(lblFullName);
+            Controls.Add(txtEmail);
+            Controls.Add(lblEmail);
             Controls.Add(txtEmpId);
             Controls.Add(lblEmpId);
             Controls.Add(lblTitle);
@@ -237,6 +271,8 @@ namespace GUI
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblEmpId;
         private System.Windows.Forms.TextBox txtEmpId;
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Label lblFullName;
         private System.Windows.Forms.TextBox txtFullName;
         private System.Windows.Forms.Label lblPhone;

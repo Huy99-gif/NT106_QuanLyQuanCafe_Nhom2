@@ -45,7 +45,7 @@ namespace GUI
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(36, 270);
+            btnUpdate.Location = new Point(36, 280);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(100, 35);
             btnUpdate.TabIndex = 0;
@@ -63,7 +63,8 @@ namespace GUI
             txtMoTa.Multiline = true;
             txtMoTa.Name = "txtMoTa";
             txtMoTa.PlaceholderText = " Mô tả món ăn...";
-            txtMoTa.Size = new Size(228, 55);
+            txtMoTa.ScrollBars = ScrollBars.Vertical;
+            txtMoTa.Size = new Size(228, 60);
             txtMoTa.TabIndex = 2;
             // 
             // txtTenMon
@@ -73,9 +74,10 @@ namespace GUI
             txtTenMon.Font = new Font("Segoe UI", 11F);
             txtTenMon.ForeColor = Color.White;
             txtTenMon.Location = new Point(36, 75);
+            txtTenMon.Multiline = true;
             txtTenMon.Name = "txtTenMon";
             txtTenMon.PlaceholderText = " Tên món";
-            txtTenMon.Size = new Size(228, 27);
+            txtTenMon.Size = new Size(228, 32);
             txtTenMon.TabIndex = 4;
             // 
             // txtGia
@@ -98,7 +100,7 @@ namespace GUI
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(164, 270);
+            btnCancel.Location = new Point(164, 280);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(100, 35);
             btnCancel.TabIndex = 6;
@@ -131,7 +133,7 @@ namespace GUI
             lblTitle.TabIndex = 8;
             lblTitle.Text = "SỬA THÔNG TIN MÓN";
             // 
-            // EditMonUong
+            // FoodEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -145,7 +147,7 @@ namespace GUI
             Controls.Add(txtMoTa);
             Controls.Add(btnUpdate);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "EditMonUong";
+            Name = "FoodEditForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sửa Món";
             ResumeLayout(false);

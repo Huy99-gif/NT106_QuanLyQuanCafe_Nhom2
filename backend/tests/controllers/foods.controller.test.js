@@ -1,10 +1,6 @@
 const { mockDb } = require('../helpers/mockFirebase');
 const foodsController = require('../../src/controllers/foods.controller');
 
-jest.mock('../../src/utils/reorder_helper', () => ({
-    reorderSequence: jest.fn().mockResolvedValue(undefined),
-}));
-
 const mockRes = () => {
     const res = {};
     res.status = jest.fn().mockReturnValue(res);
@@ -47,8 +43,14 @@ describe('foods.controller - add', () => {
 
     beforeEach(() => jest.clearAllMocks());
 
-    test('thêm món và trả 201 với foodId', async () => {
-        mockDb.once.mockResolvedValue({ numChildren: () => 3 });
+    test('thêm món và trả 201 với foodId (max + 1)', async () => {
+        mockDb.once.mockResolvedValue({
+            val: () => ({
+                mon_001: {},
+                mon_002: {},
+                mon_003: {},
+            }),
+        });
         mockDb.set.mockResolvedValue(undefined);
 
         const req = { body: { ten_mon: 'Trà sữa', gia: 40000 } };
@@ -59,15 +61,30 @@ describe('foods.controller - add', () => {
         const result = res.json.mock.calls[0][0];
         expect(result.foodId).toBe('mon_004');
     });
+
+    test('thêm món khi có lỗ khóa — dùng max số, không phải numChildren', async () => {
+        mockDb.once.mockResolvedValue({
+            val: () => ({
+                mon_001: {},
+                mon_005: {},
+            }),
+        });
+        mockDb.set.mockResolvedValue(undefined);
+
+        const req = { body: { ten_mon: 'Mới', gia: 1000 } };
+        const res = mockRes();
+        await foodsController.add(req, res, next);
+
+        expect(res.json.mock.calls[0][0].foodId).toBe('mon_006');
+    });
 });
 
 describe('foods.controller - remove', () => {
     const next = jest.fn();
-    const { reorderSequence } = require('../../src/utils/reorder_helper');
 
     beforeEach(() => jest.clearAllMocks());
 
-    test('xóa món và gọi reorderSequence', async () => {
+    test('xóa món chỉ gọi remove, không đọc/ghi lại cả mon_uong', async () => {
         mockDb.remove.mockResolvedValue(undefined);
 
         const req = { params: { id: 'mon_002' } };
@@ -75,7 +92,8 @@ describe('foods.controller - remove', () => {
         await foodsController.remove(req, res, next);
 
         expect(mockDb.remove).toHaveBeenCalled();
-        expect(reorderSequence).toHaveBeenCalledWith('mon_uong', 'mon_');
+        expect(mockDb.once).not.toHaveBeenCalled();
+        expect(mockDb.set).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(200);
     });
 });

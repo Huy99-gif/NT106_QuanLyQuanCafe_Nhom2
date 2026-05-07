@@ -1,4 +1,4 @@
-# start-all.ps1
+﻿# start-all.ps1
 # Khởi động toàn bộ hệ thống: Backend Express + ChatServer SignalR + Client WinForms
 #
 # Usage:
@@ -18,6 +18,13 @@ $OutputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 
 $root = Split-Path $PSScriptRoot -Parent
+
+# Phải chạy từ clone đúng (có thư mục backend + server)
+if (-not (Test-Path (Join-Path $root 'backend'))) {
+    Write-Host "`n  Lỗi: Không tìm thấy thư mục 'backend' tại: $root" -ForegroundColor Red
+    Write-Host "  Mở PowerShell tại thư mục gốc repo rồi chạy: .\scripts\start-all.ps1" -ForegroundColor Yellow
+    exit 1
+}
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  QLCafe — Khởi động hệ thống" -ForegroundColor Cyan
@@ -51,13 +58,18 @@ if (-not $NoBackend)                  { $totalSteps++ }
 if (-not $BackendOnly)                { $totalSteps++ }
 if ($WithClient -and -not $BackendOnly) { $totalSteps++ }
 
+if ($totalSteps -lt 1) {
+    Write-Host "`n  Lỗi: Không có service nào khởi động (xung đột tham số, ví dụ -NoBackend kèm -BackendOnly)." -ForegroundColor Red
+    exit 1
+}
+
 # ---- 1. Backend Express ----
 if (-not $NoBackend) {
     Write-Host "`n[$step/$totalSteps] Khởi động Backend Express (port 3000)..." -ForegroundColor Yellow
     Start-Process powershell -ArgumentList @(
         "-NoExit", "-NoProfile",
         "-Command",
-        "[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); chcp 65001 > `$null; cd '$root\backend'; Write-Host '[BACKEND]' -ForegroundColor Cyan; npm run dev"
+        "[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); chcp 65001 > `$null; Set-Location -LiteralPath '$root\backend'; Write-Host '[BACKEND]' -ForegroundColor Cyan; npm run dev"
     )
     Start-Sleep -Seconds 3
     $step++
@@ -69,7 +81,7 @@ if (-not $BackendOnly) {
     Start-Process powershell -ArgumentList @(
         "-NoExit", "-NoProfile",
         "-Command",
-        "[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); chcp 65001 > `$null; cd '$root\server\ChatServer'; Write-Host '[CHATSERVER]' -ForegroundColor Green; dotnet run"
+        "[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); chcp 65001 > `$null; Set-Location -LiteralPath '$root\server\ChatServer'; Write-Host '[CHATSERVER]' -ForegroundColor Green; dotnet run"
     )
     Start-Sleep -Seconds 2
     $step++

@@ -1,4 +1,4 @@
-﻿using BUS;
+using BUS;
 using DTO;
 using Microsoft.AspNetCore.SignalR.Client; // Thêm thư viện SignalR Client
 using System;
@@ -26,7 +26,9 @@ namespace GUI
             this.Load += async (s, e) =>
             {
                 await LoadStaffData();
-                await _chatManager.ConnectToChatServer(); // CHỈ 1 DÒNG
+                await _chatManager.ConnectToChatServer();
+                // Sau khi đã có kết nối + combo mặc định — nạp lại lịch sử và JoinRoom đúng trạng thái
+                await _chatManager.SwitchChatRoom(GetIdFromCombo());
             };
 
             btnSend.Click += BtnSend_Click;

@@ -1,4 +1,4 @@
-# start-server.ps1
+﻿# start-server.ps1
 # Khởi động ChatServer SignalR
 
 chcp 65001 > $null

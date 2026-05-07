@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
@@ -119,13 +119,15 @@ namespace GUI
                 Properties.Settings.Default.Save();
                 // KẾT THÚC THÊM ĐOẠN LƯU MẬT KHẨU
                 // Điều hướng dựa vào Role - 1 MainDashboard duy nhất cho tất cả role
-                string welcomePrefix = GlobalSession.CurrentUser.Role switch
+                string r = GlobalSession.CurrentUser.Role?.ToLowerInvariant() ?? "";
+                if (r == "stockkeeper") r = "manager";
+
+                string welcomePrefix = r switch
                 {
                     "admin"       => "Admin",
                     "manager"     => "Quản lý",
                     "order staff" => "Nhân viên Order",
                     "barista"     => "Pha chế",
-                    "stockkeeper" => "Thủ kho",
                     "security"    => "Bảo vệ",
                     _             => "User"
                 };

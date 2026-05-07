@@ -1,5 +1,6 @@
 using BUS;
 using DTO;
+using GUI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,13 @@ namespace GUI
     public partial class AddInventoryImport : Form
     {
         private List<IngredientDTO> _danhSachNguyenLieu = [];
+        private readonly IReadOnlyList<InventoryImportPrefillLine>? _prefillLines;
 
-        public AddInventoryImport()
+        public AddInventoryImport() : this(null) { }
+
+        public AddInventoryImport(IReadOnlyList<InventoryImportPrefillLine>? prefillLines)
         {
+            _prefillLines = prefillLines;
             InitializeComponent();
             this.Load += AddInventoryImport_Load;
             btnLuu.Click += BtnLuu_Click;
@@ -40,6 +45,8 @@ namespace GUI
                 dtpNgayNhap.Value = DateTime.Now;
                 lblTongTien.Text = "Thành tiền: 0 VNĐ";
                 cboNhanVien.SelectedIndex = -1;
+
+                DienTuBangNgoai();
             }
             catch (Exception ex)
             {
@@ -72,6 +79,58 @@ namespace GUI
             colMaNL.DisplayMember = "HienThi";
             colMaNL.ValueMember = "Id";
             colMaNL.FlatStyle = FlatStyle.Flat;
+        }
+
+        private void DienTuBangNgoai()
+        {
+            if (_prefillLines == null || _prefillLines.Count == 0)
+                return;
+
+            var hopLe = new HashSet<string>(
+                _danhSachNguyenLieu.Select(x => x.Id!).Where(s => !string.IsNullOrEmpty(s)),
+                StringComparer.OrdinalIgnoreCase);
+
+            dgvChiTietNhap.Rows.Clear();
+            int boQua = 0;
+
+            foreach (InventoryImportPrefillLine line in _prefillLines)
+            {
+                string id = line.NguyenLieuId.Trim();
+                if (string.IsNullOrEmpty(id) || !hopLe.Contains(id))
+                {
+                    boQua++;
+                    continue;
+                }
+
+                IngredientDTO? nl = _danhSachNguyenLieu.FirstOrDefault(x =>
+                    string.Equals(x.Id, id, StringComparison.OrdinalIgnoreCase));
+                if (nl == null)
+                {
+                    boQua++;
+                    continue;
+                }
+
+                long gia = line.GiaNhap ?? nl.GiaNhap;
+
+                int idx = dgvChiTietNhap.Rows.Add();
+                DataGridViewRow row = dgvChiTietNhap.Rows[idx];
+                row.Cells[colMaNL.Name].Value = nl.Id;
+                row.Cells[colSoLuong.Name].Value = line.SoLuong;
+                row.Cells[colGiaNhap.Name].Value = gia;
+            }
+
+            if (boQua > 0)
+            {
+                MsgBox.Show(
+                    $"Đã bỏ qua {boQua} dòng không khớp mã nguyên liệu trên hệ thống.",
+                    "Nhập từ Excel/CSV",
+                    MsgBox.MessageBoxType.Warning);
+            }
+
+            if (string.IsNullOrWhiteSpace(txtGhiChu.Text) && _prefillLines.Count > 0)
+                txtGhiChu.Text = "Nhập từ file Excel/CSV";
+
+            CapNhatTongTien();
         }
 
         private void DgvChiTietNhap_CellEndEdit(object? sender, DataGridViewCellEventArgs e)

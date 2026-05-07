@@ -33,7 +33,7 @@
             lblTitle = new Label();
             pnlBody = new Panel();
             btnCancel = new Button();
-            lblMessage = new Label();
+            txtMessage = new TextBox();
             btnOk = new Button();
             pnlHeader.SuspendLayout();
             pnlBody.SuspendLayout();
@@ -60,11 +60,12 @@
             lblTitle.Size = new Size(88, 19);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Thông báo";
+            lblTitle.MouseDown += PnlHeader_MouseDown;
             // 
             // pnlBody
             // 
             pnlBody.Controls.Add(btnCancel);
-            pnlBody.Controls.Add(lblMessage);
+            pnlBody.Controls.Add(txtMessage);
             pnlBody.Controls.Add(btnOk);
             pnlBody.Dock = DockStyle.Fill;
             pnlBody.Location = new Point(0, 35);
@@ -89,16 +90,24 @@
             btnCancel.Visible = false;
             btnCancel.Click += BtnCancel_Click;
             // 
-            // lblMessage
+            // txtMessage
             // 
-            lblMessage.Font = new Font("Segoe UI", 11F);
-            lblMessage.ForeColor = Color.White;
-            lblMessage.Location = new Point(20, 10);
-            lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(360, 90);
-            lblMessage.TabIndex = 1;
-            lblMessage.Text = "Nội dung thông báo...";
-            lblMessage.TextAlign = ContentAlignment.MiddleCenter;
+            txtMessage.BackColor = Color.FromArgb(52, 52, 55);
+            txtMessage.BorderStyle = BorderStyle.FixedSingle;
+            txtMessage.Font = new Font("Segoe UI", 11F);
+            txtMessage.ForeColor = Color.White;
+            txtMessage.Location = new Point(20, 10);
+            txtMessage.Margin = new Padding(0);
+            txtMessage.Multiline = true;
+            txtMessage.Name = "txtMessage";
+            txtMessage.ReadOnly = true;
+            txtMessage.ScrollBars = ScrollBars.Vertical;
+            txtMessage.ShortcutsEnabled = true;
+            txtMessage.Size = new Size(360, 90);
+            txtMessage.TabIndex = 1;
+            txtMessage.TabStop = true;
+            txtMessage.Text = "Nội dung thông báo...";
+            txtMessage.WordWrap = true;
             // 
             // btnOk
             // 
@@ -140,7 +149,7 @@
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel pnlBody;
-        private System.Windows.Forms.Label lblMessage;
+        internal System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
     }

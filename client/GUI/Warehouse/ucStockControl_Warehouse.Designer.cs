@@ -22,8 +22,6 @@ namespace GUI
             pnlHeader = new Panel();
             lblTitle = new Label();
             btnNewImport = new Button();
-            btnNewExport = new Button();
-            btnNewWaste = new Button();
             btnAttachPhoto = new Button();
             pnlGrid = new Panel();
             dgvStock = new DataGridView();
@@ -48,8 +46,6 @@ namespace GUI
             pnlHeader.BackColor = Color.FromArgb(30, 30, 30);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(btnNewImport);
-            pnlHeader.Controls.Add(btnNewExport);
-            pnlHeader.Controls.Add(btnNewWaste);
             pnlHeader.Controls.Add(btnAttachPhoto);
             pnlHeader.Location = new Point(20, 15);
             pnlHeader.Name = "pnlHeader";
@@ -83,38 +79,6 @@ namespace GUI
             btnNewImport.UseVisualStyleBackColor = false;
             btnNewImport.Click += btnNewImport_Click;
             //
-            // btnNewExport
-            //
-            btnNewExport.BackColor = Color.SteelBlue;
-            btnNewExport.Cursor = Cursors.Hand;
-            btnNewExport.FlatAppearance.BorderSize = 0;
-            btnNewExport.FlatStyle = FlatStyle.Flat;
-            btnNewExport.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnNewExport.ForeColor = Color.White;
-            btnNewExport.Location = new Point(410, 12);
-            btnNewExport.Name = "btnNewExport";
-            btnNewExport.Size = new Size(100, 32);
-            btnNewExport.TabIndex = 2;
-            btnNewExport.Text = "Xuất kho";
-            btnNewExport.UseVisualStyleBackColor = false;
-            btnNewExport.Click += btnNewExport_Click;
-            //
-            // btnNewWaste
-            //
-            btnNewWaste.BackColor = Color.IndianRed;
-            btnNewWaste.Cursor = Cursors.Hand;
-            btnNewWaste.FlatAppearance.BorderSize = 0;
-            btnNewWaste.FlatStyle = FlatStyle.Flat;
-            btnNewWaste.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnNewWaste.ForeColor = Color.White;
-            btnNewWaste.Location = new Point(520, 12);
-            btnNewWaste.Name = "btnNewWaste";
-            btnNewWaste.Size = new Size(100, 32);
-            btnNewWaste.TabIndex = 3;
-            btnNewWaste.Text = "Hao phí";
-            btnNewWaste.UseVisualStyleBackColor = false;
-            btnNewWaste.Click += btnNewWaste_Click;
-            //
             // btnAttachPhoto
             //
             btnAttachPhoto.BackColor = Color.FromArgb(45, 45, 48);
@@ -123,7 +87,7 @@ namespace GUI
             btnAttachPhoto.FlatStyle = FlatStyle.Flat;
             btnAttachPhoto.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAttachPhoto.ForeColor = Color.White;
-            btnAttachPhoto.Location = new Point(640, 12);
+            btnAttachPhoto.Location = new Point(418, 12);
             btnAttachPhoto.Name = "btnAttachPhoto";
             btnAttachPhoto.Size = new Size(105, 32);
             btnAttachPhoto.TabIndex = 4;
@@ -300,8 +264,6 @@ namespace GUI
         private Panel pnlHeader;
         private Label lblTitle;
         private Button btnNewImport;
-        private Button btnNewExport;
-        private Button btnNewWaste;
         private Button btnAttachPhoto;
         private Panel pnlSummary;
         private Label lblTotalItemsTitle;

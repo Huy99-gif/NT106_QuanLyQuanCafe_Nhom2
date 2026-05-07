@@ -68,7 +68,8 @@ namespace GUI
             txtMoTa.Multiline = true;
             txtMoTa.Name = "txtMoTa";
             txtMoTa.PlaceholderText = " Mô tả món ăn...";
-            txtMoTa.Size = new Size(228, 46);
+            txtMoTa.ScrollBars = ScrollBars.Vertical;
+            txtMoTa.Size = new Size(228, 56);
             txtMoTa.TabIndex = 2;
             // 
             // txtTenMon
@@ -77,12 +78,16 @@ namespace GUI
             txtTenMon.BorderStyle = BorderStyle.FixedSingle;
             txtTenMon.Font = new Font("Segoe UI", 11F);
             txtTenMon.ForeColor = Color.White;
+            txtTenMon.AcceptsReturn = false;
             txtTenMon.Location = new Point(49, 96);
             txtTenMon.Margin = new Padding(3, 2, 3, 2);
+            txtTenMon.Multiline = true;
             txtTenMon.Name = "txtTenMon";
             txtTenMon.PlaceholderText = " Tên món";
-            txtTenMon.Size = new Size(228, 27);
+            txtTenMon.ScrollBars = ScrollBars.None;
+            txtTenMon.Size = new Size(228, 32);
             txtTenMon.TabIndex = 4;
+            txtTenMon.WordWrap = true;
             // 
             // txtGia
             // 
@@ -112,6 +117,7 @@ namespace GUI
             bttnClose.TabIndex = 6;
             bttnClose.Text = "Hủy bỏ";
             bttnClose.UseVisualStyleBackColor = false;
+            bttnClose.Click += BtnClose_Click;
             // 
             // cmLoai
             // 

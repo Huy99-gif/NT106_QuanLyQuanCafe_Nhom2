@@ -2,6 +2,7 @@ using BUS;
 using DTO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,11 +12,46 @@ namespace GUI
     {
         private string _currentFoodId = string.Empty;
 
+        private const int ColLeftFoodEdit = 36;
+        private const int GapYEdit = 8;
+
         public FoodEditForm(FoodDTO food)
         {
             InitializeComponent();
             LoadCategories();
             BindData(food);
+            txtTenMon.TextChanged += (_, _) => RecalcFoodEditLayout();
+            txtMoTa.TextChanged += (_, _) => RecalcFoodEditLayout();
+            RecalcFoodEditLayout();
+        }
+
+        private void RecalcFoodEditLayout()
+        {
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtTenMon, 32, 100);
+            DialogAutosizeHelper.SetWrappedTextBoxHeight(txtMoTa, 56, 220);
+
+            int y = txtTenMon.Location.Y;
+            txtTenMon.Location = new Point(ColLeftFoodEdit, y);
+            y = txtTenMon.Bottom + GapYEdit;
+
+            txtGia.Location = new Point(ColLeftFoodEdit, y);
+            y = txtGia.Bottom + GapYEdit;
+
+            cmLoai.Location = new Point(ColLeftFoodEdit, y);
+            y = cmLoai.Bottom + GapYEdit;
+
+            txtMoTa.Location = new Point(ColLeftFoodEdit, y);
+            y = txtMoTa.Bottom + GapYEdit + 4;
+
+            btnUpdate.Location = new Point(ColLeftFoodEdit, y);
+            btnCancel.Location = new Point(164, y);
+
+            int needH = y + btnUpdate.Height + 40;
+            int needW = Math.Max(ClientSize.Width, 300);
+            ClientSize = new Size(needW, needH);
+
+            lblTitle.Location = new Point(
+                Math.Max(12, (ClientSize.Width - lblTitle.Width) / 2), lblTitle.Location.Y);
         }
         private void LoadCategories()
         {
@@ -38,17 +74,24 @@ namespace GUI
         {
             _currentFoodId = food.Id ?? ""; 
 
-            txtTenMon.Text = food.TenMon;
-            txtGia.Text = food.Gia.ToString("N0"); 
-            txtMoTa.Text = food.MoTa;
+            txtTenMon.Text = food.TenMon ?? "";
+            txtGia.Text = food.Gia.ToString("N0");
+            txtMoTa.Text = food.MoTa ?? "";
 
-            if (cmLoai.Items.Contains(food.Loai))
+            if (!string.IsNullOrEmpty(food.Loai))
             {
-                cmLoai.SelectedItem = food.Loai;
+                try
+                {
+                    cmLoai.SelectedValue = food.Loai;
+                }
+                catch
+                {
+                    cmLoai.SelectedIndex = 0;
+                }
             }
             else
             {
-                cmLoai.SelectedIndex = 0; 
+                cmLoai.SelectedIndex = 0;
             }
         }
 
@@ -76,7 +119,7 @@ namespace GUI
                     Id = _currentFoodId,
                     TenMon = txtTenMon.Text.Trim(),
                     Gia = giaMoi,
-                    Loai = cmLoai.SelectedItem?.ToString() ?? "",
+                    Loai = cmLoai.SelectedValue?.ToString() ?? "other",
                     MoTa = txtMoTa.Text.Trim(),
                     ConHang = true, 
                     HienThi = true

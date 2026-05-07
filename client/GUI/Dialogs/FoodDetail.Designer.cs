@@ -42,6 +42,8 @@ namespace GUI
             txtCategory = new TextBox();
             lblStatus = new Label();
             txtStatus = new TextBox();
+            lblMoTa = new Label();
+            txtMoTa = new TextBox();
             btnClose = new Button();
             BtnRemove = new Button();
             SuspendLayout();
@@ -98,10 +100,13 @@ namespace GUI
             txtFoodName.Font = new Font("Segoe UI", 11F);
             txtFoodName.ForeColor = Color.White;
             txtFoodName.Location = new Point(34, 162);
+            txtFoodName.Multiline = true;
             txtFoodName.Name = "txtFoodName";
             txtFoodName.ReadOnly = true;
-            txtFoodName.Size = new Size(350, 27);
+            txtFoodName.ScrollBars = ScrollBars.None;
+            txtFoodName.Size = new Size(350, 34);
             txtFoodName.TabIndex = 4;
+            txtFoodName.WordWrap = true;
             // 
             // lblPrice
             // 
@@ -172,6 +177,32 @@ namespace GUI
             txtStatus.Size = new Size(160, 27);
             txtStatus.TabIndex = 10;
             // 
+            // lblMoTa
+            // 
+            lblMoTa.AutoSize = true;
+            lblMoTa.Font = new Font("Segoe UI", 10F);
+            lblMoTa.ForeColor = Color.LightGray;
+            lblMoTa.Location = new Point(30, 332);
+            lblMoTa.Name = "lblMoTa";
+            lblMoTa.Size = new Size(53, 19);
+            lblMoTa.TabIndex = 13;
+            lblMoTa.Text = "Mô tả:";
+            // 
+            // txtMoTa
+            // 
+            txtMoTa.BackColor = Color.FromArgb(45, 45, 48);
+            txtMoTa.BorderStyle = BorderStyle.FixedSingle;
+            txtMoTa.Font = new Font("Segoe UI", 11F);
+            txtMoTa.ForeColor = Color.White;
+            txtMoTa.Location = new Point(34, 356);
+            txtMoTa.Multiline = true;
+            txtMoTa.Name = "txtMoTa";
+            txtMoTa.ReadOnly = true;
+            txtMoTa.ScrollBars = ScrollBars.Vertical;
+            txtMoTa.Size = new Size(350, 56);
+            txtMoTa.TabIndex = 14;
+            txtMoTa.WordWrap = true;
+            // 
             // btnClose
             // 
             btnClose.BackColor = Color.FromArgb(60, 60, 60);
@@ -179,7 +210,7 @@ namespace GUI
             btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnClose.ForeColor = Color.White;
-            btnClose.Location = new Point(234, 342);
+            btnClose.Location = new Point(234, 430);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(150, 40);
             btnClose.TabIndex = 11;
@@ -194,7 +225,7 @@ namespace GUI
             BtnRemove.FlatStyle = FlatStyle.Flat;
             BtnRemove.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             BtnRemove.ForeColor = Color.White;
-            BtnRemove.Location = new Point(34, 342);
+            BtnRemove.Location = new Point(34, 430);
             BtnRemove.Name = "BtnRemove";
             BtnRemove.Size = new Size(150, 40);
             BtnRemove.TabIndex = 12;
@@ -207,9 +238,11 @@ namespace GUI
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(25, 25, 25);
-            ClientSize = new Size(420, 420);
+            ClientSize = new Size(420, 492);
             Controls.Add(BtnRemove);
             Controls.Add(btnClose);
+            Controls.Add(txtMoTa);
+            Controls.Add(lblMoTa);
             Controls.Add(txtStatus);
             Controls.Add(lblStatus);
             Controls.Add(txtCategory);
@@ -244,6 +277,8 @@ namespace GUI
         private System.Windows.Forms.TextBox txtCategory;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.Label lblMoTa;
+        private System.Windows.Forms.TextBox txtMoTa;
         private System.Windows.Forms.Button btnClose;
         private Button BtnRemove;
     }

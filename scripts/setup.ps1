@@ -1,4 +1,4 @@
-# setup.ps1
+﻿# setup.ps1
 # Cài đặt toàn bộ dependencies lần đầu cho tất cả project
 
 chcp 65001 > $null

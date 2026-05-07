@@ -100,7 +100,7 @@ function createKpiSheets() {
     ['Manager', 'Manager', 'Resolve bad feedback', 'P0', 'Todo', 'Must enter resolution'],
     ['POS', 'Order Staff', 'Order + bill + QR feedback', 'P0', 'Todo', 'Main demo flow'],
     ['KDS', 'Barista', 'Realtime kitchen screen', 'P1', 'Todo', 'SignalR suggested'],
-    ['Warehouse', 'Stockkeeper', 'Smart restock algorithm', 'P2', 'Todo', 'Buffer based on sales'],
+    ['Warehouse', 'Manager', 'Smart restock + warehouse forms (no separate stockkeeper login)', 'P2', 'Todo', 'Modules in GUI/Warehouse folder'],
     ['Security', 'Security', 'Parking + SOS', 'P2', 'Todo', 'Simple shell acceptable']
   ]);
 

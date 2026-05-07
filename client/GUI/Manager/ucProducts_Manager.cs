@@ -142,28 +142,25 @@ namespace GUI
             if (e.RowIndex < 0) return;
 
             DataGridViewRow row = dgvMenu.Rows[e.RowIndex];
-            string id      = row.Cells["Mã món"].Value?.ToString() ?? string.Empty;
-            string tenMon  = row.Cells["Tên món ăn"].Value?.ToString() ?? string.Empty;
-            string gia     = Convert.ToDecimal(row.Cells["Giá bán"].Value).ToString("N0");
-            string loai    = row.Cells["Loại"].Value?.ToString() ?? "—";
-            string moTa    = row.Cells["MoTa"].Value?.ToString() ?? "—";
-            string trangThai = row.Cells["Trạng thái"].Value?.ToString() ?? "—";
+            FoodDTO food = new()
+            {
+                Id = row.Cells["Mã món"].Value?.ToString() ?? string.Empty,
+                TenMon = row.Cells["Tên món ăn"].Value?.ToString(),
+                Gia = Convert.ToDecimal(row.Cells["Giá bán"].Value),
+                Loai = row.Cells["Loại"].Value?.ToString(),
+                MoTa = row.Cells["MoTa"].Value?.ToString(),
+                ConHang = Convert.ToBoolean(row.Cells["ConHang"].Value),
+            };
 
-            string detail =
-                $"Mã món   : {id}\n" +
-                $"Tên món  : {tenMon}\n" +
-                $"Loại     : {loai}\n" +
-                $"Giá bán  : {gia} VNĐ\n" +
-                $"Trạng thái: {trangThai}\n" +
-                $"Mô tả    : {moTa}";
-
-            MsgBox.Show(detail, "Chi tiết món ăn", MsgBox.MessageBoxType.Info);
+            using FoodDetail dlg = new(food);
+            if (dlg.ShowDialog() == DialogResult.Yes)
+                await LoadRealData();
         }
 
         private void BtnImportMaterial_Click(object sender, EventArgs e)
         {
-            AddInventoryImport frm = new();
-            frm.ShowDialog();
+            using WarehouseManagerForm frm = new();
+            frm.ShowDialog(this.FindForm());
         }
 
         private void btnFilter_Click(object sender, EventArgs e)

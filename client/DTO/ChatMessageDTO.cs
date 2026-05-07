@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using System;
+using Newtonsoft.Json;
 
 namespace DTO
 {
     public class TinNhanChatDTO
     {
-        [JsonPropertyName("nguoi_gui_id")] // Ánh xạ với tên trên Firebase
+        [JsonProperty("nguoi_gui_id")] // Newtonsoft (ChatDAL) + đúng schema Firebase
         public string? SenderId { get; set; }
 
-        [JsonPropertyName("noi_dung")]
+        [JsonProperty("noi_dung")]
         public string? Message { get; set; }
 
-        [JsonPropertyName("thoi_gian")]
+        [JsonProperty("thoi_gian")]
         public long Timestamp { get; set; }
 
-        [JsonPropertyName("loai_tin_nhan")]
+        [JsonProperty("loai_tin_nhan")]
         public string? MessageType { get; set; } = "text";
     }
 

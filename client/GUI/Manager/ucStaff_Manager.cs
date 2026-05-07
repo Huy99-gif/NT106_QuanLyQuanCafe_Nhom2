@@ -163,8 +163,9 @@ namespace GUI
                 FullName = row.Cells["Họ và Tên"].Value?.ToString(),
                 Role = row.Cells["Vị Trí"].Value?.ToString(),
                 Status = row.Cells["Trạng Thái"].Value?.ToString(),
-                PhoneNumber = row.Cells["Số điện thoại"].Value?.ToString(), // Lấy SĐT ẩn
-                AuthUid = row.Cells["AuthUid"].Value?.ToString()
+                PhoneNumber = row.Cells["Số điện thoại"].Value?.ToString(),
+                AuthUid = row.Cells["AuthUid"].Value?.ToString(),
+                Email = row.Cells["Email"].Value?.ToString(),
             };
 
             // 4. Mở Form Edit
@@ -176,27 +177,25 @@ namespace GUI
             }
         }
 
-        private void dgvStaff_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgvStaff_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
             DataGridViewRow row = dgvStaff.Rows[e.RowIndex];
-            string maNV      = row.Cells["Mã NV"].Value?.ToString() ?? "—";
-            string hoTen     = row.Cells["Họ và Tên"].Value?.ToString() ?? "—";
-            string viTri     = row.Cells["Vị Trí"].Value?.ToString() ?? "—";
-            string trangThai = row.Cells["Trạng Thái"].Value?.ToString() ?? "—";
-            string sdt       = row.Cells["Số điện thoại"].Value?.ToString() ?? "—";
-            string email     = row.Cells["Email"].Value?.ToString() ?? "—";
+            EmployeeDTO emp = new()
+            {
+                EmployeeId = row.Cells["Mã NV"].Value?.ToString(),
+                FullName = row.Cells["Họ và Tên"].Value?.ToString(),
+                Role = row.Cells["Vị Trí"].Value?.ToString(),
+                Status = row.Cells["Trạng Thái"].Value?.ToString(),
+                PhoneNumber = row.Cells["Số điện thoại"].Value?.ToString(),
+                AuthUid = row.Cells["AuthUid"].Value?.ToString(),
+                Email = row.Cells["Email"].Value?.ToString(),
+            };
 
-            string detail =
-                $"Mã NV      : {maNV}\n" +
-                $"Họ và Tên  : {hoTen}\n" +
-                $"Vị trí     : {viTri}\n" +
-                $"Trạng thái : {trangThai}\n" +
-                $"SĐT        : {sdt}\n" +
-                $"Email      : {email}";
-
-            MsgBox.Show(detail, "Chi tiết nhân viên", MsgBox.MessageBoxType.Info);
+            using EmployeeDetail dlg = new(emp);
+            if (dlg.ShowDialog() == DialogResult.OK)
+                await LoadRealData();
         }
 
         private void InitFilterControls()
@@ -222,7 +221,7 @@ namespace GUI
             DataTable? dt = dgvStaff.DataSource as DataTable;
             if (dt == null) return;
 
-            List<string> filterParts = new ();
+            List<string> filterParts = new();
 
             //TÌM THEO TÊN HOẶC MÃ NV  ---
             string keyword = txtSearch.Text.Trim().Replace("'", "''");
@@ -271,5 +270,6 @@ namespace GUI
                 dt.DefaultView.RowFilter = string.Empty;
             }
         }
+
     }
 }
