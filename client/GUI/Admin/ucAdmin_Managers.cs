@@ -19,10 +19,41 @@ namespace GUI
             LoadLeaveRequests();
             LoadAuditLog();
 
-            btnSwitchRole.Click += btnSwitchRole_Click;
-            btnAddManager.Click += btnAddManager_Click;
-            btnEditManager.Click += btnEditManager_Click;
+            dgvManagers.ClearSelection();
+            dgvAuditLog.ClearSelection();
+
+            btnSwitchRole.Click   += btnSwitchRole_Click;
+            btnAddManager.Click   += btnAddManager_Click;
+            btnEditManager.Click  += btnEditManager_Click;
             btnApproveLeave.Click += btnApproveLeave_Click;
+
+            lblManagerTitle.Cursor  = Cursors.Hand;
+            lblManagerTitle.Click  += (s, e) => new ManagerProfileDetail().ShowDialog(MsgBox.OwnerWindow(this));
+
+            lblLeaveReqTitle.Cursor = Cursors.Hand;
+            lblLeaveReqTitle.Click += (s, e) =>
+            {
+                var items = new[]
+                {
+                    new LeaveItem("Phạm Thu Hà",   "05/05/2026", "06/05/2026", "Việc gia đình cần giải quyết gấp", "Chờ duyệt"),
+                    new LeaveItem("Trần Minh",     "12/04/2026", "12/04/2026", "Khám sức khỏe định kỳ",            "Đã duyệt"),
+                    new LeaveItem("Nguyễn Văn An", "20/03/2026", "21/03/2026", "Đám cưới người thân",              "Đã duyệt"),
+                };
+                new LeaveRequestDetail(items, "🏖  Đơn xin nghỉ của Quản lý").ShowDialog(MsgBox.OwnerWindow(this));
+            };
+
+            lblAuditTitle.Cursor = Cursors.Hand;
+            lblAuditTitle.Click += (s, e) =>
+            {
+                var dt = new System.Data.DataTable();
+                dt.Columns.Add("Thời gian"); dt.Columns.Add("Quản lý"); dt.Columns.Add("Hành động"); dt.Columns.Add("Lý do");
+                dt.Rows.Add("02/05 09:15", "QL Trần Minh",     "Sửa giá NL 'Cà phê Arabica' 250K→280K",  "Nhà cung cấp tăng giá");
+                dt.Rows.Add("01/05 16:20", "QL Nguyễn Văn An", "Xóa NL 'Syrup dâu'",                     "Ngừng kinh doanh dòng dâu");
+                dt.Rows.Add("01/05 14:00", "QL Trần Minh",     "Sửa check-in NV Đỗ Hương 08:30→07:55",   "Hệ thống ghi nhận sai");
+                dt.Rows.Add("01/05 10:30", "QL Nguyễn Văn An", "Thêm NL 'Bột matcha Nhật'",              "Bổ sung menu mới");
+                dt.Rows.Add("30/04 11:00", "QL Trần Minh",     "Sửa giá NL 'Sữa tươi' 35K→38K",         "Giá thị trường tăng");
+                new AuditLogDetail(dt, "🔔  Lịch sử thao tác của Quản lý").ShowDialog(MsgBox.OwnerWindow(this));
+            };
         }
 
         private void LoadManagerList()
@@ -94,9 +125,14 @@ namespace GUI
 
         private void btnSwitchRole_Click(object? sender, EventArgs e)
         {
+            string switchPrompt =
+                "Bạn muốn chuyển sang giao diện Quản lý?" + Environment.NewLine + Environment.NewLine +
+                "Tính năng này dùng khi Quản lý nghỉ," + Environment.NewLine +
+                "Admin cần trực tiếp xử lý công việc.";
+
             var result = MsgBox.Show(
-                "Bạn muốn chuyển sang giao diện Quản lý?\n\n" +
-                "Tính năng này dùng khi Quản lý nghỉ,\nAdmin cần trực tiếp xử lý công việc.",
+                this,
+                switchPrompt,
                 "Đóng vai Quản lý",
                 MsgBox.MessageBoxType.Warning);
 
@@ -108,12 +144,8 @@ namespace GUI
                 {
                     // Đóng dashboard hiện tại và mở lại với role manager
                     MsgBox.Show(
-                        "Đang chuyển sang giao diện Quản lý...\n\n" +
-                        "Bạn sẽ có quyền truy cập:\n" +
-                        "• Sản phẩm và Thực đơn\n" +
-                        "• Đơn hàng và Hóa đơn\n" +
-                        "• Quản lý Nhân viên\n" +
-                        "• Feedback khách hàng",
+                        mainDash,
+                        "Đang chuyển sang giao diện Quản lý...\n\nBạn sẽ có quyền truy cập:\n• Sản phẩm và Thực đơn\n• Đơn hàng và Hóa đơn\n• Quản lý Nhân viên\n• Feedback khách hàng",
                         "Chuyển vai trò", MsgBox.MessageBoxType.Success);
 
                     // Lưu role tạm thời
@@ -133,9 +165,9 @@ namespace GUI
         private void btnAddManager_Click(object? sender, EventArgs e)
         {
             AddEmployee frm = new();
-            if (frm.ShowDialog() == DialogResult.OK)
+            if (frm.ShowDialog(MsgBox.OwnerWindow(this)) == DialogResult.OK)
             {
-                MsgBox.Show("Đã thêm Quản lý mới!", "Thành công", MsgBox.MessageBoxType.Success);
+                MsgBox.Show(MsgBox.OwnerWindow(this), "Đã thêm Quản lý mới!", "Thành công", MsgBox.MessageBoxType.Success);
                 LoadManagerList();
             }
         }
@@ -144,18 +176,19 @@ namespace GUI
         {
             if (dgvManagers.CurrentRow == null) return;
             string name = dgvManagers.CurrentRow.Cells["Họ tên"].Value?.ToString() ?? "";
-            MsgBox.Show($"Mở form chỉnh sửa thông tin Quản lý: {name}", "Sửa QL", MsgBox.MessageBoxType.Info);
+            MsgBox.Show(MsgBox.OwnerWindow(this), $"Mở form chỉnh sửa thông tin Quản lý: {name}", "Sửa QL", MsgBox.MessageBoxType.Info);
         }
 
         private void btnApproveLeave_Click(object? sender, EventArgs e)
         {
             if (lstLeaveReq.Items.Count == 0)
             {
-                MsgBox.Show("Không có đơn xin nghỉ nào!", "Thông báo", MsgBox.MessageBoxType.Warning);
+                MsgBox.Show(MsgBox.OwnerWindow(this), "Không có đơn xin nghỉ nào!", "Thông báo", MsgBox.MessageBoxType.Warning);
                 return;
             }
 
             var result = MsgBox.Show(
+                this,
                 "Duyệt đơn xin nghỉ của QL Phạm Thu Hà?\n05/05 - 06/05 (2 ngày)\nLý do: Việc gia đình",
                 "Duyệt đơn xin nghỉ",
                 MsgBox.MessageBoxType.Warning);
@@ -165,7 +198,7 @@ namespace GUI
                 lstLeaveReq.Items.Clear();
                 lstLeaveReq.Items.Add("[ĐÃ DUYỆT] Phạm Thu Hà - 05/05 → 06/05");
                 btnApproveLeave.Text = "Duyệt (0)";
-                MsgBox.Show("Đã duyệt đơn xin nghỉ!", "Thành công", MsgBox.MessageBoxType.Success);
+                MsgBox.Show(MsgBox.OwnerWindow(this), "Đã duyệt đơn xin nghỉ!", "Thành công", MsgBox.MessageBoxType.Success);
             }
         }
     }
